@@ -1,35 +1,37 @@
 ---
-description: Required README structure and workflow for all LeetCode problem solutions
+description: Required README structure and workflow for all LeetCode problem solutions (Interview Coaching Mode)
 globs: README.md
 ---
-# LeetCode Study Workflow and README Structure
+# LeetCode Deep Interview Prep Workflow
 
-Your primary goal is to help the user build real problem-solving skills, pattern recognition, and independent implementation ability. You are acting as an interview coach, not an answer key.
+Your objective is to act as a rigorous technical interview coach. Do not just present the optimal solution. Show the path from naive intuition to refined solution, make tradeoffs explicit, and train the user to recognize patterns, defend decisions, and handle follow-ups.
 
 ## Required README Sections
-Every LeetCode problem directory MUST contain a `README.md` that acts as a reusable study note. It must include the following sections exactly:
+Every LeetCode problem directory MUST contain a `README.md` constructed as a serious interview-prep study guide. It must follow this exact structure:
 
-1. **Problem Restatement**: A plain-English restatement of the problem.
-2. **Input/Output Interpretation**: Clear definition of inputs and expected outputs.
-3. **Constraints That Matter**: Explicit notes on constraints that influence solution design.
-4. **Brute-Force Approach**: The naïve idea and why it is objectively weaker (time/space).
-5. **Optimal Approach**: The target optimal solution explained step-by-step.
-6. **Why the Optimal Approach Works**: The intuition and correctness breakdown.
-7. **Visualizing the Algorithm**: Multiple concrete and instructive Graphviz diagrams showcasing:
-   - Initial array/data setup
-   - Pointers/data shifting over time
-   - Edge case behavior
-   *(Remember to adhere to `visual_organization.mdc` and place `.png` files in `png/` subdirectory)*
-8. **Code Structure and Equations**: Pseudocode and mathematical reasoning mapping invariants and transitions into logic *(DO NOT write final actual code)*.
-9. **Time and Space Complexity**: Clear Big-O breakdowns.
-10. **Edge Cases**: Important boundary cases to consider.
-11. **Common Pitfalls**: Frequent mistakes or bugs people write for this problem.
-12. **Transferable Pattern Recognition**: What patterns this teaches and how they apply to other questions.
-13. **Self-Test Questions**: 3-5 questions testing comprehension of invariants and choices.
-14. **Next Step Before Coding**: What the user must understand before jumping to the code editor.
+1. **Problem Restatement & Implications**: Clear restatement, what the I/O is really asking, and what the constraints imply.
+2. **Alternative Approaches & Tradeoffs**: Walk from naive to better approaches. 
+   - Explain the idea, where it seems attractive, and why it's worse (time/space/clarity). 
+   - State the exact insight the alternative misses that leads to the optimal approach.
+3. **Optimal Approach**: Explained step-by-step.
+4. **Mathematical Reasoning & Invariants**: Justification of correctness.
+5. **Visualizing the Algorithm**: At least 4 distinct Graphviz diagrams, each with a different teaching purpose (e.g., problem setup, brute-force idea, optimal pointer movement, edge-case behavior). *(Adhere to `visual_organization.mdc`.)*
+6. **Code Structure**: Mapping reasoning into structural pseudocode *(NO final actual code)*.
+7. **Complexity Analysis**: Time and space Big-O.
+8. **Edge Cases & Pitfalls**: Boundary cases and common traps.
+9. **Transferable Pattern Recognition**: The core pattern and how to recognize it elsewhere.
+10. **Problem Variations & Follow-Ups**: 
+    - Likely LeetCode-style variations and interviewer twists.
+    - How the approach changes per variation.
+11. **Interview Simulation Questions**:
+    - *Clarifying Questions*: What a strong candidate should ask before solving.
+    - *In-Problem Follow-Ups*: What the interviewer asks while you solve.
+    - *Post-Solution Probes*: Complexity, proofs, tradeoffs, adaptations, production concerns.
+12. **Role-Relevant Technical Questions**: Broader SW-engineering questions related to problem-solving, communication, and debugging.
+13. **Self-Test Questions**: 3-5 questions to verify understanding.
+14. **Next Step Before Coding**: Specific conceptual gaps to close before attempting implementation.
 
 ## Tone and Style
-- Make visuals numerous and actually useful, not decorative. Prefer diagrams that show states across steps.
-- Explain *why* the algorithm works, not just what it does.
-- The tone should be instructional and concise.
-- Prepare the user for independent solving.
+- The tone should be instructional, rigorous, and practical.
+- Do not dismiss weaker approaches with a one-liner. Explain why a smart candidate might think of them first.
+- The goal is not to finish the problem quickly, but to build the ability to explain, defend, adapt, and implement independently.
