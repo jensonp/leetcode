@@ -1,204 +1,146 @@
 ---
-description: Enforced README structure and workflow for LeetCode interview-prep problem directories
+description: Enforced README structure for LeetCode interview-prep directories
 globs: README.md
 ---
 
-# LeetCode README Interview Coaching Standard
+# LeetCode README Standard
 
-Your role is to act as a rigorous technical interview coach.
-
-Do not jump straight to the optimal solution. Train the reader to think like a strong interview candidate:
-- clarify the problem,
-- explore reasonable approaches,
-- compare tradeoffs,
-- justify the final choice,
-- anticipate follow-ups,
-- and prepare to implement independently.
-
-The objective is not merely to solve the problem. The objective is to build interview-grade reasoning, communication, and pattern recognition.
+Your role is interview coach. Do not jump to the answer. Build a semantic ladder:
+decode the contract, trace an example, compare approaches, isolate the insight, prove correctness, map proof to code.
 
 ## Core Rules
 
-- Every problem directory must contain a `README.md`.
-- The `README.md` must follow the exact section order defined below.
-- Do not skip weaker approaches.
-- Do not present the optimal solution without showing how a thoughtful candidate could arrive at it.
-- Do not include final production code unless explicitly requested elsewhere.
-- Structural pseudocode is allowed.
-- Every explanation must prioritize interview usefulness over completeness-for-its-own-sake.
-- Prefer precise reasoning over motivational filler.
+- Every problem directory contains a `README.md`.
+- Follow the exact section order below.
+- Do not present the optimal solution without showing how a candidate arrives at it.
+- No final production code unless explicitly requested. Structural pseudocode is allowed.
+- Keep every paragraph. If it does not help you understand the contract, reject a bad approach, prove the algorithm, write the code, or answer a realistic follow-up — cut it.
 
 ## Required README Structure
 
 Use these exact section headings in this exact order.
 
 # Problem Metadata
-- LeetCode Number: 
-- Difficulty: 
-- Topic Tags: 
-- Primary Pattern: 
-- Secondary Pattern: 
-- Estimated Interview Signal: 
+- LeetCode Number:
+- Difficulty:
+- Topic Tags:
+- Primary Pattern:
+- Secondary Pattern:
+- Estimated Interview Signal:
 
-# Problem Restatement & Implications
+# Problem Contract & Hidden Semantics
 - Restate the problem in plain English.
-- Explain what the input and output actually mean.
-- Identify the constraints that materially affect solution design.
-- State any hidden implications from the problem setup.
+- Decode what the inputs actually mean physically (e.g., "only the first m entries are real data; the last n are writable capacity").
+- Decode what the output contract means (e.g., "returns void, so the answer must be written back in-place").
+- State every hidden assumption the problem statement implies but does not say explicitly.
+
+# Worked Example by Hand
+- Pick one concrete small example.
+- Trace it step by step, showing every state change.
+- Use a table or numbered list showing the values at each step.
+- The reader should be able to predict the next step of the algorithm after reading this section.
 
 # Clarifying Questions
-- List the questions a strong candidate should ask before solving.
-- Focus on ambiguous constraints, edge assumptions, mutation rules, ordering guarantees, duplicates, bounds, and allowed extra space.
+- What a strong candidate should ask before solving.
+- Focus on mutation rules, ordering guarantees, duplicates, bounds, allowed extra space.
 
 # Alternative Approaches & Tradeoffs
-For each alternative approach:
-- explain why it might seem reasonable,
-- identify the exact point where its reasoning is incomplete or flawed,
-- provide a counterexample or limitation when applicable,
-- explain what proof insight is missing.
+For each rejected approach:
+- explain why it seems reasonable,
+- identify the exact flaw in its reasoning,
+- provide a concrete counterexample or limitation,
+- state the proof insight it is missing.
 
-Do not dismiss alternatives with one sentence. Explain why a smart candidate might think of them first, and why an interviewer would push further.
+Do not dismiss alternatives in one sentence.
 
 ## Required progression
-This section should usually move through:
-1. the most naive or brute-force idea,
-2. one or more intermediate refinements if they are meaningful,
-3. the point where the optimal insight becomes unavoidable.
+1. Most naive idea.
+2. Intermediate refinements if meaningful.
+3. The point where the optimal insight becomes unavoidable.
 
-# Optimal Approach
-- Present the final approach step by step.
-- Explain the strategy in a way that could be spoken aloud in an interview.
-- Make the transition from prior approaches explicit.
-- Emphasize why this approach best satisfies the constraints.
+# Core Insight
+- State the single key observation that unlocks the optimal solution.
+- Explain it in one to three sentences that could be spoken aloud in an interview.
 
-# Correctness Argument
-- Prove that the algorithm is correct, not just intuitive.
-- When applicable, structure this section as:
-  - **Invariant or core claim**
-  - **Initialization:** why it is true before the process starts
-  - **Maintenance:** why each step preserves it
-  - **Termination:** why the process ends
-  - **Conclusion:** why termination plus the invariant implies correctness
-- If the solution is greedy, explicitly justify why the greedy choice is safe (e.g., exchange argument).
-- If the solution is recursive or dynamic programming, explain why the recurrence covers all cases and combines subresults correctly.
-- If the solution discards states or search space, explain why that pruning is valid.
+# Formal State Model
+- Define state variables (e.g., i, j, k).
+- Define the transition rule (what happens each step).
+- Define the loop guard.
+
+# Correctness Proof
+Structure as three separate claims:
+
+## Sorted-Suffix (or Main) Invariant
+State what region of the output is correct after each step. Prove initialization, maintenance, and why termination plus the invariant implies full correctness.
+
+## Safety Claim
+Prove that in-place writes do not destroy unread input. Use concrete algebra (e.g., k - i = n - x >= 0).
+
+## Termination
+State what strictly decreases each iteration. State the upper bound on iterations. State why remaining elements are already correct when the loop ends.
+
+# Equation → Pseudocode → Code Mapping
+- Restate the state variables.
+- Restate the transitions as equations.
+- Translate each equation into a pseudocode line.
+- Explain each conditional branch in English.
+- Call out where implementation bugs are most likely.
 
 # Visualizing the Algorithm
-Adhere to `visual_organization.mdc`. Provide MANY explanatory visualizations spanning brute-force, invariants, pointers, and edge-cases.
-
-# Code Structure
-- Map the reasoning into implementation structure without writing the final full solution.
-- Use pseudocode or structured bullet steps.
-- Identify important variables, state transitions, loop boundaries, and termination conditions.
-- Call out where mistakes are likely during implementation.
+Adhere to `visual_organization.mdc`. Provide many diagrams. Each must:
+- have a distinct teaching purpose,
+- be introduced with 1-3 sentences,
+- be followed by a brief interpretation.
 
 # Complexity Analysis
-- State time complexity.
-- State space complexity.
+- Time and space for the optimal approach.
+- Direct comparison to rejected approaches.
 - Justify both.
-- If multiple approaches were discussed, compare their complexity directly.
 
 # Edge Cases & Pitfalls
-- List important edge cases.
-- Explain why each matters.
-- Include common implementation traps, off-by-one mistakes, invalid assumptions, and mutation hazards.
-- Tie pitfalls back to earlier reasoning where possible.
+- List each edge case and explain why it matters.
+- Include off-by-one traps, invalid assumptions, and mutation hazards.
+- Tie pitfalls back to the proof claims.
 
 # Transferable Pattern Recognition
-- Name the core pattern, paradigm, or technique.
-- Explain how to recognize when this pattern applies in other problems.
-- Mention similar problem shapes, constraints, or keywords that should trigger recall.
+- Name the pattern.
+- Explain how to recognize it in unseen problems.
+- List trigger keywords or constraint shapes.
 
 # Problem Variations & Follow-Ups
-Include likely interview twists and related variations.
-
 For each variation:
 - describe the change,
-- explain whether the same core pattern still works,
-- explain what must change in the approach,
-- note whether complexity changes,
-- identify when the original solution breaks down.
+- state whether the same pattern applies,
+- state what must change,
+- cap at 2-3 realistic variations.
 
-Prioritize realistic follow-ups over random extensions.
+# Interview Questions
+## In-Problem Follow-Ups (2-3)
+Questions an interviewer asks while you solve.
 
-# Interview Simulation Questions
-
-## In-Problem Follow-Ups
-List questions an interviewer may ask while the candidate is solving, such as:
-- why this approach,
-- what tradeoff is being made,
-- can this be done in less space,
-- what happens under changed constraints,
-- what invariant are you maintaining,
-- why is this step safe.
-
-## Post-Solution Probes
-List deeper follow-up questions after the solution is explained, such as:
-- prove correctness,
-- compare to rejected approaches,
-- adapt to streaming or immutability constraints,
-- handle production-scale concerns,
-- discuss failure modes,
-- generalize the method.
-
-# Role-Relevant Technical Questions
-Add broader software engineering interview questions related to the problem’s underlying skills.
-
-These may include:
-- debugging strategy,
-- communication under ambiguity,
-- performance tradeoffs,
-- input validation,
-- maintainability,
-- testing strategy,
-- reasoning about mutations and state.
-
-These should sound like questions a real interviewer for a software engineering role might ask.
+## Post-Solution Probes (2-3)
+Deeper questions after the solution is explained. Keep them relevant to the problem's actual difficulty level.
 
 # Self-Test Questions
-Provide 3-5 questions that test whether the reader actually understands the problem.
-
-Good self-test questions should check:
-- pattern recognition,
-- tradeoff awareness,
-- invariant understanding,
-- edge-case handling,
-- ability to explain the algorithm without memorization.
+3-5 questions checking invariant understanding, edge-case handling, and ability to explain without memorization.
 
 # Next Step Before Coding
-- State the exact conceptual gaps the reader should close before implementation.
-- Give a concrete recommendation for what to try next.
-- Focus on readiness to write the solution independently.
+State the exact conceptual gap to close. Give one concrete exercise (e.g., "hand-trace the m=0 case on paper").
 
-## Quality Bar
-A valid `README.md` must satisfy all of the following:
-- It teaches the reasoning path, not just the final answer.
-- It explains why weaker approaches fail or underperform.
-- It includes interview-relevant follow-ups and variations.
-- It includes MANY distinct Graphviz diagrams with different teaching purposes (enforced by `visual_organization.mdc`).
-- It gives enough structure that the reader could attempt coding without copying.
-- It is concise where possible, but never at the expense of clarity.
-- It is written for serious interview preparation, not casual note-taking.
+## Quality Filter
+Keep a section only if it helps you:
+- understand the contract,
+- reject a bad approach,
+- prove the algorithm,
+- write the code,
+- or answer a realistic follow-up.
 
-## Disallowed Behaviors
-Do not:
-- skip directly to the optimal solution,
-- describe rejected approaches superficially,
-- include decorative diagrams with no teaching value,
-- provide final code when only structural reasoning is requested,
-- give generic interview questions unrelated to the problem,
-- write vague filler like “be careful with edge cases” without naming them.
+If it does none of those, cut it.
 
-## Writing Standard
-The tone must be:
-- instructional,
-- rigorous,
-- practical,
-- interview-oriented.
-
-The writing should help the reader:
-- explain the solution aloud,
-- defend design decisions,
-- handle interviewer pressure,
-- recognize related patterns later,
-- and implement the solution independently.
+## Disallowed
+- Skipping directly to the optimal solution.
+- Dismissing rejected approaches superficially.
+- Decorative diagrams with no teaching value.
+- Final code when only structural reasoning is requested.
+- Interview questions that drift far from the problem's actual level.
+- Vague filler like "be careful with edge cases" without naming them.

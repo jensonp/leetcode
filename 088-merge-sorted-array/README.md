@@ -1,145 +1,203 @@
 # 088: Merge Sorted Array
 
 # Problem Metadata
-- LeetCode Number: 088
+- LeetCode Number: 88
 - Difficulty: Easy
-- Topic Tags: Array, Two Pointers, Sorting
+- Topic Tags: Array, Two Pointers
 - Primary Pattern: Two Pointers (Backwards)
 - Secondary Pattern: In-Place Array Mutation
-- Estimated Interview Signal: High (fundamental logic, pointer management, space complexity awareness)
+- Estimated Interview Signal: High (pointer logic, in-place safety, invariant reasoning)
 
-# Problem Restatement & Implications
-We are given two integer arrays, `nums1` and `nums2`, both sorted in non-decreasing order. We also have integers `m` and `n`, representing the valid elements in `nums1` and `nums2` respectively.
-Our goal is to merge `nums2` into `nums1` so that `nums1` becomes a single array sorted in non-decreasing order.
+# Problem Contract & Hidden Semantics
 
-**Implications:** 
-  - `nums1` has a total pre-allocated length of `m + n`. The first `m` elements are valid data, while the last `n` elements are `0`s acting as raw buffer space.
-  - Return type is `void`; we must modify `nums1` strictly **in-place**.
-  - Arrays are already sorted. This implies $O((m+n)\log(m+n))$ sorting is suboptimal, and we should capitalize on the existing order to achieve $O(m+n)$ linear merging.
+`nums1` has physical length `m + n`, but only its first `m` positions count as input data. The final `n` positions are spare capacity, not meaningful values. They happen to be `0`, but that is irrelevant — they are writable slots.
+
+`nums2` has length `n`. All `n` elements are real input.
+
+Both arrays are already sorted in non-decreasing order.
+
+The function returns nothing (`void`). The answer must be written back into `nums1` itself. You cannot allocate and return a new array.
+
+**Hidden assumptions:**
+- "Sorted" means non-decreasing, so duplicates are allowed.
+- The `0`s at the end of `nums1` are not part of the data. They are capacity.
+- If `m = 0`, `nums1` still has total capacity `n`. There are no valid original elements, but there is room to copy all of `nums2` into it.
+- If `n = 0`, `nums2` is empty. `nums1` is already the answer.
+
+# Worked Example by Hand
+
+**Input:** `nums1 = [1, 2, 3, 0, 0, 0]`, `m = 3`, `nums2 = [2, 5, 6]`, `n = 3`
+
+We define pointers: `i = m-1 = 2`, `j = n-1 = 2`, `k = m+n-1 = 5`.
+
+| Step | i | j | k | Compare | Action | nums1 state |
+|------|---|---|---|---------|--------|-------------|
+| 0 | 2 | 2 | 5 | `3` vs `6` | `6` wins, write to `[5]`, j-- | `[1, 2, 3, 0, 0, 6]` |
+| 1 | 2 | 1 | 4 | `3` vs `5` | `5` wins, write to `[4]`, j-- | `[1, 2, 3, 0, 5, 6]` |
+| 2 | 2 | 0 | 3 | `3` vs `2` | `3` wins, write to `[3]`, i-- | `[1, 2, 3, 3, 5, 6]` |
+| 3 | 1 | 0 | 2 | `2` vs `2` | `2` (from B) wins via else, j-- | `[1, 2, 2, 3, 5, 6]` |
+| 4 | 1 | -1 | 1 | j < 0 | Loop ends | `[1, 2, 2, 3, 5, 6]` |
+
+After step 3, `j` drops below 0. The loop terminates. The remaining prefix `nums1[0..1] = [1, 2]` is already in correct sorted position because those elements were never moved and are smaller than everything placed after them.
 
 # Clarifying Questions
-- "Are there negative numbers? Elements with duplicate values?" *(Yes, the logic handles duplicates naturally via `>=`)*.
-- "If $m=0$, does `nums1` still have a length of $n$?" *(Yes, it's strictly pre-allocated).*
-- "Should stability of duplicate elements be maintained, or does their relative order not matter?" *(Typically does not matter for simple integers).*
+- "Can elements be negative or contain duplicates?" — Yes. The logic is comparison-based and handles both.
+- "If `m = 0`, does `nums1` still have length `n`?" — Yes. Capacity is always `m + n`.
+- "Is extra space allowed?" — The problem expects $O(1)$ auxiliary space.
 
 # Alternative Approaches & Tradeoffs
 
-### 1. Concat and Built-in Sort (Brute Force)
-- **Why it seems reasonable:** Concatenating the elements and using a standard library sort is an extremely low-effort, robust 1-liner in most languages. It guarantees correctness immediately.
-- **Where its reasoning is incomplete/flawed:** It structurally assumes the incoming data has no prior ordering, intentionally wasting $O(N \log N)$ operations on data that is already strictly sorted.
-- **Counterexample/Limitation:** Sorting inherently takes $O((m+n)\log(m+n))$ time. When $m$ and $n$ are astronomically large (e.g., merging two 1,000,000 element streams), a generalized sort will be orders of magnitude slower than a linear target merge and completely unacceptable in a production system.
-- **Missing Proof Insight:** A true merge only ever requires localized pointer comparisons between the unmerged extremum (head/tail) of the two sorted sequences, totally bypassing global sorts.
+### 1. Append + Sort
+- **Why it seems reasonable:** Copy `nums2` into the trailing slots of `nums1`, then sort. One line of code. Guaranteed correct.
+- **The flaw:** It ignores that both inputs are already sorted. Sorting costs $O((m+n)\log(m+n))$ when a linear merge is possible.
+- **Counterexample:** With `m = n = 500,000`, the sort does ~40× more comparisons than a merge.
+- **Missing insight:** Because both arrays are sorted, we only ever need to compare the two current extremes — not re-sort globally.
 
-### 2. Two Pointers from the Front with Shifting
-- **Why it seems reasonable:** Reading left-to-right structurally mimics human intuition and perfectly mirrors how we linearly merge standard Linked Lists.
-- **Where its reasoning is incomplete/flawed:** Standard Arrays are block-contiguous memory allocations. We mathematically cannot simply insert a value into the front of a heavily populated array without cascading shift operations on every remaining element to the right. 
-- **Counterexample/Limitation:** If every element in `nums2` happens to be smaller than the very first element in `nums1`, every single insertion strictly requires shifting the entire `m` block of `nums1`. This degrades the worst-case time complexity to $O(m \times n) \approx O((m+n)^2)$.
-- **Missing Proof Insight:** The available contiguous empty padding `n` strictly resides at the *end* of `nums1`. The proof dictates we must aggressively consume the buffer from the back to eliminate geometric shifting collisions entirely.
+### 2. Two Pointers from the Front
+- **Why it seems reasonable:** This is how we merge two sorted linked lists. Compare heads, take the smaller, advance.
+- **The flaw:** In an array, inserting at the front requires shifting everything to the right. Each insertion is $O(m)$, giving $O(m \cdot n)$ worst case. Alternatively, using a temporary array costs $O(m+n)$ space, violating the in-place constraint.
+- **Counterexample:** If every element of `nums2` is smaller than `nums1[0]`, every insertion shifts the entire `m`-block.
+- **Missing insight:** The spare capacity is at the **end** of `nums1`. Writing from the back avoids all shifting.
 
-# Optimal Approach
-Since the empty space is trailing, we can sort the arrays in reverse (largest to smallest) and place the largest elements at the very back of `nums1`.
+# Core Insight
 
-**Algorithm Step-by-Step:**
-1. Initialize three pointers: $p_1$ pointing to the end of `nums1`'s valid data ($m-1$), $p_2$ pointing to the end of `nums2` ($n-1$), and $p$ pointing to the literal end of `nums1` ($m+n-1$).
-2. While elements remain in `nums2` ($p_2 \ge 0$):
-3. Compare the elements at $nums1[p_1]$ and $nums2[p_2]$.
-4. Take the larger of the two, place it at $nums1[p]$, and decrement the $p$ pointer and the pointer from which the element was taken.
-5. If $p_1$ exhausts early, naturally copy the rest of `nums2` over via the `else` block.
+The spare capacity sits at the tail of `nums1`. If we fill from the back — placing the largest remaining element at position `k` and working leftward — we write only into capacity slots. We never overwrite a valid element before reading it.
 
-# Correctness Argument
+# Formal State Model
 
-We must formally prove the invariant safety of backward merging directly into the exact boundary array we are actively reading from.
+Let `A = nums1[0..m-1]` (original valid data), `B = nums2[0..n-1]`.
 
-- **Invariant / Core Claim:** "At the conclusion of every individual loop iteration, the total number of populated elements securely locked in the tail buffer strictly matches the exact number of elements actively consumed from the back of `nums1` and `nums2`."
-- **Initialization:** Before the loop executes, exactly 0 elements are processed, and 0 elements are placed in the padding space. The write-head $p = (m+n-1)$. The unread boundary of `nums1` is defined directly at $p_1 = m-1$. The mathematical distance between $p$ and $p_1$ is strictly exactly $n$.
-- **Maintenance:** In every comparative step, we process exactly one extremum element from either `nums1` or `nums2` strictly by decrementing its respective pointer. Simultaneously, we write exactly one element firmly at $p$, decrementing $p$. The geometric distance between the write-head $p$ and the read-head $p_1$ decreases *only* if we pull from `nums2`. Since there are strictly exactly $n$ elements in `nums2`, $p$ can logically close the gap towards $p_1$ by an absolute maximum of $n$ steps. Since the initial gap is exactly established as $n$, $p$ structurally can never mathematically overtake $p_1$ under any permutations.
-- **Termination:** The loop conditionally terminates firmly when $p_2 < 0$. With each bounded loop iteration, target $p$ strictly decreases monotonically. If elements are cleanly drawn from `nums2`, $p_2$ rigorously decreases toward $-1$. Since $nums2$ is finite (size $n$), strict termination is functionally guaranteed.
-- **Conclusion:** The algorithm logically must terminate because we monotonically reduce the target bounds of $p_2$. Upon guaranteed termination, all source elements of $nums2$ are perfectly placed. The non-collision geometric invariant strongly ensures we never overwrote unread historical data in `nums1`. Thus, the greedy systemic choice to safely place bounding maximum elements directly at the rear constraint is rigorously safe and formally optimal!
+**State variables:**
+- `i = m - 1` — index of the largest unplaced element in A
+- `j = n - 1` — index of the largest unplaced element in B
+- `k = m + n - 1` — index of the next write position in nums1
+
+**Transition (each iteration):**
+- If `i >= 0` and `A[i] > B[j]`: write `A[i]` to `nums1[k]`, decrement `i`
+- Else: write `B[j]` to `nums1[k]`, decrement `j`
+- Always decrement `k`
+
+**Loop guard:** `j >= 0`
+
+When `j < 0`, all of B has been placed. The remaining prefix of A is already in `nums1[0..i]` in sorted order, so no further work is needed.
+
+# Correctness Proof
+
+## Sorted-Suffix Invariant
+**Claim:** After each iteration, `nums1[k+1 .. m+n-1]` contains the largest already-placed elements of `A ∪ B`, in sorted order.
+
+- **Initialization:** Before the loop, no elements have been placed. The suffix `nums1[m+n .. m+n-1]` is empty, which is trivially sorted.
+- **Maintenance:** Each iteration places the largest remaining candidate (either `A[i]` or `B[j]`) at position `k`. Since all previously placed values at `k+1..m+n-1` are ≥ this value (they were larger when chosen), appending to the left preserves sorted order.
+- **Conclusion:** When the loop ends, the filled suffix is the complete sorted merge of all consumed elements.
+
+## Safety Claim (No Overwrite)
+Let `x` = number of elements taken from B so far, `y` = number taken from A. Then:
+
+$$k = (m+n-1) - (x+y), \quad i = (m-1) - y$$
+
+$$k - i = n - x$$
+
+Since $x \le n$, we have $k - i \ge 0$. The write-head `k` never overtakes the read-head `i`. We never overwrite an unread element of A.
+
+## Termination
+Each iteration decrements `k` and either `i` or `j`. The loop runs at most `m + n` times. It exits when `j < 0`, meaning all of B has been placed. The remaining `A[0..i]` is already in its correct position in `nums1` (those elements were never moved and are ≤ everything in the filled suffix).
+
+# Equation → Pseudocode → Code Mapping
+
+**State variables → declarations:**
+```
+i = m - 1       # read-head for A
+j = n - 1       # read-head for B
+k = m + n - 1   # write-head
+```
+
+**Transition → loop body:**
+```
+while j >= 0:                         # loop guard: B not exhausted
+    if i >= 0 and nums1[i] > nums2[j]:  # A's tail is larger
+        nums1[k] = nums1[i]             # place A[i]
+        i -= 1                           # advance A's read-head
+    else:                                # B's tail is larger, or A exhausted
+        nums1[k] = nums2[j]             # place B[j]
+        j -= 1                           # advance B's read-head
+    k -= 1                               # advance write-head
+```
+
+**Why `>` and not `>=` in the comparison:** Either works for correctness. Using `>` means ties go to B. Using `>=` means ties go to A. Both produce a valid sorted result. The choice does not affect complexity.
+
+**Where bugs are most likely:**
+- Using `while i >= 0 and j >= 0` instead of `while j >= 0`. The first form requires a second cleanup loop to copy remaining B elements. The single-guard form handles A-exhaustion inside the `if`.
+- Off-by-one on initial pointer values. `i = m - 1`, not `m`. `k = m + n - 1`, not `m + n`.
 
 # Visualizing the Algorithm
 
-### 1. Problem Setup 
-Shows the pre-allocated buffer trailing at the end, leading to the insight of backward merging.
-![Initial Setup](png/setup.png)
+### 1. Problem Setup
+Shows the physical layout: valid data vs. spare capacity in `nums1`.
+![Problem Setup](png/setup.png)
+The first 3 cells are real data. The last 3 are writable buffer — this is why backward merging works.
 
-### 2. Brute Force Re-Sorting
-Visualizing why appending and then performing an $O(N \log N)$ sort is mathematically and structurally inefficient since it throws away initial states.
-![Brute Force Sort](png/bruteforce.png)
+### 2. Why Append+Sort Wastes Work
+Shows the brute-force approach discarding the sorted property entirely.
+![Brute Force](png/bruteforce.png)
+The red arrows dump `nums2` into the tail, then a full $O(N \log N)$ sort re-derives an ordering that already existed.
 
-### 3. Pointer Transitions: Resolving the Back
-Shows how pointers gracefully compare ending elements and drop the maximum directly into the buffer.
-![Optimal Step 1](png/step1.png)
+### 3. Backward Pointer Movement
+Shows `i`, `j`, `k` resolving the largest elements into the buffer slots.
+![Step 1](png/step1.png)
+The write-head `k` moves left in lockstep with whichever read-head supplied the value.
 
-### 4. Invariant Preservation
-Visually confirming that the `p` pointer (red) never overtakes the `p1` pointer (blue) because the processed items map $1:1$ with the consumed buffer.
-![Invariant Preservation](png/invariant.png)
+### 4. Safety Invariant: k Never Overtakes i
+Visually confirms the gap `k - i = n - x ≥ 0`.
+![Invariant](png/invariant.png)
+The gap can only shrink when we pull from B (increasing `x`), and `x` can never exceed `n`.
 
-### 5. Edge-Case Handling (Empty Initial Array)
-If `m=0`, $p_1$ starts at $-1$. The algorithm effortlessly shifts to copying `nums2` directly into the buffer safely.
-![Empty Edge Case](png/edge_case.png)
-
-# Code Structure
-```python
-# Initialize pointers at the tails
-p1 = m - 1
-p2 = n - 1
-p = m + n - 1
-
-# Only nums2 dictates the critical loop termination
-while p2 >= 0:
-    if p1 >= 0 and nums1[p1] > nums2[p2]:
-        # nums1 element is larger
-        nums1[p] = nums1[p1]
-        p1 -= 1
-    else:
-        # nums2 element is larger (or p1 exhausted)
-        nums1[p] = nums2[p2]
-        p2 -= 1
-    p -= 1
-```
+### 5. Edge Case: m = 0
+When A is empty, `i = -1` immediately. The loop copies all of B into `nums1`.
+![Edge Case](png/edge_case.png)
+The `i >= 0` guard in the `if` prevents any read from the nonexistent A.
 
 # Complexity Analysis
-- **Time Complexity:** $O(m + n)$. We touch each element in both arrays exactly once, doing $O(1)$ operations per element. The optimal approach is vastly superior to the Brute-Force $O((m+n)\log(m+n))$.
-- **Space Complexity:** $O(1)$. We strictly mutate `nums1` in place without allocating auxiliary arrays (pointers require negligible, constant space), strictly superior to constructing temporary arrays.
+| Approach | Time | Space |
+|----------|------|-------|
+| Append + Sort | $O((m+n)\log(m+n))$ | $O(1)$ |
+| Front merge + shift | $O(m \cdot n)$ | $O(1)$ |
+| Front merge + temp array | $O(m+n)$ | $O(m+n)$ |
+| **Backward merge** | **$O(m+n)$** | **$O(1)$** |
+
+The backward merge is strictly dominant: linear time, constant space.
 
 # Edge Cases & Pitfalls
-- **Edge Case: `n == 0`**: Loop never runs. `nums1` is perfectly untouched. Safe.
-- **Edge Case: `m == 0`**: $p_1 = -1$ immediately. The conditional falls straight to the `else` block, smoothly copying all of `nums2` into `nums1`. Safe.
-- **Implementation Pitfall:** Using `while p1 >= 0 and p2 >= 0:` loop logic. Using this structure requires a second manually unrolled `while p2 >= 0` loop afterward to catch elements if $nums1$ ran out first. The target optimal structure cleverly delegates the exhaustion of $p_1$ directly inside the main loop via the `p1 >= 0` guard in the `if` statement.
+- **`n = 0`:** Loop body never executes. `nums1` is untouched. Correct.
+- **`m = 0`:** `i = -1`. Every iteration takes the `else` branch, copying B into `nums1`. Correct.
+- **All of B smaller than all of A:** A elements fill the tail first, then B fills the front. The `j >= 0` guard handles the transition.
+- **All duplicates:** Every comparison goes to `else` (B). Same logic, no special case needed.
+- **Single-element arrays:** `m = 1, n = 1`. One comparison, one write, done.
 
 # Transferable Pattern Recognition
-- **Two Pointers:** Canonical approach for merging, comparing, or reconciling pairs of sorted sequences.
-- **In-place Array Modification (Back-to-Front Traversal):** When an array has padding to absorb new data, starting from the back prevents rippling shift operations and data overwrites.
+- **Two Pointers on sorted data.** Trigger: two sorted sequences, merge/intersect/compare.
+- **Back-to-front in-place fill.** Trigger: array has trailing capacity or padding. Writing from the back avoids shifting and overwrite hazards.
 
 # Problem Variations & Follow-Ups
-- **Variation: Merge Sorted Linked Lists (LeetCode 21)**
-  - *Change/Twist:* Arrays are swapped for Linked Lists.
-  - *Approach:* The same core comparison applies, but we merge **front-to-back**. Because Linked List manipulation takes $O(1)$ time and doesn't require shifting neighbor nodes in memory, front-to-back is actually optimal. Space complexity stays $O(1)$.
-- **Variation: Merge 'K' Sorted Arrays (LeetCode 23)**
-  - *Change/Twist:* Generalizing 2 arrays to $K$ arrays.
-  - *Approach:* Dual two-pointers breaks down. We must upgrade into a **Min-Heap (Priority Queue)** to efficiently track the smallest element across $K$ heads simultaneously to maintain an $O(N \log K)$ limit.
+- **Merge Two Sorted Linked Lists (LC 21):** Same comparison logic, but front-to-back works because linked list insertion is $O(1)$. No shifting problem.
+- **Merge K Sorted Lists (LC 23):** Two-pointer generalizes to a min-heap over K heads. Time becomes $O(N \log K)$.
+- **Intersection of Two Sorted Arrays (LC 349/350):** Same two-pointer skeleton, but collect matches instead of merging all elements.
 
-# Interview Simulation Questions
+# Interview Questions
 
 ## In-Problem Follow-Ups
-- "Why does your main loop only check `p2 >= 0` instead of `p1 >= 0 and p2 >= 0`?"
-- "Can you guarantee that $p$ will never overwrite $p_1$ randomly before elements are processed?" 
-- "If I restricted modifying variable definitions inside loops, could you write this cleanly?"
+- "Why do you loop on `j >= 0` rather than `i >= 0 and j >= 0`?"
+- "Can you prove the write-head never overwrites an unread element?"
 
 ## Post-Solution Probes
-- "If this was running in a highly constrained embedded system with almost zero L1 Cache, would you still use this array traversal?"
-- "What if `nums1` was much, much larger than `nums2` (e.g., $m = 1,000,000$, $n=10$)? Does the Time Complexity change your algorithm choice?" *(Insight: Binary Search merging).*
-- "Prove that algorithm is structurally robust even if elements duplicate consecutively heavily."
-
-# Role-Relevant Technical Questions
-- "If you were merging millions of arrays originating from independent microservice packet streams in production, how would you design the aggregation system rather than just a single thread loop?"
-- "How would you unit-test this logic to ensure extreme bounds (like sizes at max integer bounds) don't trigger index failures?"
+- "If `m` is huge and `n` is tiny (e.g., m=1M, n=5), is there a faster approach?" *(Yes — binary-search insertion of B's elements into A.)*
+- "What changes if the problem asked you to return a new array instead of modifying in-place?"
 
 # Self-Test Questions
-1. How does navigating `nums1` back-to-front solve the strict $O(1)$ space constraint compared to front-to-back?
-2. Trace the single-loop `if/else` logic exactly when `p1` hits `-1`. How does the code proceed without triggering an `IndexOutOfBounds` error?
-3. What is the Big-O Time Complexity of systematically shifting an array index rightwards, and how does that validate our architectural choice here?
-4. What visually proves that the tail index $p$ never collides with $p_1$?
+1. State the safety invariant in one sentence. Why does `k - i = n - x` prove no overwrite?
+2. Hand-trace the `m = 0, n = 3` case. What value does `i` start at, and why does the loop still work?
+3. Why is `while j >= 0` sufficient as the sole loop guard?
+4. If you used `>=` instead of `>` in the comparison, what changes? Does correctness break?
+5. Why does the remaining prefix of A need no further work when `j` drops below 0?
 
 # Next Step Before Coding
-Ensure you can map the pointer locations on a whiteboard for the edge case where `m = 0` and `n = 3`. Once you can trace logically why $p_1 = -1$ routes `nums2`'s values via the `else` block to naturally copy over, you are ready to write the implementation completely from memory.
+Hand-trace the `m = 0, n = 3` case on paper. Confirm that `i = -1` causes every iteration to take the `else` branch, copying B into `nums1[2], nums1[1], nums1[0]`. Once you can explain *why* this works without looking at notes, write the solution from memory.
