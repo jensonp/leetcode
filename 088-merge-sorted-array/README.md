@@ -173,6 +173,10 @@ When `j` drops below 0, the loop exits. The remaining prefix of A is already in 
 
 > "At every step, I place the largest remaining unplaced element into the last open position. Both arrays are sorted, so the largest remaining candidate is always at one of the two tails I'm comparing. Placing it at position `k` is safe because nothing smaller should go after it. The write-head can never overwrite an unread element — the gap between `k` and `i` equals exactly the number of B-elements still to be placed, which is always ≥ 0. The loop ends when B is exhausted, and whatever remains of A is already in place."
 
+## Compressed Restatement
+
+The backward merge places the largest remaining element at position `k` each step, building a correct sorted suffix from right to left. The write-head `k` cannot overwrite an unread element of A because the algebraic gap `k - i = n - x` is always ≥ 0. The loop terminates after at most `m + n` iterations because `k` strictly decreases, and when B is exhausted the remaining prefix of A is already in place.
+
 # Equation → Pseudocode → Implementation Mapping
 
 **State variables → declarations:**
@@ -267,6 +271,24 @@ When B is empty, `j = -1` from the start. The loop guard `j >= 0` is immediately
 
 # Complexity Analysis
 
+## Formal Time Derivation
+
+**Define the input size.** `m` = number of valid elements in A. `n` = number of elements in B. Total elements = `m + n`.
+
+**Count the work per iteration.** Inside the loop body: one comparison (`A[i] > B[j]`), one array write (`nums1[k] = ...`), and 1-2 pointer decrements. All $O(1)$.
+
+**Bound the iterations.** The loop guard is `j >= 0`. Variable `k` starts at `m + n - 1` and decreases by exactly 1 each iteration. The loop also exits when `j < 0`. In the worst case (when A is not exhausted early), the loop runs exactly `m + n` times — once for each element that needs to be placed.
+
+**State the case.** This is worst-case analysis. Best-case (e.g., all of B > all of A) is also $O(m+n)$ because `k` still decreases through every position.
+
+**Conclude.** Each of the `m + n` iterations does $O(1)$ work. Therefore, worst-case time = $O(m + n)$.
+
+## Formal Space Derivation
+
+**What is allocated beyond the input?** Three integer variables: `i`, `j`, `k`. No auxiliary arrays, no recursion. Therefore auxiliary space = $O(1)$.
+
+## Comparison Table
+
 | Approach | Time | Space | Uses sorted property? |
 |----------|------|-------|-----------------------|
 | Append + Sort | $O((m+n)\log(m+n))$ | $O(1)$ | No |
@@ -276,7 +298,40 @@ When B is empty, `j = -1` from the start. The loop guard `j >= 0` is immediately
 
 The backward merge is the only approach that achieves linear time *and* constant space *and* uses the sorted property. Every other approach sacrifices at least one of those.
 
-**Why we can't do better than $O(m+n)$:** Consider any element in A or B. If we don't examine it, we can't know where it belongs in the merged result — it could be out of position. So every correct merge must look at each of the $m+n$ elements at least once. That makes $\Omega(m+n)$ a lower bound. Our algorithm matches it.
+## Lower Bound
+
+Consider any element in A or B. If we don't examine it, we can't know where it belongs in the merged result — it could be out of position. So every correct merge must look at each of the $m+n$ elements at least once. That makes $\Omega(m+n)$ a lower bound. Our algorithm matches it.
+
+## Compressed Restatement
+
+The loop runs at most `m + n` times, each iteration does $O(1)$ work (one comparison, one write, constant pointer updates), so total time is $O(m + n)$. Only three integer variables are allocated, so auxiliary space is $O(1)$. This is optimal — any correct merge must examine every element at least once.
+
+# What Breaks If…
+
+### What if the input arrays were not sorted?
+- **Change:** `nums1[0..m-1]` and `nums2[0..n-1]` are in arbitrary order.
+- **What breaks:** The core insight fails — "largest remaining element is at one of the two tails" is only true when both arrays are sorted. With unsorted input, the tail may not be the maximum, so the algorithm places the wrong element.
+- **What you would need:** A general merge (copy into temp, sort everything), or a fundamentally different algorithm. No two-pointer merge works on unsorted data.
+
+### What if the loop guard were `while i >= 0 and j >= 0`?
+- **Change:** Loop exits as soon as *either* pointer is exhausted.
+- **What breaks:** If A runs out first (`i < 0`), the loop exits immediately — but B still has unplaced elements. Those remaining elements of B never get written into `nums1`. The result is missing data.
+- **What you would need:** A second cleanup loop: `while j >= 0: nums1[k] = nums2[j]; j -= 1; k -= 1`. The current design avoids this by only guarding on `j`, since leftover A elements are already in position.
+
+### What if the spare capacity were at the front instead of the back?
+- **Change:** `nums1 = [0, 0, 0, 1, 2, 3]` with capacity at indices `0..n-1`.
+- **What breaks:** The backward merge writes into positions `m+n-1` downward, which is now the data region, not the capacity region. The very first write overwrites valid data.
+- **What you would need:** Reverse the merge direction — merge from the front, placing the smallest elements first at position `k = 0` and walking right. The safety argument mirrors: the gap between write-head and read-head equals elements of B not yet placed.
+
+### What if we used `>=` instead of `>` in the comparison?
+- **Change:** `if i >= 0 and nums1[i] >= nums2[j]` instead of `>`.
+- **What breaks:** Nothing. When `A[i] == B[j]`, both `>` and `>=` produce valid sorted output. With `>`, ties go to B. With `>=`, ties go to A. Both are correct because the tie-breaking direction doesn't affect sortedness.
+- **What you would need:** No change. This is a case where the algorithm is robust to the variation.
+
+### What if memory were not contiguous (linked list instead of array)?
+- **Change:** `nums1` and `nums2` are linked lists.
+- **What breaks:** The motivation for backward merging disappears. In a linked list, inserting at the front is $O(1)$ — no shifting. The entire reason we merge backward is to avoid array shift costs.
+- **What you would need:** Standard forward merge (LC 21). Compare heads, take the smaller, advance. The proof changes from sorted-suffix to sorted-prefix, but the structure is the same.
 
 # Edge Cases & Pitfalls
 

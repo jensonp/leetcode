@@ -43,6 +43,7 @@ Optimize for clarity, correctness, and teachability.
   - final code only if the current task explicitly requests code
 - Prefer fewer high-value visuals and questions over broad filler.
 - Do not announce a result before earning it. Build up: observation → consequence → conclusion. If a complexity claim, design choice, or key insight appears, the preceding sentences must make it feel inevitable, not surprising. Reasoning before headline.
+- **Formal first, then compress.** For any claim about complexity, correctness, or safety: first derive it from precise definitions. Define the input size, name the variable being counted, state the loop bound, and distinguish worst-case from average-case from asymptotic. Only after the formal derivation, provide a compressed but still precise restatement. Not intuition — compressed rigor. If you cannot derive it, you do not know it. If you can only derive it slowly and cannot recognize it quickly, you do not yet own it.
 
 ## Required README Structure
 
@@ -195,9 +196,11 @@ Include:
 Rules:
 - Do not fake mathematical rigor.
 - Use the simplest proof that makes the reasoning precise.
-- End with a short subsection:
+- End with two short subsections:
   - **30-Second Interview Proof**
-  - This should summarize the correctness argument in concise spoken language.
+  - Summarize the correctness argument in concise spoken language a candidate could say aloud.
+  - **Compressed Restatement**
+  - Restate the entire proof in 2-3 sentences. Must be shorter than the formal version but still precise — no vague language, no hand-waving. This trains the "fast recall" layer of mastery.
 
 # Equation → Pseudocode → Implementation Mapping
 Bridge the idea across levels of abstraction.
@@ -243,11 +246,34 @@ Rules:
 - Stop adding visuals once they stop adding new insight.
 
 # Complexity Analysis
-- State time complexity.
-- State space complexity.
-- Justify both from the structure of the algorithm.
-- Compare with rejected approaches when useful.
-- If asymptotic optimality matters, say why a better bound is impossible or unlikely.
+Do not simply announce the complexity. Derive it formally:
+1. **Define the input size.** What is $n$? What is $m$?
+2. **Count the work per iteration.** What operations run inside the loop body? Are they $O(1)$?
+3. **Bound the iterations.** How many times can the loop run? What variable is decreasing? What is its starting and ending value?
+4. **State the case.** Is this worst-case, average-case, best-case, or amortized? Be explicit.
+5. **Conclude.** State the final bound and connect it to the derivation above.
+6. **Space:** What is allocated beyond the input? Count pointer variables, auxiliary arrays, recursion stack depth.
+
+After the formal derivation:
+- Compare with rejected approaches in a table when useful.
+- If asymptotic optimality matters, derive the lower bound (e.g., "must examine every element → Ω(n)").
+- Provide a **Compressed Restatement**: 1-2 sentences restating the complexity with just enough justification to be precise.
+
+# What Breaks If…
+Change one condition and ask what fails. This tests real understanding vs. pattern memorization.
+
+Include 3-5 scenarios such as:
+- What if the input arrays were not sorted?
+- What if the loop guard were different?
+- What if the comparison operator changed?
+- What if the spare capacity were at the front instead of the back?
+- What if equal elements had to maintain relative order (stability)?
+- What if memory were not contiguous (linked list vs. array)?
+
+For each scenario:
+- **Change:** what exactly is different
+- **What breaks:** which part of the algorithm or proof fails
+- **What you would need:** what alternative approach or modification handles it
 
 # Edge Cases & Pitfalls
 For each case, include:
@@ -336,6 +362,7 @@ Delete or compress anything that does not clear this bar.
 - Do not include broad system-design or role questions unless they are tightly connected to the problem; if included, cap them at 3 and place them last.
 - Do not let the README become a dump of facts. It must read like a coherent lesson.
 - Do not announce conclusions before earning them (e.g., stating "O(m+n)" before explaining why). Build observation → consequence → conclusion chains so each sentence earns the next.
+- Do not state a complexity bound without deriving it. "The time is O(m+n)" alone is a headline, not an explanation. Derive it: define input, count work, bound iterations, conclude.
 
 ## Writing Standard
 The tone must be:
