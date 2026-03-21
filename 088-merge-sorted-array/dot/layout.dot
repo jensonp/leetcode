@@ -1,0 +1,8 @@
+digraph G {
+rankdir=LR; node [shape=record, fontname="Helvetica"];
+nums1 [label="<f0> 1 |<f1> 2 |<f2> 3 |<f3> 0 |<f4> 0 |<f5> 0", style=filled, fillcolor=lightblue];
+nums2 [label="<f0> 2 |<f1> 5 |<f2> 6", style=filled, fillcolor=lightyellow];
+valid [shape=plaintext, label="valid data (m=3)"]; valid -> nums1:f1;
+cap [shape=plaintext, label="writable capacity (n=3)"]; cap -> nums1:f4;
+labelloc="t"; label="Physical layout: first m slots are data, last n slots are capacity"; fontsize=14;
+}

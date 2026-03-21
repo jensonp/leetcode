@@ -1,12 +1,10 @@
 digraph G {
-    rankdir=TB;
-    node [shape=record, fontname="Helvetica", style=filled, fillcolor=white];
+    rankdir=TB; node [shape=record, fontname="Helvetica", style=filled, fillcolor=white];
     nums1 [label="<f0> 1|<f1> 2|<f2> 2|<f3> 3|<f4> 5|<f5> 6", fillcolor=lightblue];
     nums2 [label="<f0> 2|<f1> 5|<f2> 6", fillcolor=lightyellow];
-    node [shape=plaintext, fillcolor=none, fontcolor=blue, fontname="Helvetica-Bold"];
-    p1 [label="p1=1"]; p1 -> nums1:f1;
-p [label="p=2"]; p -> nums1:f2 [color=red, fontcolor=red];
-    labelloc="t";
-    label="Placed nums2[p2] (2) at nums1[p]";
-    fontsize=14;
+    node [shape=plaintext, fillcolor=none, fontname="Helvetica-Bold"];
+    i [label="i=1", fontcolor=blue]; i -> nums1:f1;
+j [label="j=-1 (done)", fontcolor=gray];
+k [label="k=2", fontcolor=red]; k -> nums1:f2 [color=red];
+labelloc="t"; label="Step 4: B[j]=2 >= A[i]=2 — write 2 at k=2, decrement j"; fontsize=14;
 }

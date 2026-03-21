@@ -1,0 +1,8 @@
+digraph G {
+rankdir=TB; node [shape=record, fontname="Helvetica"];
+nums1 [label="<f0> 1 |<f1> 2 |<f2> 3", style=filled, fillcolor=lightgreen];
+nums2 [label="(empty)", shape=plaintext];
+j [shape=plaintext, label="j = -1 immediately"]; 
+note [shape=plaintext, label="Loop never executes.\nnums1 is already the answer.", fontcolor=darkgreen];
+labelloc="t"; label="Edge Case: n=0 — loop guard j>=0 is false, nothing happens"; fontsize=14;
+}

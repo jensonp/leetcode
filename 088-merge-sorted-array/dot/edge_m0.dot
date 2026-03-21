@@ -1,0 +1,11 @@
+digraph G {
+rankdir=TB; node [shape=record, fontname="Helvetica"];
+nums1 [label="<f0> 0 |<f1> 0 |<f2> 0", style=filled, fillcolor=lightgrey];
+nums2 [label="<f0> 1 |<f1> 2 |<f2> 3", style=filled, fillcolor=lightyellow];
+result [label="<f0> 1 |<f1> 2 |<f2> 3", style=filled, fillcolor=lightgreen];
+i [shape=plaintext, label="i = -1 (exhausted immediately)"]; 
+j [shape=plaintext, label="j = 2"]; j -> nums2:f2;
+k [shape=plaintext, label="k = 2"]; k -> nums1:f2;
+nums1 -> result [label="loop copies all of B", style=dashed, color=green];
+labelloc="t"; label="Edge Case: m=0 — i starts exhausted, B copied directly"; fontsize=14;
+}
