@@ -1,0 +1,15 @@
+digraph G {
+    rankdir=TB;
+    node [shape=record, fontname="Helvetica", style=filled, fillcolor=white];
+    
+    nums1 [label="<f0> 1|<f1> 2|<f2> 3|<f3> 0|<f4> 0|<f5> 0", fillcolor=lightblue];
+    nums2 [label="<f0> 2|<f1> 5|<f2> 6", fillcolor=lightyellow];
+    
+    node [shape=plaintext, fillcolor=none, fontcolor=blue, fontname="Helvetica-Bold"];
+    p1 [label="p1=2"]; p1 -> nums1:f2;
+p2 [label="p2=2"]; p2 -> nums2:f2;
+p [label="p=5"]; p -> nums1:f5 [color=red, fontcolor=red];
+    labelloc="t";
+    label="Step 0: Initial State\nBoth arrays start sorted. Pointers p1 and p2 at the end of valid elements.\nPointer p at the very end of nums1 (the write position).";
+    fontsize=14;
+}
