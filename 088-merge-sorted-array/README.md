@@ -6,7 +6,7 @@
 - **Topic Tags:** Array, Two Pointers
 - **Primary Pattern:** Two Pointers (Backwards)
 - **Secondary Pattern:** In-Place Array Mutation
-- **Why Interviewers Ask This:** Tests whether you can reason about pointer safety inside a shared read/write array, recognize that sorted input enables linear merging, and avoid the trap of front-to-back insertion in contiguous memory.
+- **Why Interviewers Ask This:** The problem looks trivially easy — just combine two arrays. But doing it in-place without extra space forces you to reason about which direction to fill, whether you'll overwrite data you haven't read yet, and why the loop terminates correctly. That combination of simple setup and subtle pointer reasoning is exactly what interviewers want to see.
 
 # Problem Contract & Hidden Semantics
 
@@ -73,25 +73,25 @@ Pointers: `i = 2` (last valid in A), `j = 2` (last in B), `k = 5` (last slot in 
 - **Idea:** Copy `nums2` into `nums1[m..m+n-1]`, then sort the whole array.
 - **Why it seems reasonable:** It is a one-liner in most languages. Correctness is trivially guaranteed by the sort.
 - **Why a smart candidate might try it first:** Minimal code, no pointer logic, impossible to have an off-by-one error.
-- **Where it breaks down:** Time complexity is $O((m+n)\log(m+n))$. It throws away the fact that both inputs are already sorted. With `m = n = 500,000`, a general sort does ~40× more comparisons than a linear merge.
-- **Counterexample:** Not a correctness failure, but a performance failure that signals to the interviewer you did not observe the key constraint.
-- **Missing insight:** Sorted inputs need only local comparisons between their current extremes, not a global re-sort.
+- **Where it breaks down:** Both arrays are already sorted. A general sort ignores this — it re-derives an ordering that already exists. How much work does that waste? With `m = n = 500,000`, a sort performs roughly $(m+n)\log(m+n) \approx 20$ million comparisons, while a merge that exploits the existing order touches each element once — about 1 million operations. That's ~20× wasted work. The time complexity is $O((m+n)\log(m+n))$ vs. an achievable $O(m+n)$.
+- **Counterexample:** Not a correctness failure, but a performance failure. An interviewer who sees you re-sort already-sorted input knows you missed the key structural observation.
+- **Missing insight:** Because each array is sorted, the largest remaining element must be at one of the two tails. That means we only need local tail comparisons, not a global re-sort.
 
 ### 2. Two Pointers from the Front (with shifting)
 
 - **Idea:** Compare `nums1[0]` and `nums2[0]`. Insert the smaller one at the front and shift everything else right.
 - **Why it seems reasonable:** This mirrors how we merge two sorted linked lists — compare heads, take the smaller.
 - **Why a smart candidate might try it first:** Left-to-right traversal matches human reading order and linked-list intuition.
-- **Where it breaks down:** Arrays are contiguous memory. Inserting at the front requires shifting all subsequent elements right — $O(m)$ per insertion. Worst case: every element of B is smaller than A[0], causing $n$ full shifts → $O(m \cdot n)$ total.
-- **Counterexample:** `nums1 = [4, 5, 6, 0, 0, 0]`, `nums2 = [1, 2, 3]`. Each of the 3 insertions shifts all 3 valid elements.
-- **Missing insight:** The spare capacity is at the **end** of `nums1`. Writing from the back avoids all shifting because we only write into empty slots.
+- **Where it breaks down:** Arrays are contiguous blocks of memory. To insert a value at position 0, every element after it must physically move one slot to the right — that costs $O(m)$ per insertion. Now consider: what if every element in B is smaller than A[0]? Then every one of B's `n` elements triggers a full shift of all `m` elements in A. That's $n$ shifts × $m$ moves each = $O(m \cdot n)$ total work.
+- **Counterexample:** `nums1 = [4, 5, 6, 0, 0, 0]`, `nums2 = [1, 2, 3]`. Inserting 1 shifts [4,5,6]. Inserting 2 shifts [1,4,5,6]. Inserting 3 shifts [1,2,4,5,6]. Nine moves for 3 insertions.
+- **Missing insight:** The spare capacity is at the **end** of `nums1`. Writing from the back means every write goes into an empty slot — no elements need to be shifted at all.
 
 ### 3. Two Pointers from the Front (with temporary array)
 
 - **Idea:** Merge into a new array of size `m + n`, then copy back.
-- **Why it seems reasonable:** Avoids shifting entirely. Linear time.
-- **Where it breaks down:** Uses $O(m+n)$ auxiliary space, violating the in-place expectation.
-- **Missing insight:** We don't need a temporary array because the capacity in `nums1` itself *is* the temporary buffer — we just have to fill it from the correct direction.
+- **Why it seems reasonable:** Avoids shifting entirely. Each element is compared and placed once, so the merge itself runs in $O(m+n)$ time.
+- **Where it breaks down:** The new array requires $O(m+n)$ extra memory. The problem says to write the result into `nums1`, so using auxiliary space this large defeats the purpose — we're essentially ignoring the pre-allocated capacity that `nums1` already provides.
+- **Missing insight:** `nums1` already has `n` empty slots at the end. Those slots *are* the scratch space. We don't need to allocate a separate buffer — we need to recognize the buffer that's already built into the input, and fill it from the correct end.
 
 # Core Insight
 
@@ -127,14 +127,14 @@ When `j < 0`, all of B has been placed. The remaining elements `A[0..i]` are alr
 
 # Optimal Approach
 
-1. **Initialize pointers at the tails.** Set `i = m-1`, `j = n-1`, `k = m+n-1`. This positions us to fill from the back.
-   - **Why this is safe:** The positions `k` through `k - n + 1` are all capacity slots. No valid data will be overwritten immediately.
+1. **Initialize pointers at the tails.** Set `i = m-1` (last valid element of A), `j = n-1` (last element of B), `k = m+n-1` (last slot of nums1). We start at the back because that's where the empty capacity is.
+   - **Why this is safe:** Position `k` starts at index `m+n-1`. The valid data in A ends at index `m-1`. Everything from index `m` to `m+n-1` is writable capacity. So our first write goes into an empty slot.
 
 2. **While B has unplaced elements (`j >= 0`):**
    - Compare `A[i]` and `B[j]` (guarding against `i < 0`).
    - Place the larger at `nums1[k]`.
    - Decrement the pointer for whichever element was placed, and always decrement `k`.
-   - **Why this is safe:** Each step places exactly the right element (the largest remaining) at exactly the right position (the leftmost unfilled slot in the sorted suffix).
+   - **Why this is safe:** Both arrays are sorted, so the largest remaining element must be at one of the two tails. Placing it at `k` means it goes to the leftmost unfilled slot in what will become the sorted suffix. And since we proved (see Safety Claim) that `k - i = n - x ≥ 0`, we never write over an element of A we haven't read yet.
 
 3. **When the loop ends:** All of B is merged in. If any prefix of A remains, it is already in place.
    - **Why this is valid:** Those elements were never moved, and they are ≤ everything in the filled suffix.
@@ -274,9 +274,9 @@ When B is empty, `j = -1` from the start. The loop guard `j >= 0` is immediately
 | Front merge + temp array | $O(m+n)$ | $O(m+n)$ | Yes |
 | **Backward merge** | **$O(m+n)$** | **$O(1)$** | **Yes** |
 
-The backward merge is strictly dominant: linear time, constant auxiliary space, and it fully exploits the sorted order.
+The backward merge is the only approach that achieves linear time *and* constant space *and* uses the sorted property. Every other approach sacrifices at least one of those.
 
-**Why $O(m+n)$ is optimal:** Any correct merge must examine every element at least once (an unexamined element could be out of position). So $\Omega(m+n)$ is a lower bound.
+**Why we can't do better than $O(m+n)$:** Consider any element in A or B. If we don't examine it, we can't know where it belongs in the merged result — it could be out of position. So every correct merge must look at each of the $m+n$ elements at least once. That makes $\Omega(m+n)$ a lower bound. Our algorithm matches it.
 
 # Edge Cases & Pitfalls
 
@@ -290,9 +290,9 @@ The backward merge is strictly dominant: linear time, constant auxiliary space, 
 
 # Transferable Pattern Recognition
 
-- **Two Pointers on sorted data.** Trigger keywords: "sorted," "merge," "intersection," "two arrays." Whenever two sorted sequences need to be combined or compared, two-pointer traversal gives linear time.
-- **Back-to-front in-place fill.** Trigger: an array has trailing capacity or padding. Filling from the back avoids shifting and ensures write-head safety. Look for problems where the output shares memory with the input.
-- **Invariant-based safety.** Whenever you read and write the same array, define the gap between read-head and write-head and prove it never goes negative. This pattern appears in remove-duplicates, move-zeros, and partition problems.
+- **Two Pointers on sorted data.** When you see two sorted sequences that need to be merged, intersected, or compared, ask: can I walk through both sequences simultaneously, making one comparison per step? If yes, you get $O(m+n)$ time. Trigger keywords: "sorted," "merge," "intersection," "two arrays."
+- **Back-to-front in-place fill.** When the output array shares memory with the input, ask: where is the free space? If it's at the end, fill from the back. This avoids shifting and guarantees write-head safety. Trigger: any problem where an array has trailing capacity, padding, or reserved slots.
+- **Invariant-based safety.** Whenever you read and write the same array, define the gap between read-head and write-head, express it algebraically, and prove it stays ≥ 0. If you can do this, the in-place approach is safe. This same reasoning appears in remove-duplicates (LC 26), move-zeros (LC 283), and array partition problems.
 
 # Problem Variations & Follow-Ups
 
