@@ -403,10 +403,10 @@ The loop runs at most `m + n` times, each iteration does $O(1)$ work (one compar
 - **New failure mode:** None. Front-to-back works because linked list insertion is $O(1)$.
 
 ### Merge K Sorted Lists (LC 23)
-- **What changes:** Generalize from 2 inputs to $K$ inputs.
+- **What changes:** Generalize from 2 inputs to `K` inputs.
 - **What stays the same:** Need to find the smallest (or largest) among current heads.
-- **Same proof idea?** Partially — invariant generalizes, but comparing $K$ heads linearly is $O(K)$ per step.
-- **Complexity change?** Use a min-heap → $O(N \log K)$ where $N$ is total elements.
+- **Same proof idea?** Partially — invariant generalizes, but comparing `K` heads linearly is `O(K)` per step.
+- **Complexity change?** Use a min-heap → `O(N log K)` where `N` is total elements.
 - **New failure mode:** Forgetting to handle empty lists in the heap.
 
 ### Squares of a Sorted Array (LC 977)
@@ -427,7 +427,7 @@ The loop runs at most `m + n` times, each iteration does $O(1)$ work (one compar
 - "What happens if all of `nums2` is larger than all of `nums1`?"
 
 ## Post-Solution Probes
-- "If `m` is huge and `n` is tiny (e.g., m=1M, n=5), is there a better approach?" *(Yes — binary search for insertion positions of B's elements into A, $O(n \log m)$.)*
+- "If `m` is huge and `n` is tiny (e.g., m=1M, n=5), is there a better approach?" *(Yes — binary search for insertion positions of B's elements into A, `O(n log m)`.)*
 - "What changes if the function were allowed to return a new array instead of modifying in-place?"
 - "How would you test this function? What are your most important test cases?"
 
