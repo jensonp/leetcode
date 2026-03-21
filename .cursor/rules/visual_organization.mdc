@@ -8,7 +8,7 @@ globs: README.md, *.py
 Generous, high-quality visualizations are REQUIRED for every problem. Do not be sparse with visual aids. Make MANYYYY visualizations.
 
 ## Teaching Requirements
-You must generate at least 4-8 distinct Graphviz diagrams. Every diagram **must** possess a unique teaching purpose. 
+You must generate at least 10 distinct Graphviz diagrams. Every diagram **must** possess a unique teaching purpose. 
 
 Required or highly-recommended diagrams include:
 1. **Initial Problem Setup**: Demonstrating the inputs and any padded boundaries.

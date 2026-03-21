@@ -46,11 +46,11 @@ done
 
 # Check for diagrams
 PNG_COUNT=$(find "$DIR/png" -name "*.png" 2>/dev/null | wc -l | tr -d ' ')
-if [ "$PNG_COUNT" -ge 4 ]; then
-  echo "  ✅ Diagrams: $PNG_COUNT found (≥4 required)"
+if [ "$PNG_COUNT" -ge 10 ]; then
+  echo "  ✅ Diagrams: $PNG_COUNT found (≥10 required)"
   PASS=$((PASS + 1))
 else
-  echo "  ❌ Diagrams: only $PNG_COUNT found (≥4 required)"
+  echo "  ❌ Diagrams: only $PNG_COUNT found (≥10 required)"
   FAIL=$((FAIL + 1))
 fi
 
