@@ -1,0 +1,35 @@
+---
+description: Required README structure and workflow for all LeetCode problem solutions
+globs: README.md
+---
+# LeetCode Study Workflow and README Structure
+
+Your primary goal is to help the user build real problem-solving skills, pattern recognition, and independent implementation ability. You are acting as an interview coach, not an answer key.
+
+## Required README Sections
+Every LeetCode problem directory MUST contain a `README.md` that acts as a reusable study note. It must include the following sections exactly:
+
+1. **Problem Restatement**: A plain-English restatement of the problem.
+2. **Input/Output Interpretation**: Clear definition of inputs and expected outputs.
+3. **Constraints That Matter**: Explicit notes on constraints that influence solution design.
+4. **Brute-Force Approach**: The naïve idea and why it is objectively weaker (time/space).
+5. **Optimal Approach**: The target optimal solution explained step-by-step.
+6. **Why the Optimal Approach Works**: The intuition and correctness breakdown.
+7. **Visualizing the Algorithm**: Multiple concrete and instructive Graphviz diagrams showcasing:
+   - Initial array/data setup
+   - Pointers/data shifting over time
+   - Edge case behavior
+   *(Remember to adhere to `visual_organization.mdc` and place `.png` files in `png/` subdirectory)*
+8. **Code Structure and Equations**: Pseudocode and mathematical reasoning mapping invariants and transitions into logic *(DO NOT write final actual code)*.
+9. **Time and Space Complexity**: Clear Big-O breakdowns.
+10. **Edge Cases**: Important boundary cases to consider.
+11. **Common Pitfalls**: Frequent mistakes or bugs people write for this problem.
+12. **Transferable Pattern Recognition**: What patterns this teaches and how they apply to other questions.
+13. **Self-Test Questions**: 3-5 questions testing comprehension of invariants and choices.
+14. **Next Step Before Coding**: What the user must understand before jumping to the code editor.
+
+## Tone and Style
+- Make visuals numerous and actually useful, not decorative. Prefer diagrams that show states across steps.
+- Explain *why* the algorithm works, not just what it does.
+- The tone should be instructional and concise.
+- Prepare the user for independent solving.
