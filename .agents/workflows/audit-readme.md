@@ -1,10 +1,10 @@
 ---
-description: Audit a LeetCode README against the interview-prep standard
+description: Audit a LeetCode README for teaching quality and comprehension
 ---
 
 # Audit LeetCode README
 
-Review a generated README for compliance with the interview-prep standard.
+Review a generated README for comprehension quality, not just structural compliance. (For structural checks, run `./audit.sh <problem-dir>` first.)
 
 ## Steps
 
@@ -12,48 +12,130 @@ Review a generated README for compliance with the interview-prep standard.
 
 2. **Read the target README.** Read the `README.md` in the specified problem directory.
 
-3. **Structural check.** Verify these exact headings exist in this exact order:
-   - `# Problem Metadata`
-   - `# Problem Contract & Hidden Semantics`
-   - `# Worked Example by Hand`
-   - `# Clarifying Questions`
-   - `# Alternative Approaches & Tradeoffs`
-   - `# Core Insight`
-   - `# Formal State Model`
-   - `# Correctness Proof`
-   - `# Equation → Pseudocode → Code Mapping`
-   - `# Visualizing the Algorithm`
-   - `# Complexity Analysis`
-   - `# Edge Cases & Pitfalls`
-   - `# Transferable Pattern Recognition`
-   - `# Problem Variations & Follow-Ups`
-   - `# Interview Questions`
-   - `# Self-Test Questions`
-   - `# Next Step Before Coding`
+3. **Run the structural audit first.** Run `./audit.sh <problem-dir>` and confirm all headings pass. If not, fix structure before auditing content.
 
-   Report any missing or out-of-order headings.
+4. **Perform the Comprehension Audit below.**
 
-4. **Content quality check.** For each section, verify:
-   - **Contract:** Does it decode physical vs logical meaning? Does it explain what the return type implies?
-   - **Worked Example:** Is there a full trace table (not just prose)?
-   - **Alternatives:** Does each rejected approach have a counterexample and a "missing insight"?
-   - **Core Insight:** Is it ≤3 sentences and speakable aloud?
-   - **Proof:** Are there three separate claims (invariant, safety, termination)? Does safety include algebra?
-   - **Mapping:** Does it bridge equations to pseudocode with English explanations per branch?
-   - **Visuals:** Are there ≥4 diagrams? Does each have an intro sentence and interpretation?
-   - **Interview Qs:** Are they relevant to the problem's actual difficulty level (no drifting into systems design for an Easy)?
+---
 
-5. **Quality filter.** Flag any paragraph that does not help:
-   - understand the contract,
-   - reject a bad approach,
-   - prove the algorithm,
-   - write the code,
-   - or answer a realistic follow-up.
+## Comprehension Audit
+Before finalizing the README, perform a full readability and teaching pass.
 
-6. **Report.** Output a summary table:
+For every major section, check all of the following:
 
-   | Section | Present | Quality | Issue |
-   |---------|---------|---------|-------|
-   | ...     | ✅/❌   | Strong/Weak/Missing | Description |
+### 1. Undefined Terms Check
+- Do not use technical terms before they are defined.
+- If a term is easy to misuse or easy to gloss over, define it in plain English at first use.
+- Examples:
+  - in-place
+  - auxiliary space
+  - pre-allocated capacity
+  - invariant
+  - pruning
+  - recurrence
+  - monotonic
+  - valid prefix / suffix
 
-   Then list specific fixes needed.
+### 2. Why-It-Matters Check
+Every important statement must answer:
+- **What does this mean?**
+- **Why does it matter?**
+- **What consequence does it have for the solution?**
+
+Bad:
+- "The function returns void."
+Good:
+- "The function returns void, so we are not allowed to build and return a separate answer. The merged result must be written back into the provided data structure."
+
+Bad:
+- "nums1 is pre-allocated."
+Good:
+- "nums1 has physical space for `m + n` elements, but only the first `m` are valid input. The remaining `n` positions are writable capacity reserved for the merge."
+
+### 3. Equation Translation Check
+Every equation, symbolic definition, or formal statement must be followed by:
+- a plain-English translation,
+- the exact intuition it captures,
+- and where it will be used later.
+
+Do not include equations that are not used in the proof, pseudocode, or implementation notes.
+
+### 4. Bridge Check
+Do not jump directly between abstraction levels.
+
+Always bridge in this order:
+- concrete example
+- general idea
+- formal state / equations
+- pseudocode
+- implementation notes
+- final code only if requested
+
+If any section skips a level, add the missing bridge.
+
+### 5. Proof Readability Check
+The correctness proof must not merely be correct; it must also be teachable.
+
+After the full proof, include:
+- a short plain-English proof summary,
+- and a **30-Second Interview Explanation** that a candidate could actually say aloud.
+
+### 6. Pseudocode Alignment Check
+Every major pseudocode branch or loop must map back to:
+- a variable from the state model,
+- a proof idea,
+- or a specific edge case.
+
+If a line of pseudocode exists but its purpose is not explained, explain it.
+
+### 7. Confusion Hotspot Check
+Look for sentences likely to confuse a learner because they are:
+- compressed,
+- jargon-heavy,
+- technically true but not illuminating,
+- or missing assumptions.
+
+Rewrite those sentences with:
+- simpler wording,
+- one concrete example,
+- and an explicit consequence.
+
+### 8. Filler Removal Check
+Delete or compress material that does not help the reader do one of these:
+- understand the contract,
+- choose among approaches,
+- prove correctness,
+- map reasoning into code,
+- avoid a bug,
+- answer a likely follow-up.
+
+If a paragraph sounds impressive but does not improve understanding, cut it.
+
+### 9. Final Reader Test
+The README should allow the reader to answer all of these after one careful read:
+- What is the problem really asking?
+- Why is the obvious approach weaker?
+- What is the key insight?
+- Why is the final approach correct?
+- How do the equations map to pseudocode?
+- What would be easy to mess up in implementation?
+
+---
+
+## Output Format
+
+Report findings as a table per check:
+
+| Check | Pass/Fail | Issues Found |
+|-------|-----------|--------------|
+| Undefined Terms | ✅/❌ | List any terms used before defined |
+| Why-It-Matters | ✅/❌ | List bare statements missing consequences |
+| Equation Translation | ✅/❌ | List equations without English follow-up |
+| Bridge Check | ✅/❌ | List abstraction jumps |
+| Proof Readability | ✅/❌ | Missing plain summary or 30-sec explanation? |
+| Pseudocode Alignment | ✅/❌ | Unmapped lines? |
+| Confusion Hotspots | ✅/❌ | List confusing sentences |
+| Filler Removal | ✅/❌ | List paragraphs that don't serve the 5 purposes |
+| Final Reader Test | ✅/❌ | Which questions can't be answered? |
+
+Then list specific fixes needed, grouped by section.
