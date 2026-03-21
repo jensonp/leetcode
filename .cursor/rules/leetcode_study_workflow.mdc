@@ -51,14 +51,13 @@ Use these exact section headings in this exact order.
 - Focus on ambiguous constraints, edge assumptions, mutation rules, ordering guarantees, duplicates, bounds, and allowed extra space.
 
 # Alternative Approaches & Tradeoffs
-For each non-optimal but plausible approach:
-- explain the idea,
-- explain why a smart candidate might consider it first,
-- explain where it appears attractive,
-- explain why it is weaker in time, space, clarity, robustness, or interview performance,
-- state the key insight it misses that unlocks the stronger approach.
+For each alternative approach:
+- explain why it might seem reasonable,
+- identify the exact point where its reasoning is incomplete or flawed,
+- provide a counterexample or limitation when applicable,
+- explain what proof insight is missing.
 
-Do not dismiss alternatives with one sentence.
+Do not dismiss alternatives with one sentence. Explain why a smart candidate might think of them first, and why an interviewer would push further.
 
 ## Required progression
 This section should usually move through:
@@ -72,11 +71,17 @@ This section should usually move through:
 - Make the transition from prior approaches explicit.
 - Emphasize why this approach best satisfies the constraints.
 
-# Mathematical Reasoning & Invariants
-- State the invariant(s), monotonic property, recurrence, ordering fact, or other formal reasoning that makes the solution correct.
-- Explain why each step preserves correctness.
-- Where helpful, use concise equations or symbolic reasoning.
-- Keep this section rigorous but readable.
+# Correctness Argument
+- Prove that the algorithm is correct, not just intuitive.
+- When applicable, structure this section as:
+  - **Invariant or core claim**
+  - **Initialization:** why it is true before the process starts
+  - **Maintenance:** why each step preserves it
+  - **Termination:** why the process ends
+  - **Conclusion:** why termination plus the invariant implies correctness
+- If the solution is greedy, explicitly justify why the greedy choice is safe (e.g., exchange argument).
+- If the solution is recursive or dynamic programming, explain why the recurrence covers all cases and combines subresults correctly.
+- If the solution discards states or search space, explain why that pruning is valid.
 
 # Visualizing the Algorithm
 Adhere to `visual_organization.mdc`. Provide MANY explanatory visualizations spanning brute-force, invariants, pointers, and edge-cases.

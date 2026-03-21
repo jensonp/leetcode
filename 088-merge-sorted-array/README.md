@@ -25,16 +25,16 @@ Our goal is to merge `nums2` into `nums1` so that `nums1` becomes a single array
 # Alternative Approaches & Tradeoffs
 
 ### 1. Concat and Built-in Sort (Brute Force)
-- **The Idea:** Concatenate the active `n` elements of `nums2` into the trailing `0`s of `nums1`, then call a built-in library sort.
-- **Why it seems attractive:** Extremely fast to write, usually one line in modern languages, low cognitive load.
-- **Why it falls short:** Time complexity is $O((m+n)\log(m+n))$. It entirely ignores the fact that both arrays are already sorted. In an interview, treating sorted input as unsorted demonstrates a lack of analytical observation.
-- **The Missing Insight:** We don't need to perform general comparisons globally; local comparisons between the heads (or tails) of the arrays are sufficient.
+- **Why it seems reasonable:** Concatenating the elements and using a standard library sort is an extremely low-effort, robust 1-liner in most languages. It guarantees correctness immediately.
+- **Where its reasoning is incomplete/flawed:** It structurally assumes the incoming data has no prior ordering, intentionally wasting $O(N \log N)$ operations on data that is already strictly sorted.
+- **Counterexample/Limitation:** Sorting inherently takes $O((m+n)\log(m+n))$ time. When $m$ and $n$ are astronomically large (e.g., merging two 1,000,000 element streams), a generalized sort will be orders of magnitude slower than a linear target merge and completely unacceptable in a production system.
+- **Missing Proof Insight:** A true merge only ever requires localized pointer comparisons between the unmerged extremum (head/tail) of the two sorted sequences, totally bypassing global sorts.
 
 ### 2. Two Pointers from the Front with Shifting
-- **The Idea:** Place pointers at index 0 of both arrays. If $nums2[p_2] < nums1[p_1]$, insert the element into $nums1$ and shift every remaining element in $nums1$ to the right to make space.
-- **Why it seems attractive:** Reading left-to-right is natural to human intuition. It mimics how we natively merge Linked Lists.
-- **Why it falls short:** Arrays are contiguous memory blocks. Shifting elements to the right takes $O(m)$ time per insertion. In the worst case, this inflates the time complexity to $O((m+n)^2)$. Attempting to avoid shifting by creating a temporary output array requires $O(m+n)$ auxiliary space, failing the in-place constraint.
-- **The Missing Insight:** The empty buffer space in `nums1` is located at the **end**, not the beginning. We should iterate towards the buffer to avoid colliding with unread data.
+- **Why it seems reasonable:** Reading left-to-right structurally mimics human intuition and perfectly mirrors how we linearly merge standard Linked Lists.
+- **Where its reasoning is incomplete/flawed:** Standard Arrays are block-contiguous memory allocations. We mathematically cannot simply insert a value into the front of a heavily populated array without cascading shift operations on every remaining element to the right. 
+- **Counterexample/Limitation:** If every element in `nums2` happens to be smaller than the very first element in `nums1`, every single insertion strictly requires shifting the entire `m` block of `nums1`. This degrades the worst-case time complexity to $O(m \times n) \approx O((m+n)^2)$.
+- **Missing Proof Insight:** The available contiguous empty padding `n` strictly resides at the *end* of `nums1`. The proof dictates we must aggressively consume the buffer from the back to eliminate geometric shifting collisions entirely.
 
 # Optimal Approach
 Since the empty space is trailing, we can sort the arrays in reverse (largest to smallest) and place the largest elements at the very back of `nums1`.
@@ -46,9 +46,15 @@ Since the empty space is trailing, we can sort the arrays in reverse (largest to
 4. Take the larger of the two, place it at $nums1[p]$, and decrement the $p$ pointer and the pointer from which the element was taken.
 5. If $p_1$ exhausts early, naturally copy the rest of `nums2` over via the `else` block.
 
-# Mathematical Reasoning & Invariants
-**Invariant:** At any step $k$, the number of filled elements at the tail of `nums1` is exactly the number of elements processed from `nums1` + `nums2`.
-Because $p = (m-1) + (n-1) - k$, and we only ever write to $p$, the available space ($nums1$ buffer) perfectly mathematically guarantees we will **never** overwrite an element in `nums1` before $p_1$ has had a chance to read it. Our total processed span matches our available span.
+# Correctness Argument
+
+We must formally prove the invariant safety of backward merging directly into the exact boundary array we are actively reading from.
+
+- **Invariant / Core Claim:** "At the conclusion of every individual loop iteration, the total number of populated elements securely locked in the tail buffer strictly matches the exact number of elements actively consumed from the back of `nums1` and `nums2`."
+- **Initialization:** Before the loop executes, exactly 0 elements are processed, and 0 elements are placed in the padding space. The write-head $p = (m+n-1)$. The unread boundary of `nums1` is defined directly at $p_1 = m-1$. The mathematical distance between $p$ and $p_1$ is strictly exactly $n$.
+- **Maintenance:** In every comparative step, we process exactly one extremum element from either `nums1` or `nums2` strictly by decrementing its respective pointer. Simultaneously, we write exactly one element firmly at $p$, decrementing $p$. The geometric distance between the write-head $p$ and the read-head $p_1$ decreases *only* if we pull from `nums2`. Since there are strictly exactly $n$ elements in `nums2`, $p$ can logically close the gap towards $p_1$ by an absolute maximum of $n$ steps. Since the initial gap is exactly established as $n$, $p$ structurally can never mathematically overtake $p_1$ under any permutations.
+- **Termination:** The loop conditionally terminates firmly when $p_2 < 0$. With each bounded loop iteration, target $p$ strictly decreases monotonically. If elements are cleanly drawn from `nums2`, $p_2$ rigorously decreases toward $-1$. Since $nums2$ is finite (size $n$), strict termination is functionally guaranteed.
+- **Conclusion:** The algorithm logically must terminate because we monotonically reduce the target bounds of $p_2$. Upon guaranteed termination, all source elements of $nums2$ are perfectly placed. The non-collision geometric invariant strongly ensures we never overwrote unread historical data in `nums1`. Thus, the greedy systemic choice to safely place bounding maximum elements directly at the rear constraint is rigorously safe and formally optimal!
 
 # Visualizing the Algorithm
 
