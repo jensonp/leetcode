@@ -1,0 +1,12 @@
+digraph G {
+rankdir=TB;
+node [shape=record, fontname="Helvetica"];
+nums1 [label="<f0> 0 |<f1> 0 |<f2> 0", fillcolor=lightgrey, style=filled];
+nums2 [label="<f0> 1 |<f1> 2 |<f2> 3", fillcolor=lightyellow, style=filled];
+p1 [shape=plaintext, label="p1 = -1 (exhausted immediately)"];
+p2 [shape=plaintext, label="p2 = 2"]; p2 -> nums2:f2;
+p [shape=plaintext, label="p = 2"]; p -> nums1:f2;
+edge [color=green, style=dashed];
+nums2:f2 -> nums1:f2;
+labelloc="t"; label="Edge Case: m=0\np1 starts exhausted, so nums2 is blindly copied into nums1 safely."; fontsize=14;
+}

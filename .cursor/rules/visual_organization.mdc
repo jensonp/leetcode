@@ -1,18 +1,31 @@
 ---
-description: Rules for organizing visual assets and Graphviz files for LeetCode walkthroughs
-globs: *
+description: Extremely strict rule for producing many functional Graphviz diagrams in LeetCode guides
+globs: README.md, *.py
 ---
-# Organization of Visual Files for LeetCode Walkthroughs
 
-When generating visual sequence files (like Graphviz `.dot` files and rendered `.png` images) for LeetCode problem explanations, ALWAYS group them into specific subdirectories to keep the main problem directory clean.
+# Graphviz Instructional Standard for LeetCode
 
-1. Rendered image sequences (`.png`) MUST be written to a `png/` subdirectory.
-2. Raw source files (`.dot`) MUST be written to a `dot/` subdirectory.
+Generous, high-quality visualizations are REQUIRED for every problem. Do not be sparse with visual aids. Make MANYYYY visualizations.
 
-## Script Automation
-Ensure that any Python visualization scripts (e.g., `generate_visuals.py`) automatically create these subdirectories if they do not exist (`os.makedirs("png", exist_ok=True)`).
-The scripts should output the files directly to these directories.
+## Teaching Requirements
+You must generate at least 4-8 distinct Graphviz diagrams. Every diagram **must** possess a unique teaching purpose. 
 
-## Documentation Links
-When writing the `README.md` step-by-step state visualization, make sure to reference the images from the correct `png/` subdirectory, like so:
-`![Step 0](png/step0.png)`
+Required or highly-recommended diagrams include:
+1. **Initial Problem Setup**: Demonstrating the inputs and any padded boundaries.
+2. **Brute-Force Representation**: Drawing arrows or layout shifts demonstrating mathematically why an alternative approach is expensive in Space/Time.
+3. **Invariant Preservation**: Diagramming what stays constant across loop iterations.
+4. **Pointer Transitions**: Showing how pointers change states.
+5. **Edge Cases**: Highlighting an extreme boundary setup (e.g. empty arrays, extreme bounds).
+
+Each diagram *embedded inside the README* MUST:
+- Be introduced with 1-3 sentences stating precisely what it is teaching.
+- Be followed by a brief interpretation.
+- Mirror the mathematical logic stated in surrounding text.
+
+## Directory Management
+Keep the problem directories flawlessly clean by automating the segregation of assets:
+- Output `.png` files exclusively to `png/`
+- Output `.dot` files exclusively to `dot/`
+
+## Script Construction
+Write Python scripts (e.g., `generate_visuals.py`) to systematically build the images, and always ensure `os.makedirs('png', exist_ok=True)` and `dot` equivalents are actively included.

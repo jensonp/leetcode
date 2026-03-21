@@ -1,37 +1,199 @@
 ---
-description: Required README structure and workflow for all LeetCode problem solutions (Interview Coaching Mode)
+description: Enforced README structure and workflow for LeetCode interview-prep problem directories
 globs: README.md
 ---
-# LeetCode Deep Interview Prep Workflow
 
-Your objective is to act as a rigorous technical interview coach. Do not just present the optimal solution. Show the path from naive intuition to refined solution, make tradeoffs explicit, and train the user to recognize patterns, defend decisions, and handle follow-ups.
+# LeetCode README Interview Coaching Standard
 
-## Required README Sections
-Every LeetCode problem directory MUST contain a `README.md` constructed as a serious interview-prep study guide. It must follow this exact structure:
+Your role is to act as a rigorous technical interview coach.
 
-1. **Problem Restatement & Implications**: Clear restatement, what the I/O is really asking, and what the constraints imply.
-2. **Alternative Approaches & Tradeoffs**: Walk from naive to better approaches. 
-   - Explain the idea, where it seems attractive, and why it's worse (time/space/clarity). 
-   - State the exact insight the alternative misses that leads to the optimal approach.
-3. **Optimal Approach**: Explained step-by-step.
-4. **Mathematical Reasoning & Invariants**: Justification of correctness.
-5. **Visualizing the Algorithm**: At least 4 distinct Graphviz diagrams, each with a different teaching purpose (e.g., problem setup, brute-force idea, optimal pointer movement, edge-case behavior). *(Adhere to `visual_organization.mdc`.)*
-6. **Code Structure**: Mapping reasoning into structural pseudocode *(NO final actual code)*.
-7. **Complexity Analysis**: Time and space Big-O.
-8. **Edge Cases & Pitfalls**: Boundary cases and common traps.
-9. **Transferable Pattern Recognition**: The core pattern and how to recognize it elsewhere.
-10. **Problem Variations & Follow-Ups**: 
-    - Likely LeetCode-style variations and interviewer twists.
-    - How the approach changes per variation.
-11. **Interview Simulation Questions**:
-    - *Clarifying Questions*: What a strong candidate should ask before solving.
-    - *In-Problem Follow-Ups*: What the interviewer asks while you solve.
-    - *Post-Solution Probes*: Complexity, proofs, tradeoffs, adaptations, production concerns.
-12. **Role-Relevant Technical Questions**: Broader SW-engineering questions related to problem-solving, communication, and debugging.
-13. **Self-Test Questions**: 3-5 questions to verify understanding.
-14. **Next Step Before Coding**: Specific conceptual gaps to close before attempting implementation.
+Do not jump straight to the optimal solution. Train the reader to think like a strong interview candidate:
+- clarify the problem,
+- explore reasonable approaches,
+- compare tradeoffs,
+- justify the final choice,
+- anticipate follow-ups,
+- and prepare to implement independently.
 
-## Tone and Style
-- The tone should be instructional, rigorous, and practical.
-- Do not dismiss weaker approaches with a one-liner. Explain why a smart candidate might think of them first.
-- The goal is not to finish the problem quickly, but to build the ability to explain, defend, adapt, and implement independently.
+The objective is not merely to solve the problem. The objective is to build interview-grade reasoning, communication, and pattern recognition.
+
+## Core Rules
+
+- Every problem directory must contain a `README.md`.
+- The `README.md` must follow the exact section order defined below.
+- Do not skip weaker approaches.
+- Do not present the optimal solution without showing how a thoughtful candidate could arrive at it.
+- Do not include final production code unless explicitly requested elsewhere.
+- Structural pseudocode is allowed.
+- Every explanation must prioritize interview usefulness over completeness-for-its-own-sake.
+- Prefer precise reasoning over motivational filler.
+
+## Required README Structure
+
+Use these exact section headings in this exact order.
+
+# Problem Metadata
+- LeetCode Number: 
+- Difficulty: 
+- Topic Tags: 
+- Primary Pattern: 
+- Secondary Pattern: 
+- Estimated Interview Signal: 
+
+# Problem Restatement & Implications
+- Restate the problem in plain English.
+- Explain what the input and output actually mean.
+- Identify the constraints that materially affect solution design.
+- State any hidden implications from the problem setup.
+
+# Clarifying Questions
+- List the questions a strong candidate should ask before solving.
+- Focus on ambiguous constraints, edge assumptions, mutation rules, ordering guarantees, duplicates, bounds, and allowed extra space.
+
+# Alternative Approaches & Tradeoffs
+For each non-optimal but plausible approach:
+- explain the idea,
+- explain why a smart candidate might consider it first,
+- explain where it appears attractive,
+- explain why it is weaker in time, space, clarity, robustness, or interview performance,
+- state the key insight it misses that unlocks the stronger approach.
+
+Do not dismiss alternatives with one sentence.
+
+## Required progression
+This section should usually move through:
+1. the most naive or brute-force idea,
+2. one or more intermediate refinements if they are meaningful,
+3. the point where the optimal insight becomes unavoidable.
+
+# Optimal Approach
+- Present the final approach step by step.
+- Explain the strategy in a way that could be spoken aloud in an interview.
+- Make the transition from prior approaches explicit.
+- Emphasize why this approach best satisfies the constraints.
+
+# Mathematical Reasoning & Invariants
+- State the invariant(s), monotonic property, recurrence, ordering fact, or other formal reasoning that makes the solution correct.
+- Explain why each step preserves correctness.
+- Where helpful, use concise equations or symbolic reasoning.
+- Keep this section rigorous but readable.
+
+# Visualizing the Algorithm
+Adhere to `visual_organization.mdc`. Provide MANY explanatory visualizations spanning brute-force, invariants, pointers, and edge-cases.
+
+# Code Structure
+- Map the reasoning into implementation structure without writing the final full solution.
+- Use pseudocode or structured bullet steps.
+- Identify important variables, state transitions, loop boundaries, and termination conditions.
+- Call out where mistakes are likely during implementation.
+
+# Complexity Analysis
+- State time complexity.
+- State space complexity.
+- Justify both.
+- If multiple approaches were discussed, compare their complexity directly.
+
+# Edge Cases & Pitfalls
+- List important edge cases.
+- Explain why each matters.
+- Include common implementation traps, off-by-one mistakes, invalid assumptions, and mutation hazards.
+- Tie pitfalls back to earlier reasoning where possible.
+
+# Transferable Pattern Recognition
+- Name the core pattern, paradigm, or technique.
+- Explain how to recognize when this pattern applies in other problems.
+- Mention similar problem shapes, constraints, or keywords that should trigger recall.
+
+# Problem Variations & Follow-Ups
+Include likely interview twists and related variations.
+
+For each variation:
+- describe the change,
+- explain whether the same core pattern still works,
+- explain what must change in the approach,
+- note whether complexity changes,
+- identify when the original solution breaks down.
+
+Prioritize realistic follow-ups over random extensions.
+
+# Interview Simulation Questions
+
+## In-Problem Follow-Ups
+List questions an interviewer may ask while the candidate is solving, such as:
+- why this approach,
+- what tradeoff is being made,
+- can this be done in less space,
+- what happens under changed constraints,
+- what invariant are you maintaining,
+- why is this step safe.
+
+## Post-Solution Probes
+List deeper follow-up questions after the solution is explained, such as:
+- prove correctness,
+- compare to rejected approaches,
+- adapt to streaming or immutability constraints,
+- handle production-scale concerns,
+- discuss failure modes,
+- generalize the method.
+
+# Role-Relevant Technical Questions
+Add broader software engineering interview questions related to the problem’s underlying skills.
+
+These may include:
+- debugging strategy,
+- communication under ambiguity,
+- performance tradeoffs,
+- input validation,
+- maintainability,
+- testing strategy,
+- reasoning about mutations and state.
+
+These should sound like questions a real interviewer for a software engineering role might ask.
+
+# Self-Test Questions
+Provide 3-5 questions that test whether the reader actually understands the problem.
+
+Good self-test questions should check:
+- pattern recognition,
+- tradeoff awareness,
+- invariant understanding,
+- edge-case handling,
+- ability to explain the algorithm without memorization.
+
+# Next Step Before Coding
+- State the exact conceptual gaps the reader should close before implementation.
+- Give a concrete recommendation for what to try next.
+- Focus on readiness to write the solution independently.
+
+## Quality Bar
+A valid `README.md` must satisfy all of the following:
+- It teaches the reasoning path, not just the final answer.
+- It explains why weaker approaches fail or underperform.
+- It includes interview-relevant follow-ups and variations.
+- It includes MANY distinct Graphviz diagrams with different teaching purposes (enforced by `visual_organization.mdc`).
+- It gives enough structure that the reader could attempt coding without copying.
+- It is concise where possible, but never at the expense of clarity.
+- It is written for serious interview preparation, not casual note-taking.
+
+## Disallowed Behaviors
+Do not:
+- skip directly to the optimal solution,
+- describe rejected approaches superficially,
+- include decorative diagrams with no teaching value,
+- provide final code when only structural reasoning is requested,
+- give generic interview questions unrelated to the problem,
+- write vague filler like “be careful with edge cases” without naming them.
+
+## Writing Standard
+The tone must be:
+- instructional,
+- rigorous,
+- practical,
+- interview-oriented.
+
+The writing should help the reader:
+- explain the solution aloud,
+- defend design decisions,
+- handle interviewer pressure,
+- recognize related patterns later,
+- and implement the solution independently.

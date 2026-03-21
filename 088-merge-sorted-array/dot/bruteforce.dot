@@ -1,0 +1,12 @@
+digraph G {
+rankdir=TB;
+node [shape=record, fontname="Helvetica"];
+nums1 [label="<f0> 1 |<f1> 2 |<f2> 3 |<f3> 2 |<f4> 5 |<f5> 6", fillcolor=salmon, style=filled];
+nums2 [label="<f0> 2 |<f1> 5 |<f2> 6", fillcolor=lightyellow, style=filled];
+edge [color=red];
+nums2:f0 -> nums1:f3;
+nums2:f1 -> nums1:f4;
+nums2:f2 -> nums1:f5;
+note [shape=plaintext, label="O((N)) append... BUT O((m+n)log(m+n)) Sort required after append!\nIgnores existing sorted property entirely.", fontcolor=red];
+labelloc="t"; label="Brute Force: Append and Re-sort"; fontsize=14;
+}

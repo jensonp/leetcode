@@ -1,0 +1,10 @@
+digraph G {
+rankdir=LR;
+node [shape=record, fontname="Helvetica"];
+nums1 [label="<f0> 1 |<f1> 2 |<f2> 3 |<f3> 0 |<f4> 0 |<f5> 0 ", fillcolor=lightblue, style=filled];
+nums2 [label="<f0> 2 |<f1> 5 |<f2> 6 ", fillcolor=lightyellow, style=filled];
+m [shape=plaintext, label="m = 3"]; m -> nums1:f1;
+n [shape=plaintext, label="n = 3"]; n -> nums2:f1;
+buffer [shape=plaintext, label="buffer (size n = 3)"]; buffer -> nums1:f4;
+labelloc="t"; label="Problem Setup: nums1 has m valid elements and a buffer of size n"; fontsize=14;
+}
