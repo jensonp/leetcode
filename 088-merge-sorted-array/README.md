@@ -51,7 +51,7 @@ When $nums2[p_2]$ is larger vs when $nums1[p_1]$ is larger or equal:
 ![After Step 4](png/step4.png)
 
 ### Final State
-![Final State](png/step5.png)
+The algorithm terminates here because `p2` has fallen below 0, indicating all elements from `nums2` have been successfully placed.
 
 ## Code Structure and Equations
 ```python
