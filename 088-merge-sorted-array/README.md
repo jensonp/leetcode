@@ -216,57 +216,101 @@ while j >= 0:                            # Guard: B not exhausted
 
 ### 1. Physical Layout: Valid Data vs. Writable Capacity
 Shows how `nums1`'s first `m` slots are real data and the last `n` are empty capacity — the structural reason backward merging works.
-![Physical Layout](png/layout.png)
+
+<div align="center">
+  <img src="png/layout.png" alt="Physical Layout">
+</div>
+
 The spare slots at the right are not "zeros in the data." They are empty space waiting to be filled.
 
 ### 2. Brute Force: Why Append+Sort Wastes Work
 Shows the two-step process of copying B into the tail, then re-sorting the entire array.
-![Brute Force](png/bruteforce.png)
+
+<div align="center">
+  <img src="png/bruteforce.png" alt="Brute Force">
+</div>
+
 The re-sort costs $O((m+n)\log(m+n))$ because it discards the existing sorted order entirely.
 
 ### 3. Front Merge: Why Shifting Is Expensive
 Shows that inserting at the front of a contiguous array requires cascading shifts.
-![Front Shift](png/front_shift.png)
+
+<div align="center">
+  <img src="png/front_shift.png" alt="Front Shift">
+</div>
+
 Every insertion pushes the rest of the block right — $O(m)$ per insert, $O(m \cdot n)$ worst case.
 
 ### 4. Step 0: Pointer Initialization
 Pointers positioned at the tails of A, B, and the full nums1 array.
-![Step 0](png/step0.png)
+
+<div align="center">
+  <img src="png/step0.png" alt="Step 0">
+</div>
+
 The gap between `k` and `i` is exactly `n = 3` — room for all of B.
 
 ### 5. Step 1: B[2]=6 > A[2]=3, Place 6
 The largest element overall goes to the last slot.
-![Step 1](png/step1.png)
+
+<div align="center">
+  <img src="png/step1.png" alt="Step 1">
+</div>
+
 `j` decrements because we took from B. The gap `k-i` decreases by 1.
 
 ### 6. Step 2: B[1]=5 > A[2]=3, Place 5
 Second-largest goes to the second-to-last slot.
-![Step 2](png/step2.png)
+
+<div align="center">
+  <img src="png/step2.png" alt="Step 2">
+</div>
+
 Still taking from B, gap shrinks to 1.
 
 ### 7. Step 3: A[2]=3 > B[0]=2, Place 3
 First time we take from A. Both `i` and `k` move, so the gap stays the same.
-![Step 3](png/step3.png)
+
+<div align="center">
+  <img src="png/step3.png" alt="Step 3">
+</div>
+
 When we take from A, `i` also decreases — the gap `k-i = n-x` is unchanged.
 
 ### 8. Step 4: Tie (2 = 2), Take from B, Loop Ends
 The `else` branch handles ties. `j` drops to -1 and the loop exits.
-![Step 4](png/step4.png)
+
+<div align="center">
+  <img src="png/step4.png" alt="Step 4">
+</div>
+
 The remaining `[1, 2]` in A is already in place. No cleanup needed.
 
 ### 9. Safety Invariant: k Never Overtakes i
 Algebraically: `k - i = n - x`, where `x` is elements taken from B. Since `x ≤ n`, the gap is always ≥ 0.
-![Safety Invariant](png/safety.png)
+
+<div align="center">
+  <img src="png/safety.png" alt="Safety Invariant">
+</div>
+
 This is the core reason in-place backward merging is safe.
 
 ### 10. Edge Case: m = 0
 When A is empty, `i = -1` from the start. Every iteration takes the `else` branch, copying B into nums1.
-![Edge m=0](png/edge_m0.png)
+
+<div align="center">
+  <img src="png/edge_m0.png" alt="Edge Case m=0">
+</div>
+
 The `i >= 0` guard prevents any read from the nonexistent A.
 
 ### 11. Edge Case: n = 0
 When B is empty, `j = -1` from the start. The loop guard `j >= 0` is immediately false, so nothing happens.
-![Edge n=0](png/edge_n0.png)
+
+<div align="center">
+  <img src="png/edge_n0.png" alt="Edge Case n=0">
+</div>
+
 `nums1` is already the correct answer. No code runs.
 
 # Complexity Analysis

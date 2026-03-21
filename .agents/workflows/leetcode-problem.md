@@ -244,6 +244,12 @@ Rules:
   - 1-2 sentences interpreting why it matters
 - Diagrams must explain, not decorate.
 - Stop adding visuals once they stop adding new insight.
+- **Embed images using centered HTML**, not raw markdown `![]()`. This prevents text-wrapping and ensures consistent block-level display:
+  ```html
+  <div align="center">
+    <img src="png/filename.png" alt="Description">
+  </div>
+  ```
 
 # Complexity Analysis
 Do not simply announce the complexity. Derive it formally:
