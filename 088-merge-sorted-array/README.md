@@ -14,13 +14,13 @@ You are given two integer arrays, `nums1` and `nums2`, and two integers `m` and 
 
 `nums1` has physical space for `m + n` elements, but only the first `m` positions contain valid input data. The remaining `n` positions are writable capacity reserved for the merge — they happen to hold `0`, but those zeros are not meaningful data.
 
-- **Why it matters:** The spare capacity is at the *end* of `nums1`. This constrains where we can safely write without overwriting unread data. It is the structural clue that unlocks the backward-merge strategy.
+- **Why it matters:** The spare capacity is at the *end* of `nums1`, not the beginning. If we try to write from the front, we would overwrite valid data that hasn't been read yet. But if we write from the back, we fill only into empty capacity slots. The position of the spare space is what makes backward merging possible.
 
 `nums2` has length `n`. All `n` elements are valid input.
 
 Both arrays are sorted in non-decreasing order (meaning duplicates are allowed and adjacent equal elements are legal).
 
-- **Why it matters:** Because the input is already sorted, we do not need a general-purpose sort. We can merge in $O(m+n)$ time by comparing only the current extremes of each array. Any approach that re-sorts from scratch wastes the existing order.
+- **Why it matters:** Because both arrays are already sorted, the largest remaining element must be at the end of one of the two arrays. That means we only need to compare the two current tails and place one element at a time. Since each element is compared and placed exactly once, the total work is proportional to the combined number of elements — giving $O(m+n)$ time. Any approach that re-sorts from scratch ignores this and does unnecessary work.
 
 The function returns `void`.
 
@@ -95,9 +95,9 @@ Pointers: `i = 2` (last valid in A), `j = 2` (last in B), `k = 5` (last slot in 
 
 # Core Insight
 
-The spare capacity sits at the tail of `nums1`. If we fill from the back — placing the largest remaining element at position `k` and walking leftward — we write only into capacity slots. We never overwrite a valid element in A before reading it, because the gap between the write-head and the read-head is exactly `n`, and each placement from B closes the gap by at most 1.
+The spare capacity sits at the tail of `nums1`. Both arrays are sorted, so the largest unplaced element is always at the end of either A or B. If we compare those two tails and place the larger one at position `k` — the last open slot — we write only into capacity. The write-head `k` then moves left. The gap between `k` and A's read-head `i` starts at exactly `n`, and it only shrinks when we take from B. Since B has exactly `n` elements, the gap can never go negative. So the write-head can never overwrite an unread element of A.
 
-In precise terms: the backward merge turns the trailing capacity into a natural output buffer, achieving $O(m+n)$ time with $O(1)$ auxiliary space.
+This is the backward merge: it turns trailing capacity into a natural output buffer, achieving $O(m+n)$ time with $O(1)$ auxiliary space.
 
 # Formal State Model
 

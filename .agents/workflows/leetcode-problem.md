@@ -42,6 +42,7 @@ Optimize for clarity, correctness, and teachability.
   - implementation notes
   - final code only if the current task explicitly requests code
 - Prefer fewer high-value visuals and questions over broad filler.
+- Do not announce a result before earning it. Build up: observation → consequence → conclusion. If a complexity claim, design choice, or key insight appears, the preceding sentences must make it feel inevitable, not surprising. Reasoning before headline.
 
 ## Required README Structure
 
@@ -334,6 +335,7 @@ Delete or compress anything that does not clear this bar.
 - Do not add visuals that do not teach a new idea.
 - Do not include broad system-design or role questions unless they are tightly connected to the problem; if included, cap them at 3 and place them last.
 - Do not let the README become a dump of facts. It must read like a coherent lesson.
+- Do not announce conclusions before earning them (e.g., stating "O(m+n)" before explaining why). Build observation → consequence → conclusion chains so each sentence earns the next.
 
 ## Writing Standard
 The tone must be:
