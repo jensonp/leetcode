@@ -1,0 +1,18 @@
+---
+description: Rules for organizing visual assets and Graphviz files for LeetCode walkthroughs
+globs: *
+---
+# Organization of Visual Files for LeetCode Walkthroughs
+
+When generating visual sequence files (like Graphviz `.dot` files and rendered `.png` images) for LeetCode problem explanations, ALWAYS group them into specific subdirectories to keep the main problem directory clean.
+
+1. Rendered image sequences (`.png`) MUST be written to a `png/` subdirectory.
+2. Raw source files (`.dot`) MUST be written to a `dot/` subdirectory.
+
+## Script Automation
+Ensure that any Python visualization scripts (e.g., `generate_visuals.py`) automatically create these subdirectories if they do not exist (`os.makedirs("png", exist_ok=True)`).
+The scripts should output the files directly to these directories.
+
+## Documentation Links
+When writing the `README.md` step-by-step state visualization, make sure to reference the images from the correct `png/` subdirectory, like so:
+`![Step 0](png/step0.png)`

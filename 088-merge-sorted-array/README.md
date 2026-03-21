@@ -17,37 +17,37 @@ At each step, we rigorously compare $nums1[p_1]$ and $nums2[p_2]$, pick the larg
 
 Initial state where $p_1=2$, $p_2=2$, and $p=5$.
 
-![Initial State](step0.png)
+![Initial State](png/step0.png)
 
 ### Step 1: Compare $nums1[p_1]$ and $nums2[p_2]$
 
 We see $nums1[2] (3) \le nums2[2] (6)$. We place $6$ at $nums1[5]$, then decrement $p_2$ and $p$.
 
-![After Step 1](step1.png)
+![After Step 1](png/step1.png)
 
 ### Step 2: Compare again
 
 $nums1[2] (3) \le nums2[1] (5)$. We place $5$ at $nums1[4]$, then decrement $p_2$ and $p$.
 
-![After Step 2](step2.png)
+![After Step 2](png/step2.png)
 
 ### Step 3: Compare again
 
 $nums1[2] (3) > nums2[0] (2)$. We place $3$ at $nums1[3]$, then decrement $p_1$ and $p$.
 
-![After Step 3](step3.png)
+![After Step 3](png/step3.png)
 
 ### Step 4: Compare again
 
 $nums1[1] (2) \le nums2[0] (2)$. We place $2$ at $nums1[2]$, then decrement $p_2$ and $p$.
 
-![After Step 4](step4.png)
+![After Step 4](png/step4.png)
 
 ### Step 5: Termination
 
 $p_2$ has fallen below 0. The remaining elements in $nums1$ are already correctly positioned, so the algorithm terminates.
 
-![Final State](step5.png)
+![Final State](png/step5.png)
 
 ## Fundamentals
 

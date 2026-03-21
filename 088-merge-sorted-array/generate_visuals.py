@@ -21,10 +21,12 @@ def generate_step(step, nums1, nums2, p1, p2, p, action_text):
     dot_content += f'    labelloc="t";\n    label="{action_text}";\n    fontsize=14;\n'
     dot_content += "}\n"
     
+    os.makedirs("dot", exist_ok=True)
+    os.makedirs("png", exist_ok=True)
     name = f"step{step}"
-    with open(f"{name}.dot", "w") as f:
+    with open(f"dot/{name}.dot", "w") as f:
         f.write(dot_content)
-    subprocess.run(["dot", "-Tpng", f"{name}.dot", "-o", f"{name}.png"])
+    subprocess.run(["dot", "-Tpng", f"dot/{name}.dot", "-o", f"png/{name}.png"])
 
 nums1 = [1, 2, 3, 0, 0, 0]
 m = 3
