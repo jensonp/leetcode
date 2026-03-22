@@ -587,6 +587,95 @@ def visual_15() -> str:
     return wrap_graph(body)
 
 
+def visual_16() -> str:
+    body = "\n".join(
+        [
+            array_node(
+                "wide",
+                "Best pair: (1, 8) uses slightly lower water level but much more width",
+                left=1,
+                right=8,
+                custom_bg={6: ACCENT_BG},
+            ),
+            note_node(
+                "wide_stats",
+                "Area of (1, 8)",
+                ["width = 7", "water level = 7", "area = 49"],
+                fill="#ECFCCB",
+            ),
+            array_node(
+                "narrow",
+                "Inner tall line: (1, 6) is taller but too narrow to win",
+                left=1,
+                right=6,
+                custom_bg={8: ACCENT_BG},
+                custom_role={8: "previous wider partner"},
+            ),
+            note_node(
+                "narrow_stats",
+                "Area of (1, 6)",
+                ["width = 5", "water level = 8", "area = 40"],
+                fill="#FEE2E2",
+            ),
+            "wide -> wide_stats [style=dashed];",
+            "narrow -> narrow_stats [style=dashed];",
+            "{ rank=same; wide; wide_stats; narrow; narrow_stats; }",
+        ]
+    )
+    return wrap_graph(body)
+
+
+def visual_17() -> str:
+    body = "\n".join(
+        [
+            matrix_node(
+                "tie_prune",
+                "Tie optimization: at (1, 6), both the active row and column are safe to drop",
+                current=(1, 6),
+                best=(1, 8),
+                pruned_rows={1},
+                pruned_cols={6},
+            ),
+            note_node(
+                "proof",
+                "Why moving both is safe",
+                [
+                    "Inside the active window, every (1, k) and (k, 6) is narrower.",
+                    "Their water level cannot exceed 8.",
+                ],
+                fill="#EDE9FE",
+            ),
+            "tie_prune -> proof [style=dashed];",
+        ]
+    )
+    return wrap_graph(body)
+
+
+def visual_18() -> str:
+    body = "\n".join(
+        [
+            note_node("s1", "(0, 8)", ["width = 8"], fill="#DBEAFE"),
+            note_node("s2", "(1, 8)", ["width = 7"], fill="#ECFCCB"),
+            note_node("s3", "(1, 7)", ["width = 6"], fill="#DBEAFE"),
+            note_node("s4", "(1, 6)", ["width = 5"], fill="#DBEAFE"),
+            note_node("s5", "(1, 5)", ["width = 4"], fill="#DBEAFE"),
+            note_node("s6", "(1, 4)", ["width = 3"], fill="#DBEAFE"),
+            note_node("s7", "(1, 3)", ["width = 2"], fill="#DBEAFE"),
+            note_node("s8", "(1, 2)", ["width = 1"], fill="#DBEAFE"),
+            note_node("done", "Stop", ["Pointers meet at (1, 1)", "No width remains."], fill="#FEE2E2"),
+            's1 -> s2 [label="move left"];',
+            's2 -> s3 [label="move right"];',
+            's3 -> s4 [label="move right"];',
+            's4 -> s5 [label="move either"];',
+            's5 -> s6 [label="move right"];',
+            's6 -> s7 [label="move right"];',
+            's7 -> s8 [label="move right"];',
+            's8 -> done [label="move right"];',
+        ]
+    )
+    return wrap_graph(body)
+
+
 def render_visual(name: str, dot_source: str) -> None:
     dot_path = DOT_DIR / f"{name}.dot"
     png_path = PNG_DIR / f"{name}.png"
@@ -614,6 +703,9 @@ def main() -> None:
         "visual_13": visual_13(),
         "visual_14": visual_14(),
         "visual_15": visual_15(),
+        "visual_16": visual_16(),
+        "visual_17": visual_17(),
+        "visual_18": visual_18(),
     }
 
     for name, dot_source in visuals.items():

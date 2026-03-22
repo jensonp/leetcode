@@ -282,6 +282,33 @@ Ends with a direct comparison between the exhaustive search and the pruned searc
 
 The two-pointer method is not lucky. It is fast because each move deletes a provably losing region of the search space instead of merely hoping a local greedy choice works.
 
+### 16. Width vs. Height Tradeoff: Taller Does Not Automatically Mean Better
+Compares the optimal pair `(1, 8)` with the tempting inner pair `(1, 6)`. This is the cleanest picture for readers who over-focus on tall bars and underweight width.
+
+<div align="center">
+  <img src="png/visual_16.png" alt="Side-by-side comparison of width-height tradeoff">
+</div>
+
+The inner pair has a higher water level, but it loses too much width. The area objective multiplies both factors, so a slightly lower water level can still win decisively.
+
+### 17. Tie Optimization: Why Moving Both Pointers Is Also Safe
+Builds on the equal-height case and shows the stronger statement: when both boundary heights are equal, you may move both pointers inward at once without losing the optimum.
+
+<div align="center">
+  <img src="png/visual_17.png" alt="Tie optimization that prunes both a row and a column">
+</div>
+
+Inside the active window, every candidate anchored at either equal-height wall is narrower and cannot beat the current water level. That is why the optional “move both on tie” optimization is sound.
+
+### 18. Convergence and Termination: Width Falls by Exactly One Each Step
+Shows the active pair sequence for the sample input all the way until the pointers meet. This turns the loop termination argument into a visual invariant.
+
+<div align="center">
+  <img src="png/visual_18.png" alt="Convergence timeline until the pointers meet">
+</div>
+
+Each iteration moves exactly one pointer inward, so `right - left` shrinks by exactly `1`. Once the width reaches `0`, there are no valid pairs left to evaluate and the loop must stop.
+
 # Complexity Analysis
 1. **Define the input size:** Let $n$ be the length of the `height` array.
 2. **Count the work per iteration:** Inside the while loop, we perform $O(1)$ operations: a subtraction, a `min()` comparison, a multiplication, a `max()` assignment, and a single pointer increment/decrement.
