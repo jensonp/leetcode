@@ -1,164 +1,125 @@
 ---
-description: Enforced README structure for LeetCode interview-prep directories
+description: Enforced proof-first README structure for LeetCode study directories
 globs: README.md
 ---
 
 # LeetCode README Standard
 
-Your role is interview coach. Do not jump to the answer. Build a semantic ladder:
-decode the contract, trace an example, compare approaches, isolate the insight, prove correctness, map proof to code.
+Your role is to produce a proof-first canonical note.
+Do not jump to the final algorithm. Build the reasoning ladder in this order:
+contract -> example -> rejected approach -> key lemma -> state model -> algorithm -> proof -> pseudocode -> pitfalls.
 
 ## Core Rules
 
 - Every problem directory contains a `README.md`.
-- Follow the exact section order below.
-- Do not present the optimal solution without showing how a candidate arrives at it.
-- No final production code unless explicitly requested. Structural pseudocode is allowed.
-- Keep every paragraph. If it does not help you understand the contract, reject a bad approach, prove the algorithm, write the code, or answer a realistic follow-up — cut it.
+- Follow the exact core section order below.
+- Final code is optional and should appear only when the current task explicitly requests it.
+- Keep a paragraph only if it defines the contract, rejects a weaker approach, states a lemma, proves correctness, maps proof to implementation, or records a realistic pitfall or variation.
+- Visuals are subordinate to the proof. Use only the smallest local reproducible set that removes real ambiguity.
 
-## Required README Structure
+## Required Core Structure
 
-Use these exact section headings in this exact order.
+Use these exact core headings in this exact order.
 
 # Problem Metadata
-- LeetCode Number:
-- Difficulty:
-- Topic Tags:
-- Primary Pattern:
-- Secondary Pattern:
-- Estimated Interview Signal:
+- LeetCode Number
+- Difficulty
+- Topic Tags
+- Primary Pattern
+- Secondary Pattern
+- Why Interviewers Ask This
 
 # Problem Contract & Hidden Semantics
-- Restate the problem in plain English.
-- Decode what the inputs actually mean physically (e.g., "only the first m entries are real data; the last n are writable capacity").
-- Decode what the output contract means (e.g., "returns void, so the answer must be written back in-place").
-- State every hidden assumption the problem statement implies but does not say explicitly.
+- Restate the problem precisely.
+- Decode what the input and output mean.
+- Surface hidden assumptions and state why each matters.
 
 # Worked Example by Hand
-- Pick one concrete small example.
-- Trace it step by step, showing every state change.
-- Use a table or numbered list showing the values at each step.
-- The reader should be able to predict the next step of the algorithm after reading this section.
-
-# Clarifying Questions
-- What a strong candidate should ask before solving.
-- Focus on mutation rules, ordering guarantees, duplicates, bounds, allowed extra space.
+- Trace one concrete example step by step.
+- Show the state changes that expose the key lemma.
 
 # Alternative Approaches & Tradeoffs
-For each rejected approach:
-- explain why it seems reasonable,
-- identify the exact flaw in its reasoning,
-- provide a concrete counterexample or limitation,
-- state the proof insight it is missing.
-
-Do not dismiss alternatives in one sentence.
-
-## Required progression
-1. Most naive idea.
-2. Intermediate refinements if meaningful.
-3. The point where the optimal insight becomes unavoidable.
+- Start from the naive idea.
+- Explain why a smart reader might try it.
+- State exactly where it fails or why it stays too expensive.
+- Name the missing insight.
 
 # Core Insight
-- State the single key observation that unlocks the optimal solution.
-- Explain it in one to three sentences that could be spoken aloud in an interview.
+- State the single idea that unlocks the optimal solution.
+- Then isolate the exact lemma or safety claim that makes the algorithm valid.
 
 # Formal State Model
-- Define state variables (e.g., i, j, k).
-- Define the transition rule (what happens each step).
-- Define the loop guard.
+- Define symbols, pointers, sets, windows, or recurrence terms used later.
+- Every symbol must appear in the proof or pseudocode.
+
+# Optimal Approach
+- Give the final strategy step by step.
+- For each step, state what happens and why it is safe.
 
 # Correctness Proof
-Structure as three separate claims:
+- Prove the core lemma or invariant explicitly.
+- Cover initialization, maintenance, and termination when the problem is iterative.
+- State the exact claim needed for optimality; do not add stronger claims than necessary.
 
-## Sorted-Suffix (or Main) Invariant
-State what region of the output is correct after each step. Prove initialization, maintenance, and why termination plus the invariant implies full correctness.
-
-## Safety Claim
-Prove that in-place writes do not destroy unread input. Use concrete algebra (e.g., k - i = n - x >= 0).
-
-## Termination
-State what strictly decreases each iteration. State the upper bound on iterations. State why remaining elements are already correct when the loop ends.
-
-# Equation → Pseudocode → Code Mapping
-- Restate the state variables.
-- Restate the transitions as equations.
-- Translate each equation into a pseudocode line.
-- Explain each conditional branch in English.
-- Call out where implementation bugs are most likely.
+# Equation -> Pseudocode -> Implementation Mapping
+- Restate the key equation or transition rule.
+- Translate it into pseudocode.
+- Explain the loop guard, branches, and bug-prone lines.
 
 # Visualizing the Algorithm
-Adhere to `visual_organization.mdc`. Provide many diagrams. Each must:
-- have a distinct teaching purpose,
-- be introduced with 1-3 sentences,
-- be followed by a brief interpretation.
-- be embedded from local `png/` assets, not external URLs.
-
-After the images are generated, formally audit every embedded image with `.agents/workflows/visual-image-audit.md` before treating the visual section as done.
-
-Treat 10 visuals as a minimum floor, not the goal.
-- For stateful search, pointer, pruning, invariant, or proof-heavy problems, 12-18 visuals is a normal target.
-- If a reasoning gap still exists after 10 visuals, add more.
-
-At minimum, the visual section should collectively cover:
-- the physical problem layout,
-- the brute-force or rejected-work picture,
-- the first nontrivial algorithm step,
-- the main pruning or safety proof,
-- failure mode of a wrong move,
-- decision rule summary,
-- edge cases,
-- and convergence or termination.
+Adhere to `visual_organization.mdc`.
+- Use only the visuals needed to support the proof or state transitions.
+- For many problems, 3-6 visuals is enough.
+- Add more only when each image proves a distinct claim or removes a distinct confusion hotspot.
+- Embed images from local `png/` assets, not external URLs.
+- After generating visuals, run `.agents/workflows/visual-image-audit.md`.
 
 # Complexity Analysis
-- Time and space for the optimal approach.
-- Direct comparison to rejected approaches.
-- Justify both.
+- Derive the bound formally.
+- Define the input size.
+- Count work per step.
+- Bound the number of steps.
+- Conclude time and space.
 
 # Edge Cases & Pitfalls
-- List each edge case and explain why it matters.
-- Include off-by-one traps, invalid assumptions, and mutation hazards.
-- Tie pitfalls back to the proof claims.
-
-# Transferable Pattern Recognition
-- Name the pattern.
-- Explain how to recognize it in unseen problems.
-- List trigger keywords or constraint shapes.
+- Record only cases that matter to the proof or implementation.
+- Include the common bug or invalid move when relevant.
 
 # Problem Variations & Follow-Ups
-For each variation:
-- describe the change,
-- state whether the same pattern applies,
-- state what must change,
-- cap at 2-3 realistic variations.
+- Keep to 2-3 realistic variations.
+- State what changes, what stays the same, and whether the proof survives.
 
-# Interview Questions
-## In-Problem Follow-Ups (2-3)
-Questions an interviewer asks while you solve.
+## Optional Appendices
 
-## Post-Solution Probes (2-3)
-Deeper questions after the solution is explained. Keep them relevant to the problem's actual difficulty level.
+Add these only when they carry distinct value and do not dilute the main proof note:
+- `# Conceptual Glossary`
+- `# Clarifying Questions`
+- `# What Breaks If`
+- `# Transferable Pattern Recognition`
+- `# Interview Questions`
+- `# Interview Simulation Questions`
+- `# Self-Test Questions`
+- `# Next Step Before Coding`
 
-# Self-Test Questions
-3-5 questions checking invariant understanding, edge-case handling, and ability to explain without memorization.
-
-# Next Step Before Coding
-State the exact conceptual gap to close. Give one concrete exercise (e.g., "hand-trace the m=0 case on paper").
+If an optional section does not add new mathematical or implementation value, omit it.
 
 ## Quality Filter
-Keep a section only if it helps you:
-- understand the contract,
-- reject a bad approach,
-- prove the algorithm,
-- write the code,
-- or answer a realistic follow-up.
 
-If it does none of those, cut it.
+Keep material only if it helps the reader do at least one of these:
+- understand the contract,
+- reject a weaker approach,
+- see the key lemma,
+- prove correctness,
+- avoid an implementation bug,
+- or handle a realistic variation.
+
+Delete or compress anything that does not clear this bar.
 
 ## Disallowed
+
 - Skipping directly to the optimal solution.
-- Dismissing rejected approaches superficially.
-- Decorative diagrams with no teaching value.
-- Hotlinking core teaching images from external sites instead of keeping them local and reproducible.
-- Final code when only structural reasoning is requested.
-- Interview questions that drift far from the problem's actual level.
-- Vague filler like "be careful with edge cases" without naming them.
+- Repeating the same proof in multiple rhetorical restatements.
+- Decorative or redundant diagrams.
+- Hotlinking core teaching images from external sites.
+- Final code when the task only asks for reasoning.
+- Interview-coaching filler inside the canonical proof spine.

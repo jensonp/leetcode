@@ -5,6 +5,7 @@ description: Audit a LeetCode README for teaching quality and comprehension
 # Audit LeetCode README
 
 Review a generated README for comprehension quality, not just structural compliance. (For structural checks, run `./audit.sh <problem-dir>` first.)
+The goal is a proof-first canonical note, not a verbose interview script.
 
 ## Steps
 
@@ -80,9 +81,10 @@ If any section skips a level, add the missing bridge.
 ### 5. Proof Readability Check
 The correctness proof must not merely be correct; it must also be teachable.
 
-After the full proof, include:
-- a short plain-English proof summary,
-- and a **30-Second Interview Explanation** that a candidate could actually say aloud.
+Check that:
+- the key lemma or invariant is explicitly isolated,
+- the proof states the exact claim needed for correctness,
+- and the note does not duplicate the same proof in softer or more rhetorical language unless the user explicitly asked for rehearsal material.
 
 ### 6. Pseudocode Alignment Check
 Every major pseudocode branch or loop must map back to:
@@ -104,7 +106,19 @@ Rewrite those sentences with:
 - one concrete example,
 - and an explicit consequence.
 
-### 8. Filler Removal Check
+### 8. Genre Consistency Check
+The note should stay in one genre.
+
+Fail this check if the README mixes:
+- formal proof,
+- interview coaching,
+- motivational framing,
+- decorative walkthrough commentary,
+- or out-of-contract speculation
+
+in a way that dilutes the main argument.
+
+### 9. Filler Removal Check
 Delete or compress material that does not help the reader do one of these:
 - understand the contract,
 - choose among approaches,
@@ -115,7 +129,7 @@ Delete or compress material that does not help the reader do one of these:
 
 If a paragraph sounds impressive but does not improve understanding, cut it.
 
-### 9. Final Reader Test
+### 10. Final Reader Test
 The README should allow the reader to answer all of these after one careful read:
 - What is the problem really asking?
 - Why is the obvious approach weaker?
@@ -136,9 +150,10 @@ Report findings as a table per check:
 | Why-It-Matters | ✅/❌ | List bare statements missing consequences |
 | Equation Translation | ✅/❌ | List equations without English follow-up |
 | Bridge Check | ✅/❌ | List abstraction jumps |
-| Proof Readability | ✅/❌ | Missing plain summary or 30-sec explanation? |
+| Proof Readability | ✅/❌ | Missing lemma, exact claim, or proof discipline? |
 | Pseudocode Alignment | ✅/❌ | Unmapped lines? |
 | Confusion Hotspots | ✅/❌ | List confusing sentences |
+| Genre Consistency | ✅/❌ | List mixed-genre or out-of-contract drift |
 | Filler Removal | ✅/❌ | List paragraphs that don't serve the 5 purposes |
 | Final Reader Test | ✅/❌ | Which questions can't be answered? |
 

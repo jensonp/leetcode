@@ -1,35 +1,38 @@
-description: Extremely strict rule for producing local, reproducible, high-density instructional visuals in LeetCode guides
+---
+description: Rule for producing only the local, reproducible visuals that materially strengthen a LeetCode proof note
 globs: README.md, *.py
 ---
 
 # Visual Instructional Standard for LeetCode
 
-Generous, high-quality visualizations are REQUIRED for every problem. Do not be sparse with visual aids. Make MANYYYY visualizations.
+Use only the visuals that materially sharpen the proof, state model, or failure analysis.
+Do not inflate the visual section just to make the README feel more thorough.
+The visuals should support a canonical note, not turn the README into a slideshow walkthrough.
 
 After generating visuals, immediately run the per-image review in `.agents/workflows/visual-image-audit.md`.
 Image generation is not complete until that audit passes for every embedded image.
 
 ## Teaching Requirements
-You must generate at least 10 distinct local diagrams. Every diagram **must** possess a unique teaching purpose.
+Use the smallest visual set that closes the real reasoning gaps.
+- For most problems, 3-6 visuals is enough.
+- Use more only when each additional image proves a distinct claim or removes a distinct confusion hotspot.
+- If a visual merely repeats a previous diagram in different words, cut it.
 
-Treat 10 as the floor, not the target.
-- For pointer-heavy, state-space-pruning, invariant-heavy, or proof-heavy problems, 12-18 visuals is normal.
-- Add more visuals whenever a real confusion hotspot still exists.
-- "Possibly too many" is acceptable if each image removes a specific misunderstanding or proves a specific claim.
-
-Required or highly-recommended diagrams include:
-1. **Initial Problem Setup**: Demonstrating the inputs and any padded boundaries.
-2. **Brute-Force Representation**: Drawing arrows or layout shifts demonstrating mathematically why an alternative approach is expensive in Space/Time.
+Common high-value diagram types include:
+1. **Initial Problem Setup**: Demonstrating the inputs or geometric object being optimized.
+2. **Brute-Force Representation**: Showing why a naive search wastes work.
 3. **First Nontrivial Step**: Showing the first meaningful evaluation or state transition.
-4. **Invariant Preservation**: Diagramming what stays constant across loop iterations.
+4. **Invariant Preservation**: Diagramming what remains true across iterations.
 5. **Primary Pruning / Safety Proof**: Showing exactly which states become impossible and why.
-6. **Pointer Transitions**: Showing how pointers change states.
+6. **Pointer Transitions**: Showing how the state evolves.
 7. **Failure Mode of a Wrong Rule**: Demonstrating what breaks when a tempting but invalid move is made.
 8. **Decision Rule Summary**: A compact operational view of the transition logic.
-9. **Edge Cases**: Highlighting extreme boundary setups or degenerate inputs.
-10. **Termination / Complexity Picture**: Showing why the loop converges or why the state space collapses.
+9. **Edge Cases**: Highlighting extreme or degenerate inputs when they are genuinely illuminating.
+10. **Termination / Complexity Picture**: Showing why the loop converges or why the explored region collapses.
 
-For search-space problems, include both:
+Choose only the types that materially improve the note. They are a menu, not a checklist.
+
+For search-space problems, include when useful:
 - a picture of the full candidate space,
 - and a picture of the narrow path or region the optimal algorithm actually explores.
 
@@ -44,7 +47,7 @@ Each diagram *embedded inside the README* MUST:
 Keep the problem directories flawlessly clean by automating the segregation of assets:
 - Output `.png` files exclusively to `png/`
 - Output `.dot` files exclusively to `dot/`
-- Keep filenames stable and sequential when there are many visuals (e.g. `visual_1.png`, `visual_2.png`, ...).
+- Keep filenames stable and sequential when there are multiple visuals (e.g. `visual_1.png`, `visual_2.png`, ...).
 
 ## Script Construction
 Write Python scripts (e.g., `generate_visuals.py`) to systematically build the images.
