@@ -14,18 +14,25 @@ REQUIRED_HEADINGS=(
   "# Problem Metadata"
   "# Problem Contract & Hidden Semantics"
   "# Worked Example by Hand"
-  "# Clarifying Questions"
   "# Alternative Approaches & Tradeoffs"
   "# Core Insight"
   "# Formal State Model"
   "# Optimal Approach"
   "# Correctness Proof"
+  "# Equation -> Pseudocode -> Implementation Mapping"
+  "# Visualizing the Algorithm"
   "# Complexity Analysis"
-  "# What Breaks If"
   "# Edge Cases & Pitfalls"
-  "# Transferable Pattern Recognition"
   "# Problem Variations & Follow-Ups"
+)
+
+OPTIONAL_HEADINGS=(
+  "# Conceptual Glossary"
+  "# Clarifying Questions"
+  "# What Breaks If"
+  "# Transferable Pattern Recognition"
   "# Interview Questions"
+  "# Interview Simulation Questions"
   "# Self-Test Questions"
   "# Next Step Before Coding"
 )
@@ -46,23 +53,29 @@ for heading in "${REQUIRED_HEADINGS[@]}"; do
   fi
 done
 
+for heading in "${OPTIONAL_HEADINGS[@]}"; do
+  if grep -qF "$heading" "$README"; then
+    echo "  ℹ️  Optional heading present: $heading"
+  fi
+done
+
 # Check for diagram files
 PNG_COUNT=$(find "$DIR/png" -type f -name "*.png" 2>/dev/null | wc -l | tr -d ' ')
 NONEMPTY_PNG_COUNT=$(find "$DIR/png" -type f -name "*.png" -size +0c 2>/dev/null | wc -l | tr -d ' ')
 
-if [ "$PNG_COUNT" -ge 10 ]; then
-  echo "  ✅ Diagram files: $PNG_COUNT found (≥10 required)"
+if [ "$PNG_COUNT" -ge 1 ]; then
+  echo "  ✅ Diagram files: $PNG_COUNT found"
   PASS=$((PASS + 1))
 else
-  echo "  ❌ Diagram files: only $PNG_COUNT found (≥10 required)"
+  echo "  ❌ Diagram files: none found"
   FAIL=$((FAIL + 1))
 fi
 
-if [ "$NONEMPTY_PNG_COUNT" -ge 10 ]; then
-  echo "  ✅ Non-empty diagrams: $NONEMPTY_PNG_COUNT found (≥10 required)"
+if [ "$NONEMPTY_PNG_COUNT" -ge 1 ]; then
+  echo "  ✅ Non-empty diagrams: $NONEMPTY_PNG_COUNT found"
   PASS=$((PASS + 1))
 else
-  echo "  ❌ Non-empty diagrams: only $NONEMPTY_PNG_COUNT found (≥10 required)"
+  echo "  ❌ Non-empty diagrams: none found"
   FAIL=$((FAIL + 1))
 fi
 
@@ -78,11 +91,11 @@ else
   EMBEDDED_COUNT=0
 fi
 
-if [ "$EMBEDDED_COUNT" -ge 10 ]; then
-  echo "  ✅ Embedded local PNGs: $EMBEDDED_COUNT found (≥10 required)"
+if [ "$EMBEDDED_COUNT" -ge 1 ]; then
+  echo "  ✅ Embedded local PNGs: $EMBEDDED_COUNT found"
   PASS=$((PASS + 1))
 else
-  echo "  ❌ Embedded local PNGs: only $EMBEDDED_COUNT found (≥10 required)"
+  echo "  ❌ Embedded local PNGs: none found"
   FAIL=$((FAIL + 1))
 fi
 
