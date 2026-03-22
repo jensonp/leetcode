@@ -9,7 +9,7 @@ For structural checks, run `./audit.sh <problem-dir>` first.
 
 ## Steps
 
-1. Read `.cursor/rules/leetcode_study_workflow.mdc`.
+1. Read `.agents/workflows/leetcode-problem.md`.
 2. Read the target `README.md`.
 3. Run `./audit.sh <problem-dir>`.
 4. If the README embeds local visuals, run `.agents/workflows/visual-image-audit.md`.
