@@ -36,7 +36,7 @@ is high, where $N$ is new-pattern value, $C$ is proof-value, $T$ is transfer-val
 
 ### Full-depth (anchor problems)
 
-Maximal rigor: full README following the workflow, formal proof, diagrams, What Breaks If, compressed restatement.
+Maximal rigor: full README following the workflow, split into `Fundamentals` and `Appendix`, with a formal proof in `Fundamentals` and visuals only when they materially help.
 
 ### Medium-depth
 

@@ -1,125 +1,103 @@
 ---
-description: Enforced proof-first README structure for LeetCode study directories
+description: Enforced Fundamentals/Appendix README structure for LeetCode study directories
 globs: README.md
 ---
 
 # LeetCode README Standard
 
-Your role is to produce a proof-first canonical note.
-Do not jump to the final algorithm. Build the reasoning ladder in this order:
-contract -> example -> rejected approach -> key lemma -> state model -> algorithm -> proof -> pseudocode -> pitfalls.
+The default output is a two-part note:
+- `## Fundamentals`
+- `## Appendix`
+
+`Fundamentals` is mandatory, compact, formal, and canonical.
+`Appendix` is optional study support.
 
 ## Core Rules
 
-- Every problem directory contains a `README.md`.
-- Follow the exact core section order below.
+- `Fundamentals` must stand alone.
+- `Appendix` must not carry proof-critical content that `Fundamentals` omitted.
 - Final code is optional and should appear only when the current task explicitly requests it.
-- Keep a paragraph only if it defines the contract, rejects a weaker approach, states a lemma, proves correctness, maps proof to implementation, or records a realistic pitfall or variation.
-- Visuals are subordinate to the proof. Use only the smallest local reproducible set that removes real ambiguity.
+- Keep visuals and pedagogy out of `Fundamentals` unless they are strictly necessary for the formal derivation.
 
-## Required Core Structure
+## Required Shape
 
-Use these exact core headings in this exact order.
+# <problem number>: <title>
 
-# Problem Metadata
-- LeetCode Number
-- Difficulty
-- Topic Tags
-- Primary Pattern
-- Secondary Pattern
-- Why Interviewers Ask This
+Optional: one short metadata line or bullet list under the title.
 
-# Problem Contract & Hidden Semantics
+## Fundamentals
+
+### Problem Contract
 - Restate the problem precisely.
-- Decode what the input and output mean.
-- Surface hidden assumptions and state why each matters.
+- Decode the input and output.
+- Surface the assumptions the solution depends on.
 
-# Worked Example by Hand
-- Trace one concrete example step by step.
-- Show the state changes that expose the key lemma.
+### Definitions and State Model
+- Define the symbols and variables used later.
+- Every symbol must appear in the algorithm, proof, or complexity analysis.
 
-# Alternative Approaches & Tradeoffs
-- Start from the naive idea.
-- Explain why a smart reader might try it.
-- State exactly where it fails or why it stays too expensive.
-- Name the missing insight.
+### Key Lemma / Invariant / Recurrence
+- State the exact claim that unlocks the solution.
+- If both a lemma and an invariant are needed, include both here.
 
-# Core Insight
-- State the single idea that unlocks the optimal solution.
-- Then isolate the exact lemma or safety claim that makes the algorithm valid.
+### Algorithm
+- State the final algorithm precisely.
+- Include pseudocode when it materially helps reconstruction.
 
-# Formal State Model
-- Define symbols, pointers, sets, windows, or recurrence terms used later.
-- Every symbol must appear in the proof or pseudocode.
+### Correctness Proof
+- Prove the algorithm from the lemma, invariant, or recurrence.
+- Use initialization, maintenance, and termination when appropriate.
 
-# Optimal Approach
-- Give the final strategy step by step.
-- For each step, state what happens and why it is safe.
-
-# Correctness Proof
-- Prove the core lemma or invariant explicitly.
-- Cover initialization, maintenance, and termination when the problem is iterative.
-- State the exact claim needed for optimality; do not add stronger claims than necessary.
-
-# Equation -> Pseudocode -> Implementation Mapping
-- Restate the key equation or transition rule.
-- Translate it into pseudocode.
-- Explain the loop guard, branches, and bug-prone lines.
-
-# Visualizing the Algorithm
-Adhere to `visual_organization.mdc`.
-- Use only the visuals needed to support the proof or state transitions.
-- For many problems, 3-6 visuals is enough.
-- Add more only when each image proves a distinct claim or removes a distinct confusion hotspot.
-- Embed images from local `png/` assets, not external URLs.
-- After generating visuals, run `.agents/workflows/visual-image-audit.md`.
-
-# Complexity Analysis
-- Derive the bound formally.
-- Define the input size.
+### Complexity Analysis
+- Define input size.
 - Count work per step.
 - Bound the number of steps.
-- Conclude time and space.
+- Distinguish exact counts from asymptotic bounds when relevant.
 
-# Edge Cases & Pitfalls
-- Record only cases that matter to the proof or implementation.
-- Include the common bug or invalid move when relevant.
+### Correctness-Sensitive Pitfalls
+Include only when needed to keep the formal note safe and complete.
 
-# Problem Variations & Follow-Ups
-- Keep to 2-3 realistic variations.
-- State what changes, what stays the same, and whether the proof survives.
+## Appendix
 
-## Optional Appendices
+Keep only the subsections that add real value:
+- `### Worked Example`
+- `### Visuals`
+- `### Variants / Follow-Ups`
+- `### Common Pitfalls`
+- `### Implementation Notes`
+- `### Interview Explanation`
+- `### Self-Test Questions`
+- `### Why Naive / Wrong Approaches Fail`
+- `### Final Code` when requested
 
-Add these only when they carry distinct value and do not dilute the main proof note:
-- `# Conceptual Glossary`
-- `# Clarifying Questions`
-- `# What Breaks If`
-- `# Transferable Pattern Recognition`
-- `# Interview Questions`
-- `# Interview Simulation Questions`
-- `# Self-Test Questions`
-- `# Next Step Before Coding`
+If there is no useful appendix material, keep `## Appendix` and say so briefly.
 
-If an optional section does not add new mathematical or implementation value, omit it.
+## Visual Policy
+
+- Visuals are optional by default.
+- For most problems, `0-3` visuals is enough.
+- For visualization-heavy canonical problems, `3-6` visuals is the upper range.
+- Do not treat visual count as a quality metric.
+- Keep visuals in `Appendix`.
+- Use local reproducible assets, not external hotlinks.
+- If visuals are present, audit them with `.agents/workflows/visual-image-audit.md`.
 
 ## Quality Filter
 
-Keep material only if it helps the reader do at least one of these:
-- understand the contract,
-- reject a weaker approach,
-- see the key lemma,
-- prove correctness,
-- avoid an implementation bug,
-- or handle a realistic variation.
+Keep material in `Fundamentals` only if it:
+- defines the contract,
+- defines the state,
+- states the key claim,
+- derives the algorithm,
+- proves correctness,
+- or justifies complexity.
 
-Delete or compress anything that does not clear this bar.
+Everything else belongs in `Appendix` or should be deleted.
 
 ## Disallowed
 
-- Skipping directly to the optimal solution.
-- Repeating the same proof in multiple rhetorical restatements.
-- Decorative or redundant diagrams.
-- Hotlinking core teaching images from external sites.
-- Final code when the task only asks for reasoning.
-- Interview-coaching filler inside the canonical proof spine.
+- Mixing interview coaching into `Fundamentals`.
+- Requiring "What this teaches", "Pattern visible", "Compressed Restatement", or "30-Second Interview Proof" in the core note.
+- Requiring "Next Step Before Coding" by default.
+- Requiring "Clarifying Questions" unless the contract is genuinely ambiguous.
+- Inflating the README with redundant visuals or repeated proof summaries.

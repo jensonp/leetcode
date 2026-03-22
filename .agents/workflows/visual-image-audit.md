@@ -15,6 +15,7 @@ This audit does not stop at checking that files exist. Each image must be evalua
 ## Scope
 
 Audit every image embedded from local `png/` assets in the README.
+If the README embeds no local images, skip this workflow. Visuals are optional by default.
 
 If the README embeds 18 images, audit 18 images.
 Do not sample. Do not audit only the newest ones.
@@ -41,6 +42,7 @@ For each embedded image, verify all of the following:
 - That purpose is distinct from neighboring visuals.
 - The image removes a real confusion hotspot, not just repeats a prior diagram.
 - If the image is decorative, redundant, or vague, it fails.
+- The README must remain formally correct without the image; visuals may clarify the proof, but may not carry missing proof obligations on their own.
 
 ### 4. Mathematical / Algorithmic Correctness
 - The image matches the algorithm described in the nearby text.

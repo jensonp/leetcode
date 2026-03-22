@@ -1,6 +1,6 @@
 #!/bin/bash
-# Quick structural audit of a LeetCode README
-# Usage: ./audit.sh 088-merge-sorted-array
+# Structural audit for a LeetCode README
+# Usage: ./audit.sh 011-container-with-most-water
 
 DIR="${1:?Usage: ./audit.sh <problem-dir>}"
 README="$DIR/README.md"
@@ -10,7 +10,33 @@ if [ ! -f "$README" ]; then
   exit 1
 fi
 
-REQUIRED_HEADINGS=(
+TITLE_PATTERN='^# .+'
+
+NEW_REQUIRED_HEADINGS=(
+  "## Fundamentals"
+  "### Problem Contract"
+  "### Definitions and State Model"
+  "### Key Lemma / Invariant / Recurrence"
+  "### Algorithm"
+  "### Correctness Proof"
+  "### Complexity Analysis"
+  "## Appendix"
+)
+
+NEW_OPTIONAL_HEADINGS=(
+  "### Correctness-Sensitive Pitfalls"
+  "### Worked Example"
+  "### Visuals"
+  "### Variants / Follow-Ups"
+  "### Common Pitfalls"
+  "### Implementation Notes"
+  "### Interview Explanation"
+  "### Self-Test Questions"
+  "### Why Naive / Wrong Approaches Fail"
+  "### Final Code"
+)
+
+LEGACY_REQUIRED_HEADINGS=(
   "# Problem Metadata"
   "# Problem Contract & Hidden Semantics"
   "# Worked Example by Hand"
@@ -26,7 +52,7 @@ REQUIRED_HEADINGS=(
   "# Problem Variations & Follow-Ups"
 )
 
-OPTIONAL_HEADINGS=(
+LEGACY_OPTIONAL_HEADINGS=(
   "# Conceptual Glossary"
   "# Clarifying Questions"
   "# What Breaks If"
@@ -42,6 +68,27 @@ echo "========================="
 
 PASS=0
 FAIL=0
+
+if grep -qE "$TITLE_PATTERN" "$README"; then
+  echo "  ✅ Top-level title found"
+  PASS=$((PASS + 1))
+else
+  echo "  ❌ MISSING: top-level title"
+  FAIL=$((FAIL + 1))
+fi
+
+if grep -qF "## Fundamentals" "$README"; then
+  MODE="fundamentals_appendix"
+  REQUIRED_HEADINGS=("${NEW_REQUIRED_HEADINGS[@]}")
+  OPTIONAL_HEADINGS=("${NEW_OPTIONAL_HEADINGS[@]}")
+  echo "  ✅ Layout detected: Fundamentals/Appendix"
+  PASS=$((PASS + 1))
+else
+  MODE="legacy"
+  REQUIRED_HEADINGS=("${LEGACY_REQUIRED_HEADINGS[@]}")
+  OPTIONAL_HEADINGS=("${LEGACY_OPTIONAL_HEADINGS[@]}")
+  echo "  ℹ️  Layout detected: legacy"
+fi
 
 for heading in "${REQUIRED_HEADINGS[@]}"; do
   if grep -qF "$heading" "$README"; then
@@ -59,25 +106,8 @@ for heading in "${OPTIONAL_HEADINGS[@]}"; do
   fi
 done
 
-# Check for diagram files
 PNG_COUNT=$(find "$DIR/png" -type f -name "*.png" 2>/dev/null | wc -l | tr -d ' ')
 NONEMPTY_PNG_COUNT=$(find "$DIR/png" -type f -name "*.png" -size +0c 2>/dev/null | wc -l | tr -d ' ')
-
-if [ "$PNG_COUNT" -ge 1 ]; then
-  echo "  ✅ Diagram files: $PNG_COUNT found"
-  PASS=$((PASS + 1))
-else
-  echo "  ❌ Diagram files: none found"
-  FAIL=$((FAIL + 1))
-fi
-
-if [ "$NONEMPTY_PNG_COUNT" -ge 1 ]; then
-  echo "  ✅ Non-empty diagrams: $NONEMPTY_PNG_COUNT found"
-  PASS=$((PASS + 1))
-else
-  echo "  ❌ Non-empty diagrams: none found"
-  FAIL=$((FAIL + 1))
-fi
 
 EMBEDDED_PNGS=$(
   grep -oE 'src="png/[^"]+\.png"' "$README" \
@@ -91,12 +121,31 @@ else
   EMBEDDED_COUNT=0
 fi
 
-if [ "$EMBEDDED_COUNT" -ge 1 ]; then
+if [ "$PNG_COUNT" -gt 0 ]; then
+  echo "  ✅ Diagram files: $PNG_COUNT found"
+  PASS=$((PASS + 1))
+else
+  echo "  ✅ Diagram files: none required"
+  PASS=$((PASS + 1))
+fi
+
+if [ "$PNG_COUNT" -eq 0 ]; then
+  echo "  ✅ Non-empty diagrams: none required"
+  PASS=$((PASS + 1))
+elif [ "$NONEMPTY_PNG_COUNT" -gt 0 ]; then
+  echo "  ✅ Non-empty diagrams: $NONEMPTY_PNG_COUNT found"
+  PASS=$((PASS + 1))
+else
+  echo "  ❌ Non-empty diagrams: none found"
+  FAIL=$((FAIL + 1))
+fi
+
+if [ "$EMBEDDED_COUNT" -gt 0 ]; then
   echo "  ✅ Embedded local PNGs: $EMBEDDED_COUNT found"
   PASS=$((PASS + 1))
 else
-  echo "  ❌ Embedded local PNGs: none found"
-  FAIL=$((FAIL + 1))
+  echo "  ✅ Embedded local PNGs: none required"
+  PASS=$((PASS + 1))
 fi
 
 MISSING_OR_EMPTY=0
