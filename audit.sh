@@ -197,7 +197,7 @@ if [ "$MODE" = "fundamentals_appendix" ]; then
 
   WEAK_REFERENT_COUNT=$(
     printf '%s\n' "$FUNDAMENTALS_TEXT" \
-      | grep -E -i 'the two chosen lines|the current pair|the shorter line|the two lines|volume' \
+      | grep -E -i 'the two chosen lines|the current pair|the shorter line|the two lines|lines at indices|volume' \
       | wc -l | tr -d ' '
   )
 

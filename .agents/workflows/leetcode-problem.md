@@ -128,10 +128,11 @@ Rules:
 In `Fundamentals`, explanatory prose must bind directly to the formal objects already introduced.
 
 Rules:
-- Prefer direct references such as `the pair (i, j)`, `lines at indices i and j`, `H[i]`, `H[j]`, and `A(i,j)`.
-- Avoid weak antecedents such as `the two chosen lines`, `the current pair`, `the shorter line`, or `the two lines` unless the referent has just been explicitly named and the symbolic anchor remains immediate.
+- Prefer notation-led references such as `(i, j)`, `H[i]`, `H[j]`, `A(i,j)`, `i`, `j`, `k`, and named invariants or recurrences.
+- Once symbols have been introduced, keep using those symbols instead of switching back to descriptive paraphrases.
+- Avoid fallback phrases such as `the lines at indices i and j`, `the two chosen lines`, `the current pair`, `the shorter line`, or `the two lines` when direct notation would be cleaner.
 - When a 2D container objective is being defined, prefer `area` over `volume`.
-- Notation and prose should reinforce each other: once symbols are introduced, prose in `Fundamentals` should reuse those symbols rather than replacing them with looser agent-language.
+- Limited prose is still allowed when it genuinely improves readability, but it should sit next to the notation rather than replace it.
 
 ## Quality Filter
 

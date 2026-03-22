@@ -7,11 +7,14 @@
 ## Fundamentals
 
 ### Problem Contract
-Given a non-negative array `height[0..n-1]`, consider any pair of indices `i < j`. The lines at indices `i` and `j`, together with the x-axis, form a container whose area is
+Given a non-negative array `height[0..n-1]`, define
 ```math
-A(i,j) = (j-i)\min(H[i], H[j]).
+A(i,j) = (j-i)\min(H[i], H[j]), \qquad 0 \le i < j < n.
 ```
-Return the maximum value of `A(i,j)` over all valid pairs `(i, j)`.
+Return
+```math
+\max_{0 \le i < j < n} A(i,j).
+```
 
 The contract has four consequences that the solution depends on:
 - For a fixed pair `(i, j)`, only the endpoints `i` and `j` affect `A(i, j)`. Interior lines do not change the area of that candidate container.
@@ -54,7 +57,7 @@ At the start of each iteration, either:
 The correctness proof will show that the pruning lemma preserves this invariant.
 
 ### Algorithm
-Start with the widest possible pair and repeatedly discard the shorter boundary:
+Start with `(i, j) = (0, n - 1)` and update the pointers by the sign of `H[i] - H[j]`:
 
 1. Initialize `i = 0`, `j = n - 1`, and `best = 0`.
 2. Evaluate `A(i, j)` and update `best`.
@@ -87,10 +90,10 @@ We prove that the algorithm returns the maximum area.
 
 **Maintenance.** Assume the invariant holds at the start of an iteration with pointers `(i, j)`.
 
-- If `H[i] <= H[j]`, the pruning lemma shows that every discarded pair `(i, k)` with `i < k < j` is strictly worse than the already evaluated pair `(i, j)`. Since `best` is updated with `A(i, j)` before the move, removing index `i` cannot discard a pair that improves on `best`.
-- If `H[j] <= H[i]`, the symmetric argument shows that every discarded pair `(k, j)` is strictly worse than `(i, j)`, so removing index `j` is equally safe.
+- If `H[i] <= H[j]`, the pruning lemma shows that every discarded pair `(i, k)` with `i < k < j` is strictly worse than the already evaluated pair `(i, j)`. Since `best` is updated with `A(i, j)` before the move, incrementing `i` cannot discard a pair that improves on `best`.
+- If `H[j] <= H[i]`, the symmetric argument shows that every discarded pair `(k, j)` is strictly worse than `(i, j)`, so decrementing `j` is equally safe.
 
-Thus, after discarding the shorter boundary, the search invariant still holds.
+Thus, after applying the update dictated by `H[i]` and `H[j]`, the search invariant still holds.
 
 **Termination.** The loop stops when `i == j`. At that point no valid pair remains in the window. By the invariant, every optimal pair has either already been evaluated or has been safely dominated by a pair whose value was recorded in `best`. Therefore `best` is the maximum area.
 

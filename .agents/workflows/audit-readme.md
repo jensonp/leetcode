@@ -73,6 +73,7 @@ In `Fundamentals`, explanatory sentences should bind directly to the symbols and
 
 Fail if:
 - weak antecedents such as `the two chosen lines`, `the current pair`, `the shorter line`, or `the two lines` appear where direct symbolic reference would be clearer,
+- descriptive fallback phrases such as `the lines at indices i and j` remain after `(i, j)` has already been introduced,
 - prose discusses a formal object without attaching it to notation such as `(i, j)`, `H[i]`, `H[j]`, or `A(i,j)`,
 - or a 2D container formulation uses `volume` where `area` is the correct model.
 
