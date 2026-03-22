@@ -46,14 +46,73 @@ for heading in "${REQUIRED_HEADINGS[@]}"; do
   fi
 done
 
-# Check for diagrams
-PNG_COUNT=$(find "$DIR/png" -name "*.png" 2>/dev/null | wc -l | tr -d ' ')
+# Check for diagram files
+PNG_COUNT=$(find "$DIR/png" -type f -name "*.png" 2>/dev/null | wc -l | tr -d ' ')
+NONEMPTY_PNG_COUNT=$(find "$DIR/png" -type f -name "*.png" -size +0c 2>/dev/null | wc -l | tr -d ' ')
+
 if [ "$PNG_COUNT" -ge 10 ]; then
-  echo "  ✅ Diagrams: $PNG_COUNT found (≥10 required)"
+  echo "  ✅ Diagram files: $PNG_COUNT found (≥10 required)"
   PASS=$((PASS + 1))
 else
-  echo "  ❌ Diagrams: only $PNG_COUNT found (≥10 required)"
+  echo "  ❌ Diagram files: only $PNG_COUNT found (≥10 required)"
   FAIL=$((FAIL + 1))
+fi
+
+if [ "$NONEMPTY_PNG_COUNT" -ge 10 ]; then
+  echo "  ✅ Non-empty diagrams: $NONEMPTY_PNG_COUNT found (≥10 required)"
+  PASS=$((PASS + 1))
+else
+  echo "  ❌ Non-empty diagrams: only $NONEMPTY_PNG_COUNT found (≥10 required)"
+  FAIL=$((FAIL + 1))
+fi
+
+EMBEDDED_PNGS=$(
+  grep -oE 'src="png/[^"]+\.png"' "$README" \
+    | sed -E 's/src="([^"]+)"/\1/' \
+    | sort -u
+)
+
+if [ -n "$EMBEDDED_PNGS" ]; then
+  EMBEDDED_COUNT=$(printf '%s\n' "$EMBEDDED_PNGS" | sed '/^$/d' | wc -l | tr -d ' ')
+else
+  EMBEDDED_COUNT=0
+fi
+
+if [ "$EMBEDDED_COUNT" -ge 10 ]; then
+  echo "  ✅ Embedded local PNGs: $EMBEDDED_COUNT found (≥10 required)"
+  PASS=$((PASS + 1))
+else
+  echo "  ❌ Embedded local PNGs: only $EMBEDDED_COUNT found (≥10 required)"
+  FAIL=$((FAIL + 1))
+fi
+
+MISSING_OR_EMPTY=0
+if [ -n "$EMBEDDED_PNGS" ]; then
+  while IFS= read -r rel_path; do
+    full_path="$DIR/$rel_path"
+    if [ ! -f "$full_path" ] || [ ! -s "$full_path" ]; then
+      echo "  ❌ Broken embedded image: $rel_path"
+      MISSING_OR_EMPTY=$((MISSING_OR_EMPTY + 1))
+    fi
+  done <<EOF
+$EMBEDDED_PNGS
+EOF
+fi
+
+if [ "$MISSING_OR_EMPTY" -eq 0 ]; then
+  echo "  ✅ Embedded image files exist and are non-empty"
+  PASS=$((PASS + 1))
+else
+  FAIL=$((FAIL + MISSING_OR_EMPTY))
+fi
+
+EXTERNAL_IMG_COUNT=$(grep -oE '<img[^>]+src="https?://[^"]+"' "$README" 2>/dev/null | wc -l | tr -d ' ')
+if [ "$EXTERNAL_IMG_COUNT" -eq 0 ]; then
+  echo "  ✅ External image embeds: none"
+  PASS=$((PASS + 1))
+else
+  echo "  ❌ External image embeds found: $EXTERNAL_IMG_COUNT"
+  FAIL=$((FAIL + EXTERNAL_IMG_COUNT))
 fi
 
 echo "========================="
