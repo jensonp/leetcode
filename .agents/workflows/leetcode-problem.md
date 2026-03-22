@@ -41,7 +41,7 @@ Optimize for clarity, correctness, and teachability.
   - pseudocode
   - implementation notes
   - final code only if the current task explicitly requests code
-- Prefer fewer high-value visuals and questions over broad filler.
+- Prefer enough high-value visuals to remove ambiguity. High visual density is good when every image earns its place.
 - Do not announce a result before earning it. Build up: observation → consequence → conclusion. If a complexity claim, design choice, or key insight appears, the preceding sentences must make it feel inevitable, not surprising. Reasoning before headline.
 - **Formal first, then compress.** For any claim about complexity, correctness, or safety: first derive it from precise definitions. Define the input size, name the variable being counted, state the loop bound, and distinguish worst-case from average-case from asymptotic. Only after the formal derivation, provide a compressed but still precise restatement. Not intuition — compressed rigor. If you cannot derive it, you do not know it. If you can only derive it slowly and cannot recognize it quickly, you do not yet own it.
 
@@ -226,16 +226,27 @@ If the current task does not request final code:
 - stop at pseudocode and implementation notes
 
 # Visualizing the Algorithm
-Include 3-6 visuals only if each teaches something distinct.
+Use a visual set large enough to make the proof and transitions easy to follow.
+
+Treat 10 visuals as the floor, not the target.
+- For pointer, pruning, invariant, search-space, or proof-heavy problems, 12-18 visuals is normal.
+- Add another image whenever a confusion hotspot still remains after the current set.
+- Stop only when additional visuals would truly be repetitive.
 
 Possible purposes:
 - problem layout / data model
 - why the naive approach wastes work
+- full candidate search space
+- first nontrivial algorithm step
+- first prune or safety claim
 - pointer or state movement
 - invariant preservation
+- width-vs-height or analogous tradeoff
 - recurrence tree or DP table evolution
 - edge-case behavior
 - failure mode of a weaker approach
+- decision rule summary
+- termination / convergence
 
 Rules:
 - Every visual needs:
@@ -243,7 +254,10 @@ Rules:
   - 1-2 sentences introducing what it shows
   - 1-2 sentences interpreting why it matters
 - Diagrams must explain, not decorate.
+- Prefer local reproducible assets under `png/`, with generator code and `dot/` sources when the set is nontrivial.
+- Do not rely on external hotlinked images for the core lesson.
 - Stop adding visuals once they stop adding new insight.
+- After rendering, formally audit every embedded image against `visual_image_audit.mdc` before finalizing the README, committing, or pushing.
 - **Embed images using centered HTML**, not raw markdown `![]()`. This prevents text-wrapping and ensures consistent block-level display:
   ```html
   <div align="center">

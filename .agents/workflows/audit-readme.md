@@ -9,12 +9,15 @@ Review a generated README for comprehension quality, not just structural complia
 ## Steps
 
 1. **Read the rules.** Read `.cursor/rules/leetcode_study_workflow.mdc` for the required section structure.
+   If the README contains local visuals, also read `.cursor/rules/visual_image_audit.mdc`.
 
 2. **Read the target README.** Read the `README.md` in the specified problem directory.
 
 3. **Run the structural audit first.** Run `./audit.sh <problem-dir>` and confirm all headings pass. If not, fix structure before auditing content.
 
-4. **Perform the Comprehension Audit below.**
+4. **Audit the visuals if present.** Confirm the image set has already passed the per-image audit in `visual_image_audit.mdc`. If not, do that before signing off.
+
+5. **Perform the Comprehension Audit below.**
 
 ---
 

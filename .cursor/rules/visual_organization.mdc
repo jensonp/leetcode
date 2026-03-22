@@ -1,31 +1,58 @@
----
-description: Extremely strict rule for producing many functional Graphviz diagrams in LeetCode guides
+description: Extremely strict rule for producing local, reproducible, high-density instructional visuals in LeetCode guides
 globs: README.md, *.py
 ---
 
-# Graphviz Instructional Standard for LeetCode
+# Visual Instructional Standard for LeetCode
 
 Generous, high-quality visualizations are REQUIRED for every problem. Do not be sparse with visual aids. Make MANYYYY visualizations.
 
+After generating visuals, immediately run the per-image review in `visual_image_audit.mdc`.
+Image generation is not complete until that audit passes for every embedded image.
+
 ## Teaching Requirements
-You must generate at least 10 distinct Graphviz diagrams. Every diagram **must** possess a unique teaching purpose. 
+You must generate at least 10 distinct local diagrams. Every diagram **must** possess a unique teaching purpose.
+
+Treat 10 as the floor, not the target.
+- For pointer-heavy, state-space-pruning, invariant-heavy, or proof-heavy problems, 12-18 visuals is normal.
+- Add more visuals whenever a real confusion hotspot still exists.
+- "Possibly too many" is acceptable if each image removes a specific misunderstanding or proves a specific claim.
 
 Required or highly-recommended diagrams include:
 1. **Initial Problem Setup**: Demonstrating the inputs and any padded boundaries.
 2. **Brute-Force Representation**: Drawing arrows or layout shifts demonstrating mathematically why an alternative approach is expensive in Space/Time.
-3. **Invariant Preservation**: Diagramming what stays constant across loop iterations.
-4. **Pointer Transitions**: Showing how pointers change states.
-5. **Edge Cases**: Highlighting an extreme boundary setup (e.g. empty arrays, extreme bounds).
+3. **First Nontrivial Step**: Showing the first meaningful evaluation or state transition.
+4. **Invariant Preservation**: Diagramming what stays constant across loop iterations.
+5. **Primary Pruning / Safety Proof**: Showing exactly which states become impossible and why.
+6. **Pointer Transitions**: Showing how pointers change states.
+7. **Failure Mode of a Wrong Rule**: Demonstrating what breaks when a tempting but invalid move is made.
+8. **Decision Rule Summary**: A compact operational view of the transition logic.
+9. **Edge Cases**: Highlighting extreme boundary setups or degenerate inputs.
+10. **Termination / Complexity Picture**: Showing why the loop converges or why the state space collapses.
+
+For search-space problems, include both:
+- a picture of the full candidate space,
+- and a picture of the narrow path or region the optimal algorithm actually explores.
 
 Each diagram *embedded inside the README* MUST:
 - Be introduced with 1-3 sentences stating precisely what it is teaching.
 - Be followed by a brief interpretation.
 - Mirror the mathematical logic stated in surrounding text.
+- Use local `png/` assets, not external hotlinked images, for any core teaching visual.
+- Use centered HTML embeds with descriptive `alt` text.
 
 ## Directory Management
 Keep the problem directories flawlessly clean by automating the segregation of assets:
 - Output `.png` files exclusively to `png/`
 - Output `.dot` files exclusively to `dot/`
+- Keep filenames stable and sequential when there are many visuals (e.g. `visual_1.png`, `visual_2.png`, ...).
 
 ## Script Construction
-Write Python scripts (e.g., `generate_visuals.py`) to systematically build the images, and always ensure `os.makedirs('png', exist_ok=True)` and `dot` equivalents are actively included.
+Write Python scripts (e.g., `generate_visuals.py`) to systematically build the images.
+
+Rules for the generator:
+- Always include reproducible generation code for nontrivial visual sets.
+- Always ensure `os.makedirs('png', exist_ok=True)` and `dot` equivalents are actively included.
+- Overwrite placeholder or stale images instead of leaving dead assets behind.
+- Prefer ASCII labels in generated diagrams for portability.
+- Re-run the generator before finalizing the README so embedded image files actually exist and are non-empty.
+- After rendering, formally audit each embedded image one by one using `visual_image_audit.mdc`.

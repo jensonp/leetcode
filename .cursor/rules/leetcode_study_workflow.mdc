@@ -91,6 +91,23 @@ Adhere to `visual_organization.mdc`. Provide many diagrams. Each must:
 - have a distinct teaching purpose,
 - be introduced with 1-3 sentences,
 - be followed by a brief interpretation.
+- be embedded from local `png/` assets, not external URLs.
+
+After the images are generated, formally audit every embedded image with `visual_image_audit.mdc` before treating the visual section as done.
+
+Treat 10 visuals as a minimum floor, not the goal.
+- For stateful search, pointer, pruning, invariant, or proof-heavy problems, 12-18 visuals is a normal target.
+- If a reasoning gap still exists after 10 visuals, add more.
+
+At minimum, the visual section should collectively cover:
+- the physical problem layout,
+- the brute-force or rejected-work picture,
+- the first nontrivial algorithm step,
+- the main pruning or safety proof,
+- failure mode of a wrong move,
+- decision rule summary,
+- edge cases,
+- and convergence or termination.
 
 # Complexity Analysis
 - Time and space for the optimal approach.
@@ -141,6 +158,7 @@ If it does none of those, cut it.
 - Skipping directly to the optimal solution.
 - Dismissing rejected approaches superficially.
 - Decorative diagrams with no teaching value.
+- Hotlinking core teaching images from external sites instead of keeping them local and reproducible.
 - Final code when only structural reasoning is requested.
 - Interview questions that drift far from the problem's actual level.
 - Vague filler like "be careful with edge cases" without naming them.
