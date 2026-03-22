@@ -4,9 +4,17 @@
 
 Become an elite software engineer. Not merely pass interviews.
 
-The target is: **recognize → derive → justify → implement → perturb → compress.**
+The target is:
 
-Pattern study is necessary. Pure memorization is insufficient.
+$$
+\text{recognize} \rightarrow \text{derive} \rightarrow \text{justify} \rightarrow \text{implement} \rightarrow \text{perturb} \rightarrow \text{compress}
+$$
+
+Pattern study is necessary. Pure memorization is insufficient. The correct algorithmic progression is:
+
+$$
+\text{assisted comprehension} \rightarrow \text{independent reproduction} \rightarrow \text{reliable repetition} \rightarrow \text{fast production under variation}
+$$
 
 ---
 
@@ -14,9 +22,17 @@ Pattern study is necessary. Pure memorization is insufficient.
 
 Not every problem deserves full rigor. The optimization objective is:
 
-> Maximize **downstream transfer** per unit of **study time**.
+$$
+\max \frac{\text{downstream transfer}}{\text{study time}}
+$$
 
-A problem gets full-depth treatment when its **new-pattern value + proof-value + transfer-value + bug-surface − redundancy** is high. Difficulty alone is not the criterion.
+Formally, mark problem $p$ full-depth when:
+
+$$
+N(p) + C(p) + T(p) + B(p) - R(p)
+$$
+
+is high, where $N$ is new-pattern value, $C$ is proof-value, $T$ is transfer-value, $B$ is bug-surface, and $R$ is redundancy with patterns you already own. Difficulty alone is not the criterion.
 
 ### Full-depth (anchor problems)
 
@@ -101,7 +117,7 @@ Promote these to full-depth **only if** the corresponding family still feels wea
 ## Per-Problem Workflow
 
 1. **Extract the problem contract formally.** Define inputs, outputs, mutation rules, hidden assumptions.
-2. **Blind attempt first.** No LLM, no editorial. Struggle is the point.
+2. **Blind attempt.** No LLM, no editorial reference.
 3. **Write a formal solution draft before coding:**
    - State variables
    - Invariant or recurrence
@@ -117,7 +133,7 @@ Promote these to full-depth **only if** the corresponding family still feels wea
    - Generate counterexamples to wrong alternatives
    - Identify hidden assumptions
    - Test transfer with perturbations
-8. **Reconstruct the final reasoning from memory.** If you can't, you don't own it yet.
+8. **Reconstruct the final reasoning from memory.**
 
 ---
 
@@ -160,28 +176,26 @@ Two layers. Both required.
 
 Training sequence: **formal first → restate precisely → test transfer → code and review.**
 
-If you cannot derive it, you do not know it.
-If you can only derive it slowly and cannot recognize it quickly, you do not yet own it.
-Aim for both.
+Derivation without recognition is inefficient. Recognition without derivation is unsafe. Both are required.
 
 ---
 
 ## Anti-Patterns to Avoid
 
-- **Over-elaboration without compression.** If the note gets longer but your cold derivation speed does not improve, the note is becoming performance art.
-- **Passive consumption.** Re-reading polished LLM output is not studying. You must independently reproduce the reasoning chain.
-- **Memorizing without understanding.** Especially dangerous for: Gas Station, Median of Two Sorted Arrays, LIS patience sorting.
-- **Full rigor on every problem.** Diminishing returns after the anchor is owned. Move to medium-depth.
+- **Over-elaboration without compression.** If documentation length increases but cold derivation speed does not improve, the protocol is failing.
+- **Passive consumption.** Re-reading verified LLM output is not studying. Independent reproduction of the reasoning chain is mandatory.
+- **Memorizing without understanding.** High risk for: Gas Station, Median of Two Sorted Arrays, LIS patience sorting.
+- **Full rigor on every problem.** Diminishing returns after the anchor is owned. Transition to medium-depth.
 - **Using LLM as primary author.** Solve first. LLM audits second.
 
 ---
 
-## What Comes After 088
+## Execution Schedule
 
-1. You have completed **088. Merge Sorted Array** at full depth. Status: **E** (early repetition) until you pass the cold derivation test.
-2. Next core anchor by family progression: **11. Container With Most Water** (two-pointer elimination proof — different proof obligation than 088).
-3. Follow the per-problem workflow above. Create the directory, blind attempt, formal draft, implement, postmortem, then LLM audit.
-4. Use `/leetcode-problem` workflow in Antigravity to generate the README after your own attempt.
-5. Use `/audit-readme` workflow to verify the README meets comprehension standards.
-6. Run `./audit.sh` for structural checks.
-7. Track your N/E/C/O status for each pattern family as you go.
+1. **88. Merge Sorted Array** requires cold derivation test to transition from Status E to Status C.
+2. Next core anchor: **11. Container With Most Water** (two-pointer elimination proof).
+3. Execute the per-problem workflow.
+4. Execute `/.agents/workflows/leetcode-problem.md` post-attempt.
+5. Execute `/.agents/workflows/audit-readme.md`.
+6. Execute `./audit.sh`.
+7. Track Status N/E/C/O per family.
