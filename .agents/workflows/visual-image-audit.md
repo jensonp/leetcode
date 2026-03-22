@@ -1,67 +1,61 @@
 ---
-description: Required per-image audit after generating local instructional visuals for LeetCode guides
-globs: README.md, *.py
+description: Formally audit every generated README image before signoff, commit, or push
 ---
 
-# Per-Image Visual Audit Standard
+# Audit Generated README Images
 
-After generating or updating visuals, you must perform a formal audit of every image before finalizing the README.
-
-This audit is not optional, and it does not stop at checking that files exist.
-You must evaluate each image as a teaching artifact.
-
-## When This Audit Runs
-
-Run this audit immediately after image generation and before:
-- final README edits are considered complete,
+Run this workflow immediately after image generation and before:
+- final README edits are treated as complete,
 - structural audit is treated as meaningful,
 - commits are created,
 - or changes are pushed.
 
+This audit does not stop at checking that files exist. Each image must be evaluated as a teaching artifact.
+
 ## Scope
 
-Audit every image that is embedded from local `png/` assets in the README.
+Audit every image embedded from local `png/` assets in the README.
 
 If the README embeds 18 images, audit 18 images.
 Do not sample. Do not audit only the newest ones.
 
-## Required Audit Procedure
+## Per-Image Audit Checklist
 
 For each embedded image, verify all of the following:
 
-1. **Render Integrity**
+### 1. Render Integrity
 - The file exists locally under `png/`.
 - The file is non-empty.
 - The image renders without corruption.
 - Text is legible at normal README viewing size.
 - Labels are not clipped, overlapping, or truncated.
 
-2. **README Alignment**
+### 2. README Alignment
 - The image filename matches the README embed.
 - The surrounding intro sentences accurately describe what the image teaches.
 - The follow-up interpretation accurately states why the image matters.
 - The `alt` text is specific and matches the actual content.
 
-3. **Teaching Purpose**
+### 3. Teaching Purpose
 - The image has one clear teaching purpose.
 - That purpose is distinct from neighboring visuals.
 - The image removes a real confusion hotspot, not just repeats a prior diagram.
 - If the image is decorative, redundant, or vague, it fails.
 
-4. **Mathematical / Algorithmic Correctness**
+### 4. Mathematical / Algorithmic Correctness
 - The image matches the algorithm described in the nearby text.
 - Numeric examples shown in the image are correct.
 - Pointer movements, pruned regions, invariants, and edge-case behavior are logically valid.
 - If the image claims a proof step, the proof step must actually be sound.
 
-5. **Reproducibility**
+### 5. Reproducibility
 - The image is locally reproducible from repository assets.
-- If the visual set is nontrivial, the generator and source files (for example `generate_visuals.py` and `dot/`) exist and match the embedded images.
+- If the visual set is nontrivial, the generator and source files exist and match the embedded images.
 - No core teaching image may rely on an external hotlink.
 
-## Formal Evaluation Output
+## Required Evaluation Output
 
-Perform the audit as a checklist or table in your working process, one row per image.
+Do the audit as a checklist or table in your working process, one row per image.
 
 Minimum columns:
 - `Image`
@@ -77,9 +71,9 @@ If any image fails:
 
 Do not mark the visual section complete until every embedded image passes.
 
-## Minimum Pass Criteria For The Whole Visual Set
+## Whole-Set Failure Conditions
 
-The set fails if any of the following is true:
+The visual set fails if any of the following is true:
 - any embedded image is missing,
 - any embedded image is empty,
 - any embedded image is unreadable,

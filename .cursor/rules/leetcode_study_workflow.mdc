@@ -93,7 +93,7 @@ Adhere to `visual_organization.mdc`. Provide many diagrams. Each must:
 - be followed by a brief interpretation.
 - be embedded from local `png/` assets, not external URLs.
 
-After the images are generated, formally audit every embedded image with `visual_image_audit.mdc` before treating the visual section as done.
+After the images are generated, formally audit every embedded image with `.agents/workflows/visual-image-audit.md` before treating the visual section as done.
 
 Treat 10 visuals as a minimum floor, not the goal.
 - For stateful search, pointer, pruning, invariant, or proof-heavy problems, 12-18 visuals is a normal target.

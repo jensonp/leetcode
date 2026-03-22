@@ -257,7 +257,7 @@ Rules:
 - Prefer local reproducible assets under `png/`, with generator code and `dot/` sources when the set is nontrivial.
 - Do not rely on external hotlinked images for the core lesson.
 - Stop adding visuals once they stop adding new insight.
-- After rendering, formally audit every embedded image against `visual_image_audit.mdc` before finalizing the README, committing, or pushing.
+- After rendering, formally audit every embedded image against `.agents/workflows/visual-image-audit.md` before finalizing the README, committing, or pushing.
 - **Embed images using centered HTML**, not raw markdown `![]()`. This prevents text-wrapping and ensures consistent block-level display:
   ```html
   <div align="center">

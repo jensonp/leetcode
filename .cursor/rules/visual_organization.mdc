@@ -6,7 +6,7 @@ globs: README.md, *.py
 
 Generous, high-quality visualizations are REQUIRED for every problem. Do not be sparse with visual aids. Make MANYYYY visualizations.
 
-After generating visuals, immediately run the per-image review in `visual_image_audit.mdc`.
+After generating visuals, immediately run the per-image review in `.agents/workflows/visual-image-audit.md`.
 Image generation is not complete until that audit passes for every embedded image.
 
 ## Teaching Requirements
@@ -55,4 +55,4 @@ Rules for the generator:
 - Overwrite placeholder or stale images instead of leaving dead assets behind.
 - Prefer ASCII labels in generated diagrams for portability.
 - Re-run the generator before finalizing the README so embedded image files actually exist and are non-empty.
-- After rendering, formally audit each embedded image one by one using `visual_image_audit.mdc`.
+- After rendering, formally audit each embedded image one by one using `.agents/workflows/visual-image-audit.md`.
