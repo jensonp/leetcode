@@ -113,6 +113,16 @@ Rules:
 - Do not rely on external hotlinked images for core teaching visuals.
 - If visuals are present, audit them with `.agents/workflows/visual-image-audit.md`.
 
+## Render Syntax Policy
+
+README syntax must be GitHub-renderable.
+
+Rules:
+- Do not use raw LaTeX display delimiters such as `\[ ... \]` in Markdown prose.
+- Prefer fenced `math` blocks for displayed equations.
+- Keep inline notation in plain text or code spans unless the renderer is known to support the exact syntax being used.
+- If a formula would render as literal control characters instead of math, rewrite it into a renderer-safe form.
+
 ## Quality Filter
 
 Every paragraph in `Fundamentals` must do at least one of these:

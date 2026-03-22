@@ -35,13 +35,13 @@ After each iteration, `nums1[k+1 .. m+n-1]` is a sorted suffix containing the la
 
 #### Safety Lemma
 Let `x` be the number of elements already taken from `B`, and `y` the number already taken from `A`. Then
-\[
+```math
 k = (m+n-1) - (x+y), \qquad i = (m-1) - y,
-\]
+```
 so
-\[
+```math
 k - i = n - x.
-\]
+```
 Since `x <= n`, we always have `k - i >= 0`.
 
 This means the write-head `k` never moves left of the unread tail of `A`. The algorithm never overwrites an element of `A` before reading it.

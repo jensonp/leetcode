@@ -60,9 +60,17 @@ Check that the note:
 - separates exact counts from asymptotic bounds when relevant,
 - and distinguishes worst-case, average-case, and best-case when relevant.
 
+### 7. Render Syntax Check
+Check that the README uses renderer-safe Markdown and math syntax.
+
+Fail if:
+- formulas are written with raw LaTeX display delimiters such as `\[ ... \]`,
+- visible control syntax would leak into the rendered README,
+- or section content relies on syntax that is unlikely to render correctly on GitHub.
+
 ## Appendix Checks
 
-### 7. Boundary Check
+### 8. Boundary Check
 `Appendix` may improve learning, recall, or usability, but it must remain non-essential.
 
 Fail if:
@@ -70,7 +78,7 @@ Fail if:
 - `Appendix` carries the only statement of a proof-critical lemma,
 - or `Appendix` quietly repairs an incomplete core argument.
 
-### 8. Visual Necessity Check
+### 9. Visual Necessity Check
 If visuals exist:
 - confirm they live in `Appendix`,
 - confirm they clarify a real confusion hotspot,
@@ -78,7 +86,7 @@ If visuals exist:
 
 If there are no visuals, that is not a failure.
 
-### 9. Packaging Restraint Check
+### 10. Packaging Restraint Check
 Fail if `Appendix` is bloated with material that does not improve:
 - understanding,
 - recall,
@@ -113,6 +121,7 @@ Report findings as a table:
 | Equation Translation | ✅/❌ | Equations without translation or purpose |
 | Proof Discipline | ✅/❌ | Weak lemma isolation or redundant restatements |
 | Complexity Precision | ✅/❌ | Missing exactness, case distinctions, or counting logic |
+| Render Syntax | ✅/❌ | Broken Markdown/math syntax or raw control delimiters |
 | Appendix Boundary | ✅/❌ | Proof content leaking into Appendix |
 | Visual Necessity | ✅/❌ | Decorative or core-dependent visuals |
 | Packaging Restraint | ✅/❌ | Appendix bloat or filler |

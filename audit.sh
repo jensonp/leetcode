@@ -177,6 +177,15 @@ else
   FAIL=$((FAIL + EXTERNAL_IMG_COUNT))
 fi
 
+RAW_LATEX_DISPLAY_COUNT=$(grep -oE '\\\[|\\\]' "$README" 2>/dev/null | wc -l | tr -d ' ')
+if [ "$RAW_LATEX_DISPLAY_COUNT" -eq 0 ]; then
+  echo "  ✅ Render-safe math delimiters: no raw \\\\[ \\\\] blocks"
+  PASS=$((PASS + 1))
+else
+  echo "  ❌ Render-safe math delimiters: found $RAW_LATEX_DISPLAY_COUNT raw \\\\[ or \\\\] tokens"
+  FAIL=$((FAIL + 1))
+fi
+
 echo "========================="
 echo "Result: $PASS passed, $FAIL failed"
 

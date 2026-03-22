@@ -8,9 +8,9 @@
 
 ### Problem Contract
 Given a non-negative array `height[0..n-1]`, choose indices `i < j`. The two chosen lines and the x-axis form a container whose area is
-\[
+```math
 A(i,j) = (j-i)\min(H[i], H[j]).
-\]
+```
 Return the maximum such area.
 
 The contract has four consequences that the solution depends on:
@@ -21,15 +21,15 @@ The contract has four consequences that the solution depends on:
 
 ### Definitions and State Model
 Let `H` be the height array, and let
-\[
+```math
 S = \{(x,y) \mid 0 \le x < y < n\}
-\]
+```
 be the search space of valid pairs.
 
 For each `(i, j) \in S`, define
-\[
+```math
 A(i,j) = (j-i)\min(H[i], H[j]).
-\]
+```
 This is the exact objective being maximized.
 
 The algorithm maintains two pointers `i` and `j` with `0 <= i < j < n`, together with a value `best` equal to the largest area already seen. The active search window is the index interval `[i, j]`.
@@ -37,13 +37,13 @@ The algorithm maintains two pointers `i` and `j` with `0 <= i < j < n`, together
 ### Key Lemma / Invariant / Recurrence
 #### Pruning Lemma
 If `H[i] <= H[j]`, then for every `k` with `i < k < j`,
-\[
+```math
 A(i,k) = (k-i)\min(H[i], H[k])
        \le (k-i)H[i]
        < (j-i)H[i]
        \le (j-i)\min(H[i], H[j])
        = A(i,j).
-\]
+```
 Therefore, once `(i, j)` has been evaluated and `H[i] <= H[j]`, index `i` can be discarded permanently. The case `H[j] <= H[i]` is symmetric.
 
 #### Search Invariant
