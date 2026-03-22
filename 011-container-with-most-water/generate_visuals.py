@@ -72,7 +72,7 @@ def table(rows: list[list[str]]) -> str:
 
 
 def note_node(name: str, title: str, lines: list[str], *, fill: str = "#FFFFFF") -> str:
-    label = "\\n".join([title, *lines])
+    label = "\n".join([title, *lines])
     return (
         f'{name} [shape=box style="rounded,filled" fillcolor="{fill}" '
         f'color="#94A3B8" penwidth=1.2 margin="0.18,0.12" '

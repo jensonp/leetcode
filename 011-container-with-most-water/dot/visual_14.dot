@@ -2,10 +2,18 @@ digraph G {
 graph [rankdir=LR bgcolor="white" margin=0.18 pad=0.2 nodesep=0.45 ranksep=0.5 splines=line]
 node [fontname="Helvetica" fontsize=12 color="#94A3B8"]
 edge [fontname="Helvetica" fontsize=11 color="#64748B" arrowsize=0.7]
-s1 [shape=box style="rounded,filled" fillcolor="#ECFCCB" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" label="Step 2\\npair (1, 8)\\narea = 49"];
-s2 [shape=box style="rounded,filled" fillcolor="#DBEAFE" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" label="Step 3\\npair (1, 7)\\narea = 18"];
-s3 [shape=box style="rounded,filled" fillcolor="#FDE68A" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" label="Step 4\\npair (1, 6)\\narea = 40"];
-s4 [shape=box style="rounded,filled" fillcolor="#DBEAFE" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" label="Step 5\\npair (1, 5)\\narea = 16"];
+s1 [shape=box style="rounded,filled" fillcolor="#ECFCCB" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" label="Step 2
+pair (1, 8)
+area = 49"];
+s2 [shape=box style="rounded,filled" fillcolor="#DBEAFE" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" label="Step 3
+pair (1, 7)
+area = 18"];
+s3 [shape=box style="rounded,filled" fillcolor="#FDE68A" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" label="Step 4
+pair (1, 6)
+area = 40"];
+s4 [shape=box style="rounded,filled" fillcolor="#DBEAFE" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" label="Step 5
+pair (1, 5)
+area = 16"];
 s1 -> s2 [label="right wall shorter: 7 < 8"];
 s2 -> s3 [label="right wall shorter: 3 < 8"];
 s3 -> s4 [label="tie at 8 and 8: move either"];
