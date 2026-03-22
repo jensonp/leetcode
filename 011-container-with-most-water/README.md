@@ -145,17 +145,142 @@ def maxArea(height: List[int]) -> int:
 ```
 
 # Visualizing the Algorithm
+These diagrams are intentionally dense. The point is not to decorate the README, but to make every important reasoning step visible: what the container physically is, what the full search space looks like, why pruning is safe, what the invariant says, and what goes wrong if you move the wrong pointer.
+
+### 1. Problem Layout: One Pair Defines One Container
+Starts with the sample array and highlights the optimal pair `(1, 8)`. This is the physical picture we are optimizing over.
+
 <div align="center">
-  <img src="https://assets.leetcode.com/uploads/2018/01/09/question_11.jpg" alt="Water Container Diagram">
+  <img src="png/visual_1.png" alt="Problem layout with the optimal pair">
 </div>
 
-*What this shows:* The basic problem data model. Notice how the internal space between index 1 and 8 is "empty" and does not displace any water. It visually proves that only the endpoints restrict the volume.
+Only the chosen endpoints determine the width and the water level. The inner lines are still useful as future candidates, but they do not reduce the water held by the current pair.
 
-Imagine the search space as an $N \times N$ matrix where cell $(i, j)$ holds $\text{Area}(i, j)$. 
-1. We start at the top-right corner $(0, n-1)$. 
-2. Comparing $H[0]$ and $H[n-1]$, if $H[0]$ is shorter, we increment `left`. In the matrix, this corresponds to deleting the entire 0-th row of the matrix because no cell to the left of $(0, n-1)$ can be larger.
-3. If $H[n-1]$ had been shorter, we would decrement `right`, effectively deleting the entire $(n-1)$-th column.
-4. The algorithm traces an $O(N)$ path from the top-right corner down to the main diagonal, systematically slicing away rows and columns of inferior pairs until the matrix is fully pruned.
+### 2. Brute Force Search Space: Every Pair Is a Candidate
+Shows the full upper-triangular state space of valid pairs. This is what the naive $O(n^2)$ approach would inspect cell by cell.
+
+<div align="center">
+  <img src="png/visual_2.png" alt="Upper-triangular matrix of all valid pairs">
+</div>
+
+The real problem is not "how do I compute an area?" but "how do I avoid evaluating almost all of these cells?"
+
+### 3. First Evaluation: Start at the Maximum Width
+Shows the very first check at `(0, 8)`, the widest possible container. Starting here guarantees that if one side is the bottleneck, every inner pair anchored at that side is immediately under suspicion.
+
+<div align="center">
+  <img src="png/visual_3.png" alt="First evaluation at the widest pair">
+</div>
+
+The first area is only `8`, but the key information is structural: the left height is just `1`, so it is the limiting wall.
+
+### 4. Pruning a Row: Why `(0, k)` Can All Be Deleted
+Zooms into the search-space consequence of evaluating `(0, 8)`. Once we know `height[0]` is the bottleneck, the entire row anchored at index `0` can be discarded.
+
+<div align="center">
+  <img src="png/visual_4.png" alt="Pruning all pairs anchored at index zero">
+</div>
+
+Every `(0, k)` has smaller width than `(0, 8)`, and its water level still cannot exceed `1`. That is the core pruning move of the algorithm.
+
+### 5. Best Pair Discovery: Where the Maximum Comes From
+Shows the next state `(1, 8)` where the maximum area `49` is found. This is the canonical example of why moving the short wall can unlock a much better bottleneck.
+
+<div align="center">
+  <img src="png/visual_5.png" alt="Best pair discovery at indices one and eight">
+</div>
+
+The tall inner line at index `6` looks tempting, but width matters just as much as height. A slightly taller inner partner can still lose because it comes with a smaller distance.
+
+### 6. Pruning a Column: The Symmetric Argument
+Now the right wall at index `8` is shorter than the left wall at index `1`. The same proof works in reverse, so the entire column anchored at `8` can be eliminated.
+
+<div align="center">
+  <img src="png/visual_6.png" alt="Pruning all pairs anchored at index eight">
+</div>
+
+The algorithm is not biased toward left moves. It always deletes the side whose height caps the current container.
+
+### 7. Tie Case: Equal Heights Let You Move Either Pointer
+Shows the state `(1, 6)` where both heights are `8`. This is the only branch where the proof does not prefer a side, because both sides impose the same bottleneck.
+
+<div align="center">
+  <img src="png/visual_7.png" alt="Tie case where both pointers are safe to move">
+</div>
+
+Moving either pointer is safe. The width must decrease, and keeping just one of the equal walls cannot make the bounding height better than the one we already used.
+
+### 8. One Path Through the Matrix: Why Time Is Linear
+Marks the actual cells visited on the sample input. Instead of touching every valid pair, the algorithm walks one monotone path from the top-right corner toward the diagonal.
+
+<div align="center">
+  <img src="png/visual_8.png" alt="Single linear path through the quadratic state space">
+</div>
+
+Each iteration deletes one full row or one full column from consideration. That is why the algorithm examines only $O(n)$ pairs even though the original state space is $O(n^2)$.
+
+### 9. Main Invariant: The Answer Is Never Lost
+Combines already-pruned regions, the currently active search window, and the best pair already recorded. This is the picture behind the correctness proof.
+
+<div align="center">
+  <img src="png/visual_9.png" alt="Invariant view of pruned cells and remaining search window">
+</div>
+
+At every step, either the true optimum has already been recorded, or it still lies inside the current pointer bounds. The pruning proof exists to keep that statement true.
+
+### 10. Wrong Move Failure: Moving the Taller Wall Is Useless
+Contrasts the correct move with the tempting but wrong one. If you keep the shorter wall and move the taller one inward, width shrinks while the bottleneck does not improve.
+
+<div align="center">
+  <img src="png/visual_10.png" alt="Why moving the taller pointer fails">
+</div>
+
+This is the easiest way to explain the algorithm in an interview: the taller wall is not the problem, so moving it does not address the constraint limiting the area.
+
+### 11. Decision Rule Summary: Compare, Then Move the Bottleneck
+Provides a compact flowchart for the pointer update rule. This is the "operational memory" version of the proof.
+
+<div align="center">
+  <img src="png/visual_11.png" alt="Decision rule flowchart for pointer movement">
+</div>
+
+If the left wall is shorter, move left. If the right wall is shorter, move right. If they are equal, either move is safe.
+
+### 12. Edge Case: Only Two Lines
+Shows the smallest legal input. There is only one container to evaluate, so the loop runs once and stops.
+
+<div align="center">
+  <img src="png/visual_12.png" alt="Two-element edge case">
+</div>
+
+This is useful for sanity-checking the loop guard: `left < right` evaluates exactly the one available pair and then terminates cleanly.
+
+### 13. Edge Case: Zero-Height Boundary
+Shows that a wide container can still hold zero water if one chosen wall has height `0`. This prevents width-only intuition from taking over.
+
+<div align="center">
+  <img src="png/visual_13.png" alt="Zero-height boundary edge case">
+</div>
+
+The area formula is always width times the minimum height. If the minimum is `0`, the entire container is worthless no matter how wide it is.
+
+### 14. Remaining Example Steps: The Right Pointer Keeps Shrinking
+Traces the later right-pointer moves after the best pair is found. This reinforces that a later pair can still be worth checking even if the current best is already large.
+
+<div align="center">
+  <img src="png/visual_14.png" alt="Later example steps after the maximum is found">
+</div>
+
+The algorithm does not stop early when it finds a strong candidate. It keeps pruning until the pointers meet, because only the proof tells us which remaining cells are impossible.
+
+### 15. Work Comparison: Brute Force vs. Two Pointers
+Ends with a direct comparison between the exhaustive search and the pruned search on this example. The point is to connect the visual pruning story back to complexity.
+
+<div align="center">
+  <img src="png/visual_15.png" alt="Comparison of brute force work and two-pointer work">
+</div>
+
+The two-pointer method is not lucky. It is fast because each move deletes a provably losing region of the search space instead of merely hoping a local greedy choice works.
 
 # Complexity Analysis
 1. **Define the input size:** Let $n$ be the length of the `height` array.

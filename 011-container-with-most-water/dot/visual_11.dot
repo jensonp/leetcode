@@ -1,0 +1,12 @@
+digraph G {
+graph [rankdir=TB bgcolor="white" margin=0.18 pad=0.2 nodesep=0.45 ranksep=0.5 splines=line]
+node [fontname="Helvetica" fontsize=12 color="#94A3B8"]
+edge [fontname="Helvetica" fontsize=11 color="#64748B" arrowsize=0.7]
+decide [shape=box style="rounded,filled" fillcolor="#F8FAFC" label="Compare\nheight[left] and height[right]"];
+less [shape=box style="rounded,filled" fillcolor="#DBEAFE" label="height[left] < height[right]\nMove left"];
+greater [shape=box style="rounded,filled" fillcolor="#FDE68A" label="height[left] > height[right]\nMove right"];
+equal [shape=box style="rounded,filled" fillcolor="#EDE9FE" label="height[left] == height[right]\nEither move is safe"];
+decide -> less [label="<"];
+decide -> greater [label=">"];
+decide -> equal [label="="];
+}
