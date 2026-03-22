@@ -16,6 +16,7 @@ Review a generated README for comprehension quality, not just structural complia
 3. **Run the structural audit first.** Run `./audit.sh <problem-dir>` and confirm all headings pass. If not, fix structure before auditing content.
 
 4. **Audit the visuals if present.** Confirm the image set has already passed the per-image audit in `.agents/workflows/visual-image-audit.md`. If not, do that before signing off.
+   If the audit reveals an obvious mechanical defect with a clear fix, do not stop at the finding. Fix it, regenerate the assets, and rerun the image audit before continuing.
 
 5. **Perform the Comprehension Audit below.**
 

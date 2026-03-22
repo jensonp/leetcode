@@ -69,6 +69,26 @@ If any image fails:
 - regenerate the assets,
 - and re-audit the full image set.
 
+If the failure is an obvious mechanical defect with a clear fix path, do not stop at the finding.
+Examples:
+- broken newline handling in Graphviz labels,
+- clipped text caused by the generator layout,
+- wrong filename in the README embed,
+- stale images that simply need regeneration,
+- obvious arithmetic typo in a note box.
+
+In those cases, continue immediately:
+1. apply the fix,
+2. regenerate the images,
+3. re-run the image audit,
+4. and only then report the final result.
+
+Only stop at the finding when:
+- the correct fix is ambiguous,
+- there are competing design choices,
+- the image exposes a deeper algorithm or proof dispute,
+- or user input is genuinely required.
+
 Do not mark the visual section complete until every embedded image passes.
 
 ## Whole-Set Failure Conditions

@@ -258,6 +258,7 @@ Rules:
 - Do not rely on external hotlinked images for the core lesson.
 - Stop adding visuals once they stop adding new insight.
 - After rendering, formally audit every embedded image against `.agents/workflows/visual-image-audit.md` before finalizing the README, committing, or pushing.
+- If that audit finds an obvious mechanical issue with a clear fix path, fix it immediately, regenerate the assets, and rerun the image audit in the same workflow pass instead of stopping at the intermediate failure.
 - **Embed images using centered HTML**, not raw markdown `![]()`. This prevents text-wrapping and ensures consistent block-level display:
   ```html
   <div align="center">
