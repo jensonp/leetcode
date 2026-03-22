@@ -7,15 +7,15 @@
 ## Fundamentals
 
 ### Problem Contract
-Given a non-negative array `height[0..n-1]`, choose indices `i < j`. The two chosen lines and the x-axis form a container whose area is
+Given a non-negative array `height[0..n-1]`, consider any pair of indices `i < j`. The lines at indices `i` and `j`, together with the x-axis, form a container whose area is
 ```math
 A(i,j) = (j-i)\min(H[i], H[j]).
 ```
-Return the maximum such area.
+Return the maximum value of `A(i,j)` over all valid pairs `(i, j)`.
 
 The contract has four consequences that the solution depends on:
-- Only the chosen endpoints matter for the current container. Interior lines do not change `A(i, j)` once `i` and `j` are fixed.
-- The shorter endpoint is the bottleneck. Changing only the taller side cannot raise the water level of the current pair.
+- For a fixed pair `(i, j)`, only the endpoints `i` and `j` affect `A(i, j)`. Interior lines do not change the area of that candidate container.
+- If `H[i] <= H[j]`, then `H[i]` is the bottleneck height for `A(i, j)`. Changing only `H[j]` cannot increase the area of that same pair.
 - Width is tied to the original indices. Sorting the heights destroys the distances that define the objective.
 - All heights are non-negative, so all candidate areas are non-negative.
 

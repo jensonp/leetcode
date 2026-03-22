@@ -68,9 +68,17 @@ Fail if:
 - visible control syntax would leak into the rendered README,
 - or section content relies on syntax that is unlikely to render correctly on GitHub.
 
+### 8. Referential Clarity Check
+In `Fundamentals`, explanatory sentences should bind directly to the symbols and objects under discussion.
+
+Fail if:
+- weak antecedents such as `the two chosen lines`, `the current pair`, `the shorter line`, or `the two lines` appear where direct symbolic reference would be clearer,
+- prose discusses a formal object without attaching it to notation such as `(i, j)`, `H[i]`, `H[j]`, or `A(i,j)`,
+- or a 2D container formulation uses `volume` where `area` is the correct model.
+
 ## Appendix Checks
 
-### 8. Boundary Check
+### 9. Boundary Check
 `Appendix` may improve learning, recall, or usability, but it must remain non-essential.
 
 Fail if:
@@ -78,7 +86,7 @@ Fail if:
 - `Appendix` carries the only statement of a proof-critical lemma,
 - or `Appendix` quietly repairs an incomplete core argument.
 
-### 9. Visual Necessity Check
+### 10. Visual Necessity Check
 If visuals exist:
 - confirm they live in `Appendix`,
 - confirm they clarify a real confusion hotspot,
@@ -86,7 +94,7 @@ If visuals exist:
 
 If there are no visuals, that is not a failure.
 
-### 10. Packaging Restraint Check
+### 11. Packaging Restraint Check
 Fail if `Appendix` is bloated with material that does not improve:
 - understanding,
 - recall,
@@ -122,6 +130,7 @@ Report findings as a table:
 | Proof Discipline | ✅/❌ | Weak lemma isolation or redundant restatements |
 | Complexity Precision | ✅/❌ | Missing exactness, case distinctions, or counting logic |
 | Render Syntax | ✅/❌ | Broken Markdown/math syntax or raw control delimiters |
+| Referential Clarity | ✅/❌ | Weak antecedents or non-symbolic prose in Fundamentals |
 | Appendix Boundary | ✅/❌ | Proof content leaking into Appendix |
 | Visual Necessity | ✅/❌ | Decorative or core-dependent visuals |
 | Packaging Restraint | ✅/❌ | Appendix bloat or filler |

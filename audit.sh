@@ -186,6 +186,30 @@ else
   FAIL=$((FAIL + 1))
 fi
 
+if [ "$MODE" = "fundamentals_appendix" ]; then
+  FUNDAMENTALS_TEXT=$(
+    awk '
+      /^## Fundamentals$/ { in_fundamentals=1; next }
+      /^## Appendix$/ { in_fundamentals=0 }
+      in_fundamentals { print }
+    ' "$README"
+  )
+
+  WEAK_REFERENT_COUNT=$(
+    printf '%s\n' "$FUNDAMENTALS_TEXT" \
+      | grep -E -i 'the two chosen lines|the current pair|the shorter line|the two lines|volume' \
+      | wc -l | tr -d ' '
+  )
+
+  if [ "$WEAK_REFERENT_COUNT" -eq 0 ]; then
+    echo "  ✅ Referential clarity in Fundamentals: no banned weak phrases"
+    PASS=$((PASS + 1))
+  else
+    echo "  ❌ Referential clarity in Fundamentals: found $WEAK_REFERENT_COUNT banned weak phrase match(es)"
+    FAIL=$((FAIL + 1))
+  fi
+fi
+
 echo "========================="
 echo "Result: $PASS passed, $FAIL failed"
 
