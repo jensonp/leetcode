@@ -59,6 +59,17 @@ The running time is `O(n)`. The auxiliary space is `O(h)` for recursion depth.
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 236: Lowest Common Ancestor of a Binary Tree">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - Building explicit parent pointers is valid, but it is not necessary once the recursive return contract is understood.
 - Returning the first node that matches `p` or `q` without combining left and right results misses the split-subtree case.

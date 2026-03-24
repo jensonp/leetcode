@@ -50,6 +50,17 @@ The running time is `O(mn)`. The auxiliary space is `O(mn)` in the worst case fo
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 130: Surrounded Regions">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - Starting flood fill from interior `'O'` cells solves the wrong problem; the decisive property is boundary reachability.
 - Flipping cells immediately during the boundary traversal can destroy the information needed to distinguish safe and captured regions.

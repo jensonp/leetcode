@@ -21,6 +21,7 @@ NEW_REQUIRED_HEADINGS=(
   "### Correctness Proof"
   "### Complexity Analysis"
   "## Appendix"
+  "### Visuals"
 )
 
 NEW_OPTIONAL_HEADINGS=(
@@ -125,13 +126,13 @@ if [ "$PNG_COUNT" -gt 0 ]; then
   echo "  ✅ Diagram files: $PNG_COUNT found"
   PASS=$((PASS + 1))
 else
-  echo "  ✅ Diagram files: none required"
-  PASS=$((PASS + 1))
+  echo "  ❌ Diagram files: required, none found"
+  FAIL=$((FAIL + 1))
 fi
 
 if [ "$PNG_COUNT" -eq 0 ]; then
-  echo "  ✅ Non-empty diagrams: none required"
-  PASS=$((PASS + 1))
+  echo "  ❌ Non-empty diagrams: no diagram set exists"
+  FAIL=$((FAIL + 1))
 elif [ "$NONEMPTY_PNG_COUNT" -gt 0 ]; then
   echo "  ✅ Non-empty diagrams: $NONEMPTY_PNG_COUNT found"
   PASS=$((PASS + 1))
@@ -144,8 +145,8 @@ if [ "$EMBEDDED_COUNT" -gt 0 ]; then
   echo "  ✅ Embedded local PNGs: $EMBEDDED_COUNT found"
   PASS=$((PASS + 1))
 else
-  echo "  ✅ Embedded local PNGs: none required"
-  PASS=$((PASS + 1))
+  echo "  ❌ Embedded local PNGs: required, none found"
+  FAIL=$((FAIL + 1))
 fi
 
 MISSING_OR_EMPTY=0

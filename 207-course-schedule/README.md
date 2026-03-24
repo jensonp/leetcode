@@ -62,6 +62,17 @@ The running time is `O(V + E)`, and the auxiliary space is `O(V + E)`.
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 207: Course Schedule">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - Reversing the edge direction changes the indegree semantics and breaks the proof.
 - A successful DFS from one vertex does not imply global feasibility; cycles may exist in a disconnected component.

@@ -59,6 +59,17 @@ The running time is `O(n)`. The auxiliary space is `O(1)` beyond the output arra
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 238: Product of Array Except Self">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - Division-based formulas break on zero entries and ignore the intended constraint.
 - Updating `suffix` before multiplying `ans[i]` would incorrectly include `nums[i]` in its own exclusion product.

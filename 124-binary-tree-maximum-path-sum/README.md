@@ -77,6 +77,17 @@ The running time is `O(n)`. The auxiliary space is `O(h)` for recursion depth, w
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 124: Binary Tree Maximum Path Sum">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - Returning the through-node value `node.val + left + right` to the parent is incorrect because a parent path cannot continue through both child branches.
 - Initializing `best` to `0` fails on trees whose node values are all negative.

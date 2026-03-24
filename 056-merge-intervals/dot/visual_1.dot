@@ -1,0 +1,32 @@
+digraph G {
+graph [rankdir=LR bgcolor="white" margin=0.18 pad=0.24 nodesep=0.55 ranksep=0.6 labelloc="t" label="56: Merge Intervals: core proof map" fontsize=18 fontname="Helvetica-Bold"]
+node [fontname="Helvetica" fontsize=12 color="#94A3B8"]
+edge [fontname="Helvetica" fontsize=11 color="#64748B" arrowsize=0.7]
+top [shape=plaintext fontname="Helvetica-Bold" fontsize=15 label="56: Merge Intervals"];
+state [shape=box style="rounded,filled" fillcolor="#DBEAFE" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" fontname="Helvetica" fontsize=12 label="State Model
+Sort the intervals by
+increasing start. Maintain a
+result list `merged`."];
+claim [shape=box style="rounded,filled" fillcolor="#DCFCE7" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" fontname="Helvetica" fontsize=12 label="Merged-Prefix Invariant
+After processing the first `k`
+sorted intervals, `merged` is
+a sorted list of disjoint
+intervals whose union equals
+..."];
+action [shape=box style="rounded,filled" fillcolor="#FDE68A" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" fontname="Helvetica" fontsize=12 label="Algorithm Consequence
+Sort by start. 2. Initialize
+`merged` with the first
+interval. 3. Sweep through the
+remaining intervals."];
+proof [shape=box style="rounded,filled" fillcolor="#FCE7F3" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" fontname="Helvetica" fontsize=12 label="Why It Works
+After sorting, any future
+overlap with the current
+interval can only occur with
+the rightmost merged interval,
+..."];
+top -> state [style=invis];
+state -> claim [label="sets up"];
+claim -> action [label="justifies"];
+action -> proof [label="preserves"];
+{ rank=same; state; claim; action; proof }
+}

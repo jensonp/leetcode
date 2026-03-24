@@ -1,0 +1,26 @@
+digraph G {
+graph [rankdir=LR bgcolor="white" margin=0.18 pad=0.24 nodesep=0.55 ranksep=0.6 labelloc="t" label="198: House Robber: core proof map" fontsize=18 fontname="Helvetica-Bold"]
+node [fontname="Helvetica" fontsize=12 color="#94A3B8"]
+edge [fontname="Helvetica" fontsize=11 color="#64748B" arrowsize=0.7]
+top [shape=plaintext fontname="Helvetica-Bold" fontsize=15 label="198: House Robber"];
+state [shape=box style="rounded,filled" fillcolor="#DBEAFE" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" fontname="Helvetica" fontsize=12 label="State Model
+Let `dp[i]` denote the maximum
+amount obtainable from the
+prefix `nums[0..i]`."];
+claim [shape=box style="rounded,filled" fillcolor="#DCFCE7" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" fontname="Helvetica" fontsize=12 label="Recurrence
+For `i >= 2`,"];
+action [shape=box style="rounded,filled" fillcolor="#FDE68A" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" fontname="Helvetica" fontsize=12 label="Algorithm Consequence
+Use rolling variables for the
+recurrence."];
+proof [shape=box style="rounded,filled" fillcolor="#FCE7F3" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" fontname="Helvetica" fontsize=12 label="Why It Works
+The base cases are correct:
+the best value for one house
+is `nums[0]`, and for two
+houses it is `max(nums[0],
+nums[1])`."];
+top -> state [style=invis];
+state -> claim [label="sets up"];
+claim -> action [label="justifies"];
+action -> proof [label="preserves"];
+{ rank=same; state; claim; action; proof }
+}

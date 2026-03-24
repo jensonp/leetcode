@@ -1,0 +1,31 @@
+digraph G {
+graph [rankdir=LR bgcolor="white" margin=0.18 pad=0.24 nodesep=0.55 ranksep=0.6 labelloc="t" label="295: Find Median from Data Stream: core proof map" fontsize=18 fontname="Helvetica-Bold"]
+node [fontname="Helvetica" fontsize=12 color="#94A3B8"]
+edge [fontname="Helvetica" fontsize=11 color="#64748B" arrowsize=0.7]
+top [shape=plaintext fontname="Helvetica-Bold" fontsize=15 label="295: Find Median from Data Stream"];
+state [shape=box style="rounded,filled" fillcolor="#DBEAFE" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" fontname="Helvetica" fontsize=12 label="State Model
+Maintain two heaps: - `low`: a
+max-heap containing the lower
+half of the values, - `high`:
+a min-heap containing the
+upper half of the values."];
+claim [shape=box style="rounded,filled" fillcolor="#DCFCE7" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" fontname="Helvetica" fontsize=12 label="Heap Invariant
+If the order and size
+conditions above hold, then: -
+for odd total count, the
+median is the top of the
+..."];
+action [shape=box style="rounded,filled" fillcolor="#FDE68A" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" fontname="Helvetica" fontsize=12 label="Algorithm Consequence
+A convenient implementation
+pattern is: Push into `low`.
+2. Move `top(low)` into
+`high`."];
+proof [shape=box style="rounded,filled" fillcolor="#FCE7F3" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" fontname="Helvetica" fontsize=12 label="Why It Works
+Induct on the number of
+inserted values."];
+top -> state [style=invis];
+state -> claim [label="sets up"];
+claim -> action [label="justifies"];
+action -> proof [label="preserves"];
+{ rank=same; state; claim; action; proof }
+}

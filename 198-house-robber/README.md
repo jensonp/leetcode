@@ -56,6 +56,17 @@ The running time is `O(n)`. The rolling-state implementation uses `O(1)` auxilia
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 198: House Robber">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - Greedily taking the locally larger of two adjacent houses fails because the effect of a choice extends beyond one step.
 - Using `prev2 = 0, prev1 = 0` is valid, but the update order must preserve the old `prev1` value before overwriting it.

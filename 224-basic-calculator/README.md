@@ -79,6 +79,17 @@ The running time is `O(n)`. The auxiliary space is `O(n)` in the worst case for 
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 224: Basic Calculator">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - Forgetting to commit the pending `num` before processing an operator or right parenthesis loses the last parsed literal.
 - A direct left-to-right subtraction without sign context fails on nested expressions such as `1-(2-3)`.

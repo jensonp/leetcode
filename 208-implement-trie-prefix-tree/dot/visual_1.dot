@@ -1,0 +1,35 @@
+digraph G {
+graph [rankdir=LR bgcolor="white" margin=0.18 pad=0.24 nodesep=0.55 ranksep=0.6 labelloc="t" label="208: Implement Trie (Prefix Tree): core proof map" fontsize=18 fontname="Helvetica-Bold"]
+node [fontname="Helvetica" fontsize=12 color="#94A3B8"]
+edge [fontname="Helvetica" fontsize=11 color="#64748B" arrowsize=0.7]
+top [shape=plaintext fontname="Helvetica-Bold" fontsize=15 label="208: Implement Trie (Prefix Tree)"];
+state [shape=box style="rounded,filled" fillcolor="#DBEAFE" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" fontname="Helvetica" fontsize=12 label="State Model
+Each trie node stores: - a
+mapping `children` from
+characters to child nodes, - a
+boolean `is_end` indicating
+..."];
+claim [shape=box style="rounded,filled" fillcolor="#DCFCE7" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" fontname="Helvetica" fontsize=12 label="Prefix-Path Invariant
+For every node `x`, the path
+label from the root to `x` is
+exactly one prefix of the
+inserted word set. Conversely,
+..."];
+action [shape=box style="rounded,filled" fillcolor="#FDE68A" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" fontname="Helvetica" fontsize=12 label="Algorithm Consequence
+`insert(word)`: create missing
+child edges while scanning the
+characters of `word`, then
+mark the terminal node.
+..."];
+proof [shape=box style="rounded,filled" fillcolor="#FCE7F3" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" fontname="Helvetica" fontsize=12 label="Why It Works
+`insert` preserves the prefix-
+path invariant because it only
+creates nodes along the
+scanned characters of the
+inserted word."];
+top -> state [style=invis];
+state -> claim [label="sets up"];
+claim -> action [label="justifies"];
+action -> proof [label="preserves"];
+{ rank=same; state; claim; action; proof }
+}

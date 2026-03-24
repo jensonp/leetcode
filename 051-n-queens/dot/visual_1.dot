@@ -1,0 +1,31 @@
+digraph G {
+graph [rankdir=LR bgcolor="white" margin=0.18 pad=0.24 nodesep=0.55 ranksep=0.6 labelloc="t" label="51: N-Queens: core proof map" fontsize=18 fontname="Helvetica-Bold"]
+node [fontname="Helvetica" fontsize=12 color="#94A3B8"]
+edge [fontname="Helvetica" fontsize=11 color="#64748B" arrowsize=0.7]
+top [shape=plaintext fontname="Helvetica-Bold" fontsize=15 label="51: N-Queens"];
+state [shape=box style="rounded,filled" fillcolor="#DBEAFE" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" fontname="Helvetica" fontsize=12 label="State Model
+Backtrack by row. At row `r`,
+maintain three forbidden sets:
+- `cols` for occupied columns,
+- `diag1` for occupied main
+..."];
+claim [shape=box style="rounded,filled" fillcolor="#DCFCE7" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" fontname="Helvetica" fontsize=12 label="Row-Invariant
+Before recursing on row `r`,
+the board prefix `0 .. r-1`
+contains exactly one queen per
+row and no attacking pair. A
+..."];
+action [shape=box style="rounded,filled" fillcolor="#FDE68A" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" fontname="Helvetica" fontsize=12 label="Algorithm Consequence
+Try every legal column in the
+current row and recurse to the
+next row."];
+proof [shape=box style="rounded,filled" fillcolor="#FCE7F3" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" fontname="Helvetica" fontsize=12 label="Why It Works
+The row-invariant holds
+initially for the empty
+prefix."];
+top -> state [style=invis];
+state -> claim [label="sets up"];
+claim -> action [label="justifies"];
+action -> proof [label="preserves"];
+{ rank=same; state; claim; action; proof }
+}

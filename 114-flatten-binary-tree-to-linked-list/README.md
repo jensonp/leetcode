@@ -61,6 +61,17 @@ The running time is `O(n)`. The auxiliary space is `O(h)` for recursion depth, w
 
 ## Appendix
 
+### Visuals
+
+#### 1. Reverse Preorder Builds The Correct Suffix
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Tree sketch and right-skewed list showing why processing right then left makes prev the correct suffix">
+</div>
+
+The reverse-preorder order is the non-obvious part. This sketch shows that `prev` already represents the list suffix that should follow the current node.
+
 ### Common Pitfalls
 - Processing `left` before `right` with the same `prev` strategy produces the wrong order.
 - Forgetting `node.left = null` leaves the structure as a tree instead of a linked list.

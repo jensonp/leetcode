@@ -58,6 +58,17 @@ A standard worst-case bound is `O(mn * 3^(L-1))` time, with `O(L)` auxiliary spa
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 79: Word Search">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - Using a global visited set across different starting cells is incorrect; visitation is local to one candidate path.
 - Forgetting to unmark a cell on backtracking blocks valid paths in sibling branches.

@@ -70,6 +70,17 @@ So the average-case running time is `O(m + n)`, and the auxiliary space is `O(|S
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 76: Minimum Window Substring">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - Tracking only set membership instead of multiplicity fails when `t` contains duplicates.
 - Updating the answer before the window is fully valid records substrings that do not cover `t`.

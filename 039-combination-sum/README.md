@@ -62,6 +62,17 @@ Therefore the worst-case running time is exponential in the size of the search s
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 39: Combination Sum">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - Advancing to `i + 1` after choosing `candidates[i]` incorrectly forbids reuse of the same candidate.
 - Allowing recursive calls to choose smaller indices reintroduces permutation duplicates.

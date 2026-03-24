@@ -54,6 +54,17 @@ The running time is `O(V + E)`. The auxiliary space is `O(V)` for the map and tr
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 133: Clone Graph">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - Creating a new clone every time a node is revisited duplicates nodes and breaks graph identity.
 - Deferring `clone[x] = x'` until after recursing on neighbors fails on cycles.

@@ -1,0 +1,19 @@
+digraph G {
+graph [rankdir=LR bgcolor="white" margin=0.18 pad=0.24 nodesep=0.55 ranksep=0.6 labelloc="t" label="146: one map, one recency list" fontsize=18 fontname="Helvetica-Bold"]
+node [fontname="Helvetica" fontsize=12 color="#94A3B8"]
+edge [fontname="Helvetica" fontsize=11 color="#64748B" arrowsize=0.7]
+map [shape=box style="rounded,filled" fillcolor="#DBEAFE" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" fontname="Helvetica" fontsize=12 label="Hash map
+key 7 -> node7
+key 4 -> node4
+key 9 -> node9"];
+list [shape=box style="rounded,filled" fillcolor="#DCFCE7" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" fontname="Helvetica" fontsize=12 label="Recency list
+head -> node9 -> node7 -> node4 -> tail
+MRU near head
+LRU near tail"];
+ops [shape=box style="rounded,filled" fillcolor="#FDE68A" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" fontname="Helvetica" fontsize=12 label="Constant-time operations
+lookup key in M
+remove / move node in the list
+evict tail.prev when full"];
+map -> list [label="node pointers"];
+list -> ops [label="supports promotion + eviction"];
+}

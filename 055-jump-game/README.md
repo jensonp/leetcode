@@ -55,6 +55,17 @@ The running time is `O(n)` and the auxiliary space is `O(1)`.
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 55: Jump Game">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - Treating this as dynamic programming is correct but unnecessary; the greedy prefix invariant already captures all reachable states.
 - Returning `false` only after the full scan misses the early-failure proof at the first `i > farthest`.

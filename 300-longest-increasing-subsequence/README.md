@@ -61,6 +61,17 @@ The running time is `O(n log n)`. The auxiliary space is `O(n)` for `tails`.
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 300: Longest Increasing Subsequence">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - `tails` does not itself have to be a subsequence of the original array; it is a summary structure for proof and search.
 - Using `>` instead of `>=` in the binary search computes a nondecreasing subsequence length instead of a strictly increasing one.

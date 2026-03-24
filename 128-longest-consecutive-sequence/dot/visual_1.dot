@@ -1,0 +1,34 @@
+digraph G {
+graph [rankdir=LR bgcolor="white" margin=0.18 pad=0.24 nodesep=0.55 ranksep=0.6 labelloc="t" label="128: Longest Consecutive Sequence: core proof map" fontsize=18 fontname="Helvetica-Bold"]
+node [fontname="Helvetica" fontsize=12 color="#94A3B8"]
+edge [fontname="Helvetica" fontsize=11 color="#64748B" arrowsize=0.7]
+top [shape=plaintext fontname="Helvetica-Bold" fontsize=15 label="128: Longest Consecutive Sequence"];
+state [shape=box style="rounded,filled" fillcolor="#DBEAFE" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" fontname="Helvetica" fontsize=12 label="State Model
+Let `S = set(nums)`. A value
+`x` is a chain start if `x-1`
+is not in `S`. For a chain
+start `x`, define its chain
+..."];
+claim [shape=box style="rounded,filled" fillcolor="#DCFCE7" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" fontname="Helvetica" fontsize=12 label="Chain-Start Lemma
+Every consecutive sequence has
+exactly one chain start: its
+minimum value. Therefore it is
+sufficient to count forward
+..."];
+action [shape=box style="rounded,filled" fillcolor="#FDE68A" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" fontname="Helvetica" fontsize=12 label="Algorithm Consequence
+Insert every value into `S`.
+2. For each `x` in `S`, skip
+it if `x-1` is also in `S`. 3.
+Otherwise count `x, x+1, x+2,
+...` until the chain ends."];
+proof [shape=box style="rounded,filled" fillcolor="#FCE7F3" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" fontname="Helvetica" fontsize=12 label="Why It Works
+By the chain-start lemma,
+every consecutive sequence has
+a unique minimum value `x`
+with `x-1` absent."];
+top -> state [style=invis];
+state -> claim [label="sets up"];
+claim -> action [label="justifies"];
+action -> proof [label="preserves"];
+{ rank=same; state; claim; action; proof }
+}

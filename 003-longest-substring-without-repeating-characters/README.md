@@ -64,6 +64,17 @@ Therefore the average-case running time is `O(n)` and the auxiliary space is `O(
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 3: Longest Substring Without Repeating Characters">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - Updating `l` to `last[c] + 1` without `max` moves the window backward when the previous copy of `c` lies outside the current window.
 - Treating this as a subsequence problem is incorrect; the substring must remain contiguous.

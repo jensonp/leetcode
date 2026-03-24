@@ -87,6 +87,17 @@ Therefore the total time is `O(n^2)`, which dominates the sort. The extra space 
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 15: 3Sum">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - Skipping duplicate anchors after the inner loop is too late; duplicate suppression must happen before the inner search starts.
 - After finding a valid triple, moving only one pointer can emit the same value-triple again.

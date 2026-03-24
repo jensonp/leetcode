@@ -62,6 +62,17 @@ The running time is `O(n)`. The auxiliary space is `O(1)`.
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 123: Best Time to Buy and Sell Stock III">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - Summing the two best single-transaction profits from disjoint intervals is not enough because the optimal split point is part of the DP state.
 - Updating the states out of transaction order can accidentally allow using the same price in an illegal way.

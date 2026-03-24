@@ -70,6 +70,17 @@ The running time is `O(n)`. The auxiliary space is `O(1)` beyond the newly alloc
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 138: Copy List with Random Pointer">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - Copying only values and `next` links without preserving node identity for `random` pointers is not a deep copy.
 - Detaching the interleaved list before assigning `random` pointers loses the constant-time access from `x` to `x'`.

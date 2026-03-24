@@ -59,6 +59,17 @@ The total time is `O(n log n)`. The auxiliary space is `O(n)` for the output, pl
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 56: Merge Intervals">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - Merging based on strict inequality `I.start < merged[-1].end` incorrectly leaves touching intervals such as `[1,4]` and `[4,5]` separated.
 - Sorting by end instead of start destroys the local-merge proof.

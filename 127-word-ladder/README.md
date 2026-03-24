@@ -64,6 +64,17 @@ A direct mutation-based implementation runs in `O(N * 26 * L^2)` time in a langu
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 127: Word Ladder">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - DFS can find a path, but it does not preserve shortest-path distance in an unweighted graph.
 - Failing to mark words visited at enqueue time can insert the same vertex many times and destroy the intended complexity.

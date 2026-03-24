@@ -49,6 +49,17 @@ The running time is `O(n log n)`. The auxiliary space is `O(1)` beyond sort work
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 452: Minimum Number of Arrows to Burst Balloons">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - Sorting by start instead of end breaks the greedy proof.
 - Using `start >= arrow_pos` instead of `start > arrow_pos` incorrectly adds an extra arrow when a balloon begins exactly where the previous arrow was shot.

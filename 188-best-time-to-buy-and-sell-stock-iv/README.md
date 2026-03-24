@@ -61,6 +61,17 @@ The running time is `O(nk)` in the bounded case and `O(n)` in the shortcut case.
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 188: Best Time to Buy and Sell Stock IV">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - Omitting the `k >= n/2` shortcut can time out on large `k` even though the cap no longer matters.
 - Reusing the same recurrence without the transaction index collapses different transaction counts into one state and loses correctness.

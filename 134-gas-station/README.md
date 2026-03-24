@@ -70,6 +70,17 @@ The running time is `O(n)` and the auxiliary space is `O(1)`.
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 134: Gas Station">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - Checking only local conditions such as `gas[i] >= cost[i]` misses starts that require surplus carried from earlier stations.
 - Resetting `start` when `tank == 0` is unnecessary; only a negative running sum disproves the current candidate.

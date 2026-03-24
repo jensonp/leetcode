@@ -74,6 +74,17 @@ The running time is `O(n)`, and the auxiliary space is `O(1)`.
 
 ## Appendix
 
+### Visuals
+
+#### 1. Reverse One k-Block, Then Splice It Back
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Linked-list diagram showing group_prev, kth, group_next, and the reversed segment">
+</div>
+
+The purpose is to lock in the segment boundaries before rewiring, then show exactly how the reversed block reconnects to the untouched suffix.
+
 ### Common Pitfalls
 - Reversing the last partial group violates the contract; the stop condition must be checked before any rewiring begins.
 - Losing `group_next` before reversal makes it impossible to reconnect the reversed block correctly.

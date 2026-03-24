@@ -59,6 +59,17 @@ The running time is `O(n)`. The auxiliary space is `O(n)` for the output list.
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 57: Insert Interval">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - Re-sorting the whole list is unnecessary because the input order already gives the needed structure.
 - Stopping after the first overlap is incorrect; `newInterval` can keep expanding and absorb more intervals to the right.

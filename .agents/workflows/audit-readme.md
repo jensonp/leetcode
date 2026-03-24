@@ -12,7 +12,7 @@ For structural checks, run `./audit.sh <problem-dir>` first.
 1. Read `.agents/workflows/leetcode-problem.md`.
 2. Read the target `README.md`.
 3. Run `./audit.sh <problem-dir>`.
-4. If the README embeds local visuals, run `.agents/workflows/visual-image-audit.md`.
+4. Run `.agents/workflows/visual-image-audit.md`. If the README embeds no local visuals, that is a failure under the current workflow.
 5. Perform the checks below.
 
 ## Fundamentals Checks
@@ -87,13 +87,13 @@ Fail if:
 - `Appendix` carries the only statement of a proof-critical lemma,
 - or `Appendix` quietly repairs an incomplete core argument.
 
-### 10. Visual Necessity Check
-If visuals exist:
-- confirm they live in `Appendix`,
-- confirm they clarify a real confusion hotspot,
-- and confirm the note would still be formally correct without them.
-
-If there are no visuals, that is not a failure.
+### 10. Visual Presence And Necessity Check
+Fail if:
+- there is no `### Visuals` subsection,
+- there are no embedded local visuals,
+- visuals appear outside `Appendix`,
+- visuals do not clarify a real confusion hotspot,
+- or the note depends on visuals to repair an incomplete core argument.
 
 ### 11. Packaging Restraint Check
 Fail if `Appendix` is bloated with material that does not improve:
@@ -133,7 +133,7 @@ Report findings as a table:
 | Render Syntax | ✅/❌ | Broken Markdown/math syntax or raw control delimiters |
 | Referential Clarity | ✅/❌ | Weak antecedents or non-symbolic prose in Fundamentals |
 | Appendix Boundary | ✅/❌ | Proof content leaking into Appendix |
-| Visual Necessity | ✅/❌ | Decorative or core-dependent visuals |
+| Visual Presence And Necessity | ✅/❌ | Missing visuals, decorative visuals, or core-dependent visuals |
 | Packaging Restraint | ✅/❌ | Appendix bloat or filler |
 | Final Reader Test | ✅/❌ | Which questions Fundamentals cannot answer |
 

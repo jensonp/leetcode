@@ -66,6 +66,17 @@ Therefore `addNum` runs in `O(log n)` time, `findMedian` runs in `O(1)` time, an
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 295: Find Median from Data Stream">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - Rebalancing only by size is not enough; the order invariant between heaps must also be maintained.
 - Storing all values in one sorted array gives `O(1)` median queries but `O(n)` insertion time.

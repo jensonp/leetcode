@@ -62,6 +62,17 @@ The running time is `O(n)`, and the auxiliary space is `O(n)` in the worst case 
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 71: Simplify Path">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - Appending `'..'` as a literal directory name is incorrect; it is a control token, not a normal component.
 - The result for an empty stack must be `'/'`, not the empty string.

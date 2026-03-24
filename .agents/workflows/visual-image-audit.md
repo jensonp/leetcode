@@ -15,7 +15,7 @@ This audit does not stop at checking that files exist. Each image must be evalua
 ## Scope
 
 Audit every image embedded from local `png/` assets in the README.
-If the README embeds no local images, skip this workflow. Visuals are optional by default.
+If the README embeds no local images, fail this workflow. Visuals are mandatory under the current full-depth workflow.
 
 If the README embeds 18 images, audit 18 images.
 Do not sample. Do not audit only the newest ones.
@@ -96,6 +96,7 @@ Do not mark the visual section complete until every embedded image passes.
 ## Whole-Set Failure Conditions
 
 The visual set fails if any of the following is true:
+- the README embeds no local image at all,
 - any embedded image is missing,
 - any embedded image is empty,
 - any embedded image is unreadable,

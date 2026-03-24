@@ -64,6 +64,17 @@ A standard worst-case bound is `O(S + mn * 4 * 3^(Lmax-1))`. The auxiliary space
 
 ## Appendix
 
+### Visuals
+
+#### 1. Trie Prefixes Prune The Board Search
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Board path and trie path diagram showing successful prefix advance and a missing-child prune">
+</div>
+
+The image focuses on the real optimization: DFS continues only while the current board path is also a trie prefix, and a missing child kills the whole branch immediately.
+
 ### Common Pitfalls
 - Running Word Search I independently for every word repeats the same board exploration many times.
 - Removing a trie node as soon as one word is found can break longer words that share that prefix; only the terminal word marker should be cleared unless the subtree becomes empty.

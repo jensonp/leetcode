@@ -57,6 +57,17 @@ The running time is `O(mn)`. The auxiliary space is `O(mn)` in the worst case fo
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 200: Number of Islands">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - Counting diagonal neighbors merges distinct islands because the problem uses only 4-directional adjacency.
 - Forgetting to mark a cell before recursing can revisit it through a neighbor and create exponential blowup.

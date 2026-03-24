@@ -63,6 +63,17 @@ The running time is `O(log n)` and the auxiliary space is `O(1)`.
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 33: Search in Rotated Sorted Array">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - This proof relies on distinct values. With duplicates, the sorted-half test can become ambiguous and requires a different argument.
 - Comparing `target` only against `nums[m]` misses the rotated ordering information carried by `nums[l]` and `nums[r]`.

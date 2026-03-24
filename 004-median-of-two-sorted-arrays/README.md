@@ -78,6 +78,17 @@ The running time is `O(log m) = O(log(min(m, n)))`, which is within `O(log(m+n))
 
 ## Appendix
 
+### Visuals
+
+#### 1. Binary Search On The Partition Boundary
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Two sorted arrays with cut positions i and j and the four boundary values Aleft, Aright, Bleft, Bright">
+</div>
+
+The cut positions, not the raw arrays, are the real state. The visual shows exactly which four values decide whether the partition is feasible and which direction the search must move.
+
 ### Common Pitfalls
 - Binary searching the larger array can make `j` leave the valid range; searching the smaller array avoids that issue cleanly.
 - Using `(m+n)//2` instead of `(m+n+1)//2` breaks the odd-length case because the left side no longer contains the middle element.

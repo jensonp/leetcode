@@ -11,7 +11,7 @@ Produce a README with two clearly separated parts:
 - `## Appendix`
 
 `Fundamentals` is the canonical note.
-`Appendix` is optional study support.
+`Appendix` is mandatory study support for full-depth notes because the visual layer is part of the required artifact.
 
 ## Governing Rule
 
@@ -82,12 +82,15 @@ Include this subsection only if omitting it would make the formal argument incom
 
 ## Appendix
 
-`Appendix` is optional and modular, but the heading should still be present so the separation is explicit.
-If there is nothing useful to add, write one short sentence saying no appendix material is needed.
+`Appendix` remains non-core, but it is not optional for full-depth notes.
+Every README must include a `### Visuals` subsection with at least one local embedded image under `png/`.
+The visual set must be reproducible and must clarify a real confusion hotspot in the solution.
 
-Useful appendix subsections include:
-- `### Worked Example`
+Required appendix subsection:
 - `### Visuals`
+
+Useful additional appendix subsections include:
+- `### Worked Example`
 - `### Variants / Follow-Ups`
 - `### Common Pitfalls`
 - `### Implementation Notes`
@@ -96,22 +99,24 @@ Useful appendix subsections include:
 - `### Why Naive / Wrong Approaches Fail`
 - `### Final Code` when explicitly requested
 
-Only include the subsections that earn their place.
+Only include the additional subsections that earn their place.
 
 ## Visual Policy
 
 Visuals belong in `Appendix`, not in `Fundamentals`, unless the user explicitly asks for a visually-led note.
 
 Rules:
-- Visuals are optional by default.
-- Add visuals only when they materially clarify geometry, pruning, state transitions, recursion structure, or invariants.
-- For most problems, `0-3` visuals is enough.
+- Visuals are mandatory for every generated full-depth README.
+- Every README must embed at least one local image from `png/`.
+- Add enough visuals to materially clarify geometry, pruning, state transitions, recursion structure, rewiring, or invariants.
+- For most problems, `1-3` visuals is enough.
 - For genuinely visualization-heavy canonical problems, `3-6` visuals is the upper range.
 - Do not require `10+` visuals.
 - Do not treat visual count as a quality metric.
 - Use local reproducible assets under `png/`, with generator code and `dot/` sources when the set is nontrivial.
+- Prefer Graphviz for diagrammatic visuals.
 - Do not rely on external hotlinked images for core teaching visuals.
-- If visuals are present, audit them with `.agents/workflows/visual-image-audit.md`.
+- Audit every embedded visual with `.agents/workflows/visual-image-audit.md` before treating the README as complete.
 
 ## Render Syntax Policy
 

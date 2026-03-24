@@ -62,6 +62,17 @@ The running time is `O(n)`. The auxiliary space is `O(h)` for recursion depth, w
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 98: Validate Binary Search Tree">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - Checking only `node.left.val < node.val < node.right.val` misses ancestor-bound violations such as a large value hidden in the left subtree.
 - Using closed intervals accepts duplicates, which is incorrect for the strict BST contract.

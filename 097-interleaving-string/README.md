@@ -61,6 +61,17 @@ The running time is `O(mn)`. The auxiliary space is `O(mn)`, reducible to `O(n)`
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 97: Interleaving String">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - Matching character counts alone is insufficient; interleaving also preserves the relative order inside `s1` and `s2`.
 - A greedy choice of taking a matching character from one string first can fail when both sources share the same next character.

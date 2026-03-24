@@ -62,6 +62,17 @@ The running time is `O(n * amount)`. The auxiliary space is `O(amount)`.
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 322: Coin Change">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - Greedily taking the largest denomination first fails for systems such as `coins = [1, 3, 4]`, `amount = 6`.
 - Using `INF = float('inf')` is fine, but an integer sentinel such as `amount + 1` keeps all states in the same numeric domain.

@@ -60,6 +60,17 @@ The worst-case running time is exponential in `n`, and the auxiliary space is `O
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 51: N-Queens">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - Scanning the whole board to test attacks at each step is correct but discards the point of the column/diagonal state model.
 - Diagonal identities are `r-c` and `r+c`; using absolute differences merges distinct diagonals incorrectly.

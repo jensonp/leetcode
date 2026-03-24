@@ -1,0 +1,19 @@
+digraph G {
+graph [rankdir=TB bgcolor="white" margin=0.18 pad=0.24 nodesep=0.55 ranksep=0.6 labelloc="t" label="114: reverse preorder builds the flattened suffix" fontsize=18 fontname="Helvetica-Bold"]
+node [fontname="Helvetica" fontsize=12 color="#94A3B8"]
+edge [fontname="Helvetica" fontsize=11 color="#64748B" arrowsize=0.7]
+root [shape=circle style=filled fillcolor="#DBEAFE" label="1"];
+left [shape=circle style=filled fillcolor="#DBEAFE" label="2"];
+right [shape=circle style=filled fillcolor="#DBEAFE" label="5"];
+leftleft [shape=circle style=filled fillcolor="#DBEAFE" label="3"];
+leftright [shape=circle style=filled fillcolor="#DBEAFE" label="4"];
+rightright [shape=circle style=filled fillcolor="#DBEAFE" label="6"];
+root -> left; root -> right; left -> leftleft; left -> leftright; right -> rightright;
+order [shape=box style="rounded,filled" fillcolor="#DCFCE7" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" fontname="Helvetica" fontsize=12 label="Reverse preorder
+visit 6 -> 5 -> 4 -> 3 -> 2 -> 1
+prev already stores the suffix
+that should follow the current node"];
+list [shape=record style="filled" fillcolor="#DCFCE7" label="1 | 2 | 3 | 4 | 5 | 6"];
+root -> order [style=dashed arrowhead=none];
+order -> list [label="rewire right pointers"];
+}

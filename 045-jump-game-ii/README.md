@@ -54,6 +54,17 @@ The running time is `O(n)` and the auxiliary space is `O(1)`.
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 45: Jump Game II">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - Incrementing `jumps` on every improvement to `farthest` overcounts; the jump count changes only when the current layer is exhausted.
 - This is not the same objective as Jump Game I, which asks only for feasibility.

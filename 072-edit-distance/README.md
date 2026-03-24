@@ -70,6 +70,17 @@ The running time is `O(mn)`, and the auxiliary space is `O(mn)` for the full tab
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 72: Edit Distance">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - Matching characters must use `dp[i-1][j-1]` directly; adding `1` in the equal-character case overcounts.
 - Longest common subsequence is related but not equivalent; edit distance also charges insertions and deletions outside the shared subsequence.

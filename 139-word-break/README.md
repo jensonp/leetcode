@@ -58,6 +58,17 @@ In a model where substring extraction is `O(1)`, the running time is `O(n^2)`. I
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 139: Word Break">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - Greedily taking the longest available dictionary word can block a valid segmentation later.
 - Using only a set of prefix lengths is insufficient; the recurrence depends on which specific substrings are dictionary words.

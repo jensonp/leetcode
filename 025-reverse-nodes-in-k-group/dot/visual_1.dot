@@ -1,0 +1,13 @@
+digraph G {
+graph [rankdir=LR bgcolor="white" margin=0.18 pad=0.24 nodesep=0.55 ranksep=0.6 labelloc="t" label="25: reverse one k-block, then reconnect it" fontsize=18 fontname="Helvetica-Bold"]
+node [fontname="Helvetica" fontsize=12 color="#94A3B8"]
+edge [fontname="Helvetica" fontsize=11 color="#64748B" arrowsize=0.7]
+before [shape=record style="filled" fillcolor="#DBEAFE" label="dummy | group_prev | a | b | c=kth | d=group_next | e"];
+after [shape=record style="filled" fillcolor="#DCFCE7" label="dummy | group_prev | c | b | a | d=group_next | e"];
+segment [shape=box style="rounded,filled" fillcolor="#FDE68A" color="#94A3B8" penwidth=1.2 margin="0.18,0.12" fontname="Helvetica" fontsize=12 label="Reverse block
+preserve group_next = d
+reverse [a, b, c]
+splice c..a after group_prev"];
+before -> segment [label="fix boundaries"];
+segment -> after [label="rewire once"];
+}

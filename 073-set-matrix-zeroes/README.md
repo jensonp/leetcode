@@ -66,6 +66,17 @@ The running time is `O(mn)` and the auxiliary space is `O(1)`.
 
 ## Appendix
 
+### Visuals
+
+#### 1. First Row And First Column As Marker Storage
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Matrix snapshot showing interior zeros writing row and column markers into the first row and first column">
+</div>
+
+This is the one picture worth keeping in mind: the first pass writes metadata into the matrix itself, and `matrix[0][0]` is not enough to represent both border directions alone.
+
 ### Common Pitfalls
 - Zeroing rows and columns immediately during the first scan contaminates later decisions with zeros that were not present in the original matrix.
 - Using only `matrix[0][0]` without separate booleans loses the ability to distinguish the first row from the first column.

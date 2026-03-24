@@ -69,6 +69,17 @@ The running time is `O(n)`. The auxiliary space is `O(n)` for `left`; the backwa
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 135: Candy">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - A single left-to-right greedy pass fails on descending runs because right-neighbor constraints are still unknown.
 - Equal ratings do not impose a strict inequality, so both directional recurrences reset to `1` there.

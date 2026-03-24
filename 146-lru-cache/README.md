@@ -73,6 +73,17 @@ So both `get` and `put` run in `O(1)` average time. The space usage is `O(C)` fo
 
 ## Appendix
 
+### Visuals
+
+#### 1. Hash Map + Recency List Representation
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Diagram of a hash map pointing into a doubly linked list ordered from most recent to least recent">
+</div>
+
+This is the representation invariant the whole design depends on: the map gives constant-time access to nodes, and the list gives constant-time promotion and eviction.
+
 ### Common Pitfalls
 - Using a singly linked list makes middle-node removal non-constant unless a predecessor map is added, which complicates the invariant.
 - Storing only values in the list is insufficient because eviction must also remove the corresponding hash-map entry by key.

@@ -81,6 +81,17 @@ Therefore the running time is `O(n)` and the auxiliary space is `O(1)`.
 
 ## Appendix
 
+### Visuals
+
+#### 1. Finalizing One Side When `left_max <= right_max`
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Bar chart style view showing why the left index can be finalized when left_max is smaller">
+</div>
+
+This picture makes the proof move concrete: once the smaller boundary is the left side, the water above that index is already determined and can be added permanently.
+
 ### Common Pitfalls
 - Finalizing `l` because `height[l] <= height[r]` is weaker than the correct rule; the proof depends on comparing `left_max` and `right_max`, not the raw endpoint heights.
 - Precomputing left and right maxima arrays is correct, but it changes the space bound from `O(1)` to `O(n)`.

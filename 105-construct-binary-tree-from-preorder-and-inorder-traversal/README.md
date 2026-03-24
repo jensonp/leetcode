@@ -64,6 +64,17 @@ The running time is `O(n)`. The auxiliary space is `O(n)` for the map and recurs
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 105: Construct Binary Tree from Preorder and Inorder Traversal">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - Searching linearly for the root position inside inorder at every call degrades the running time to `O(n^2)`.
 - Reconstructing the right subtree before the left subtree consumes preorder in the wrong order.

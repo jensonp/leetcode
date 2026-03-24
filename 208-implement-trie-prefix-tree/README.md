@@ -75,6 +75,17 @@ Under average `O(1)` child access, each operation runs in `O(L)` time. The total
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 208: Implement Trie (Prefix Tree)">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - Marking every prefix node as terminal makes `search` behave like `startsWith`.
 - Rebuilding strings at nodes is unnecessary; the structure already encodes the prefix.

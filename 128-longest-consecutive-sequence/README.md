@@ -62,6 +62,17 @@ Therefore the average-case running time is `O(n)`, and the auxiliary space is `O
 
 ## Appendix
 
+### Visuals
+
+#### 1. Core Proof Map
+This image is the required appendix visual for the note.
+
+<div align="center">
+  <img src="png/visual_1.png" alt="Core proof map for 128: Longest Consecutive Sequence">
+</div>
+
+This diagram compresses the state model, key claim, and algorithm consequence into one view so the proof spine is easier to reconstruct from memory.
+
 ### Common Pitfalls
 - Sorting first gives a correct `O(n log n)` solution, but it discards the main point of the hash-set proof.
 - Iterating over the original array instead of the set complicates duplicate handling without improving the bound.
