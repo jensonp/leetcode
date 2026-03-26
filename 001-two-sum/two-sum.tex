@@ -1,0 +1,278 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{theorem}{Theorem}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\title{Two Sum: A Rigorous Derivation from Algebra to Algorithm}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Algebraic and Combinatorial Preliminaries}
+
+\begin{definition}[Ring]
+A \emph{ring} is a set \(R\) equipped with two binary operations, usually called addition and multiplication, such that:
+\begin{enumerate}
+    \item \((R,+)\) is an abelian group;
+    \item multiplication on \(R\) is associative; and
+    \item multiplication distributes over addition from both sides.
+\end{enumerate}
+The set of integers \(\mathbb{Z}\) is the standard commutative ring with identity.
+\end{definition}
+
+\begin{remark}
+For the present problem, only the additive structure of \(\mathbb{Z}\) is essential. Because \((\mathbb{Z},+)\) is an abelian group, every integer has an additive inverse, subtraction is well-defined, and an equation of the form
+\[
+a + x = \tau
+\]
+may be rewritten uniquely as
+\[
+x = \tau - a.
+\]
+This cancellation step is the algebraic core of the algorithm.
+\end{remark}
+
+\begin{definition}[Finite integer sequence]
+Let \(n \in \mathbb{N}\) with \(n \ge 2\). A \emph{finite integer sequence of length \(n\)} is a function
+\[
+S : I_n \to \mathbb{Z},
+\qquad
+I_n := \{0,1,\dots,n-1\}.
+\]
+We write \(S(k) = s_k\) and identify \(S\) with the ordered list
+\[
+\langle s_0, s_1, \dots, s_{n-1} \rangle.
+\]
+\end{definition}
+
+\begin{definition}[Cartesian product]
+If \(A\) and \(B\) are sets, then their \emph{Cartesian product} is
+\[
+A \times B := \{(a,b) \mid a \in A,\ b \in B\}.
+\]
+Its elements are ordered pairs.
+\end{definition}
+
+\begin{definition}[Canonical pair space]
+The set of candidate index pairs is
+\[
+U_n := \{(i,j) \in I_n \times I_n \mid i < j\}.
+\]
+\end{definition}
+
+\begin{remark}
+It is important to use \(i < j\), not merely \(i \neq j\). Since integer addition is commutative,
+\[
+s_i + s_j = s_j + s_i,
+\]
+so the ordered pairs \((i,j)\) and \((j,i)\) represent the same candidate solution. Restricting to \(i < j\) removes this duplication and makes the uniqueness promise mathematically coherent.
+\end{remark}
+
+\begin{lemma}
+The cardinality of \(U_n\) is
+\[
+|U_n| = \binom{n}{2}.
+\]
+\end{lemma}
+
+\begin{proof}
+Choosing an element of \(U_n\) is equivalent to choosing an unordered two-element subset of \(I_n\) and then writing it in increasing order. The number of such subsets is \(\binom{n}{2}\).
+\end{proof}
+
+\section{Formal Problem Statement}
+
+Fix a target value \(\tau \in \mathbb{Z}\). Define the predicate
+\[
+P(i,j) \iff s_i + s_j = \tau
+\qquad \text{for } (i,j) \in U_n.
+\]
+
+The problem is to compute the unique pair \((i,j) \in U_n\) such that \(P(i,j)\) holds, under the following promise:
+\[
+\exists!\,(i,j) \in U_n \text{ such that } s_i + s_j = \tau.
+\]
+The symbol \(\exists!\) means ``there exists exactly one.''
+
+The brute-force search examines every pair in \(U_n\), hence requires \(\binom{n}{2} = \Theta(n^2)\) predicate evaluations. The goal is to derive an algorithm whose expected running time is linear in \(n\).
+
+\section{Deriving the Complement Condition}
+
+The problem asks whether, for a given index \(t \in I_n\), there exists an earlier index \(u < t\) such that
+\[
+s_u + s_t = \tau.
+\]
+The next lemma shows that this question is not a two-dimensional search problem once \(t\) is fixed.
+
+\begin{lemma}[Complement lemma]
+Fix \(t \in I_n\). Define the \emph{complement} of \(s_t\) relative to \(\tau\) by
+\[
+c_t := \tau - s_t.
+\]
+Then for every \(u \in I_n\),
+\[
+s_u + s_t = \tau
+\quad \Longleftrightarrow \quad
+s_u = c_t.
+\]
+\end{lemma}
+
+\begin{proof}
+Starting from \(s_u + s_t = \tau\), subtract \(s_t\) from both sides. Since subtraction is valid in \(\mathbb{Z}\), we obtain
+\[
+s_u = \tau - s_t = c_t.
+\]
+Conversely, if \(s_u = c_t\), then
+\[
+s_u + s_t = (\tau - s_t) + s_t = \tau.
+\]
+\end{proof}
+
+\begin{remark}
+The complement lemma collapses the search for a partner index from ``search all \(u < t\)'' to ``test whether the value \(c_t\) has already appeared.'' The remaining task is therefore a dynamic membership problem over previously seen values.
+\end{remark}
+
+\section{Data-Structural Reformulation}
+
+For each time \(t\), let
+\[
+S_{<t} := \{s_0, s_1, \dots, s_{t-1}\}
+\]
+denote the set of values already seen before index \(t\). By the complement lemma, the instance at time \(t\) is solved if and only if
+\[
+c_t \in S_{<t}.
+\]
+
+To answer this membership query efficiently, we maintain a hash map
+\[
+M : \mathbb{Z} \rightharpoonup I_n,
+\]
+that is, a finite partial function from values to indices. The intended meaning is:
+\[
+x \in \operatorname{dom}(M)
+\quad \Longleftrightarrow \quad
+\text{some previously processed index stores the value } x.
+\]
+If \(x \in \operatorname{dom}(M)\), then \(M(x)\) is one such previously seen index.
+
+\begin{remark}
+The map does not need to store every occurrence of a repeated value. It is enough to store one previously seen index for each value, because the complement test only asks whether such an index exists.
+\end{remark}
+
+\section{Algorithm}
+
+The algorithm scans the sequence from left to right.
+
+\begin{verbatim}
+Input: integers s_0, s_1, ..., s_{n-1} and target tau
+M := empty hash map
+
+for t := 0 to n - 1 do
+    c_t := tau - s_t
+    if c_t is in M then
+        return (M(c_t), t)
+    end if
+    M(s_t) := t
+end for
+\end{verbatim}
+
+Because the map only contains indices from earlier iterations, any returned pair automatically satisfies the canonical ordering \(i < j\).
+
+\section{Correctness Proof}
+
+\begin{theorem}
+Under the promise that there exists a unique pair \((i,j) \in U_n\) satisfying \(s_i + s_j = \tau\), the algorithm returns exactly that pair.
+\end{theorem}
+
+\begin{proof}
+We prove correctness by a loop invariant.
+
+After the iteration for indices \(0,1,\dots,t-1\) has completed, and assuming the algorithm has not yet returned, the following statements hold:
+\begin{enumerate}
+    \item for every integer \(x\),
+    \[
+    x \in \operatorname{dom}(M)
+    \quad \Longleftrightarrow \quad
+    \exists k < t \text{ such that } s_k = x;
+    \]
+    \item if \(x \in \operatorname{dom}(M)\), then \(M(x) < t\) and \(s_{M(x)} = x\);
+    \item no solution pair lies entirely inside the prefix \(\{0,1,\dots,t-1\}\).
+\end{enumerate}
+
+\paragraph{Initialization.}
+For \(t=0\), the map is empty. Statements (1) and (2) hold trivially because there are no processed indices. Statement (3) also holds trivially because no pair can be formed from the empty prefix.
+
+\paragraph{Maintenance.}
+Assume the invariant holds at the start of iteration \(t\). Compute \(c_t = \tau - s_t\).
+
+\emph{Case 1: \(c_t \in \operatorname{dom}(M)\).}
+By statement (2), the index \(u := M(c_t)\) satisfies \(u < t\) and \(s_u = c_t\). By the complement lemma,
+\[
+s_u + s_t = \tau.
+\]
+Hence \((u,t) \in U_n\) is a valid solution pair. Since the problem promises uniqueness, this pair is exactly the desired answer, so returning it is correct.
+
+\emph{Case 2: \(c_t \notin \operatorname{dom}(M)\).}
+By statement (1), there is no prior index \(u < t\) with \(s_u = c_t\). By the complement lemma, no valid pair ending at \(t\) exists. The algorithm then inserts \(M(s_t) := t\). After this update, statements (1) and (2) continue to hold for the prefix up to \(t\). Statement (3) also remains true for the new prefix \(\{0,1,\dots,t\}\), because there was no solution in the earlier prefix by induction and no solution ending at \(t\) by the argument above.
+
+\paragraph{Termination.}
+Let \((i^\ast,j^\ast)\) be the unique solution pair, with \(i^\ast < j^\ast\). When the loop reaches iteration \(t = j^\ast\), the index \(i^\ast\) has already been processed. By statement (1), \(s_{i^\ast}\) is therefore in the domain of \(M\). Since
+\[
+\tau - s_{j^\ast} = s_{i^\ast},
+\]
+the algorithm returns at iteration \(j^\ast\). Thus it must terminate with the correct pair before the loop finishes. If it did not return, then after the final iteration statement (3) would assert that no solution pair exists in the entire array, contradicting the promise.
+\end{proof}
+
+\section{Complexity Analysis}
+
+\begin{theorem}
+Under the simple uniform hashing assumption, the algorithm runs in expected time \(\Theta(n)\) and uses auxiliary space \(\Theta(n)\).
+\end{theorem}
+
+\begin{proof}
+The loop processes each index \(t \in I_n\) exactly once, so there are \(n\) iterations.
+
+During each iteration, the algorithm performs:
+\begin{enumerate}
+    \item one subtraction to compute \(c_t = \tau - s_t\);
+    \item one hash-table membership test or lookup for \(c_t\); and
+    \item if necessary, one hash-table insertion for \(s_t\).
+\end{enumerate}
+The subtraction is \(\Theta(1)\). Under the simple uniform hashing assumption, each hash-table lookup and insertion takes expected \(\Theta(1)\) time. Therefore the total expected running time is
+\[
+n \cdot \Theta(1) = \Theta(n).
+\]
+
+For space usage, in the worst case the algorithm stores one index for each processed value before discovering the solution. This requires at most \(n-1\) stored entries, hence auxiliary space grows linearly:
+\[
+\Theta(n).
+\]
+\end{proof}
+
+\begin{remark}
+If the hash function degenerates and causes pathological collisions, the expected constant-time guarantee disappears, and the running time may degrade to \(O(n^2)\). The linear-time claim is therefore an \emph{expected} bound, not an unconditional worst-case bound for arbitrary hashing behavior.
+\end{remark}
+
+\section{Conclusion}
+
+The improvement from quadratic search to linear expected time is not a heuristic shortcut. It is a direct consequence of the algebraic identity
+\[
+s_u + s_t = \tau
+\quad \Longleftrightarrow \quad
+s_u = \tau - s_t,
+\]
+which reduces each step to a single membership query over previously processed values. The hash map supplies that query in expected constant time, and the one-pass algorithm follows.
+
+\end{document}
