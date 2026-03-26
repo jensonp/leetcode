@@ -14,47 +14,51 @@ A **set** is a collection of objects. The symbol $R$ will denote a set.
 
 A **binary operation** on $R$ is a rule that takes any ordered pair $(a,b)$ of elements of $R$ and returns another element of $R$. Here $a$ and $b$ are arbitrary elements of $R$, and the notation $(a,b)$ means that order matters: the first entry is $a$ and the second entry is $b$. We will write one binary operation as $+$ and another as $\cdot$.
 
-The notation $(R,+)$ means the set $R$ together with the operation $+$. It is called a **group** if the following four properties hold:
+The notation $(R,+)$ means the set $R$ together with the operation $+$. It is called a **group** if the following four properties hold.
 
-1. For every $a \in R$ and every $b \in R$, the sum $a+b$ is again in $R$. This property is called **closure**.
-2. For every $a,b,c \in R$, one has
-   $$
-   (a+b)+c = a+(b+c).
-   $$
-   This property is called **associativity**.
-3. There exists an element $0_R \in R$ such that, for every $a \in R$,
-   $$
-   a+0_R = a
-   \quad \text{and} \quad
-   0_R+a = a.
-   $$
-   The symbol $0_R$ denotes the **identity element** for addition on $R$.
-4. For every $a \in R$, there exists an element denoted by $-a$ such that
-   $$
-   a+(-a)=0_R
-   \quad \text{and} \quad
-   (-a)+a=0_R.
-   $$
-   The symbol $-a$ denotes the **inverse** of $a$ with respect to addition.
+**Group Property 1 (Closure).** For every $a \in R$ and every $b \in R$, the sum $a+b$ is again in $R$.
+
+**Group Property 2 (Associativity).** For every $a,b,c \in R$, one has
+$$
+(a+b)+c = a+(b+c).
+$$
+
+**Group Property 3 (Identity Element).** There exists an element $0_R \in R$ such that, for every $a \in R$,
+$$
+a+0_R = a
+\quad \text{and} \quad
+0_R+a = a.
+$$
+The symbol $0_R$ denotes the identity element for addition on $R$.
+
+**Group Property 4 (Inverse).** For every $a \in R$, there exists an element denoted by $-a$ such that
+$$
+a+(-a)=0_R
+\quad \text{and} \quad
+(-a)+a=0_R.
+$$
+The symbol $-a$ denotes the inverse of $a$ with respect to addition.
 
 A group $(R,+)$ is called an **abelian group** if addition is also **commutative**, meaning that for every $a,b \in R$,
 $$
 a+b=b+a.
 $$
 
-A **ring** is a set $R$ equipped with two binary operations, written $+$ and $\cdot$, such that:
+A **ring** is a set $R$ equipped with two binary operations, written $+$ and $\cdot$, such that the following three properties hold.
 
-1. $(R,+)$ is an abelian group.
-2. Multiplication is associative, meaning that for every $a,b,c \in R$,
-   $$
-   (a \cdot b) \cdot c = a \cdot (b \cdot c).
-   $$
-3. Multiplication distributes over addition from both sides, meaning that for every $a,b,c \in R$,
-   $$
-   a \cdot (b+c) = a \cdot b + a \cdot c
-   \quad \text{and} \quad
-   (a+b) \cdot c = a \cdot c + b \cdot c.
-   $$
+**Ring Property 1.** The structure $(R,+)$ is an abelian group.
+
+**Ring Property 2.** Multiplication is associative, meaning that for every $a,b,c \in R$,
+$$
+(a \cdot b) \cdot c = a \cdot (b \cdot c).
+$$
+
+**Ring Property 3.** Multiplication distributes over addition from both sides, meaning that for every $a,b,c \in R$,
+$$
+a \cdot (b+c) = a \cdot b + a \cdot c
+\quad \text{and} \quad
+(a+b) \cdot c = a \cdot c + b \cdot c.
+$$
 
 The symbol $\mathbb{Z}$ denotes the set of all integers:
 $$
@@ -66,18 +70,19 @@ $$
 \mathbb{N} = \{1,2,3,\dots\}.
 $$
 
-The integers $\mathbb{Z}$ form a commutative ring with identity. In that sentence:
+The integers $\mathbb{Z}$ form a commutative ring with identity.
 
-- **commutative** means multiplication also satisfies
-  $$
-  a \cdot b = b \cdot a
-  \quad \text{for all } a,b \in \mathbb{Z};
-  $$
-- **with identity** means there exists an integer written $1$ such that
-  $$
-  1 \cdot a = a \cdot 1 = a
-  \quad \text{for all } a \in \mathbb{Z}.
-  $$
+Here **commutative** means multiplication also satisfies
+$$
+a \cdot b = b \cdot a
+\quad \text{for all } a,b \in \mathbb{Z}.
+$$
+
+Here **with identity** means there exists an integer written $1$ such that
+$$
+1 \cdot a = a \cdot 1 = a
+\quad \text{for all } a \in \mathbb{Z}.
+$$
 
 For this problem, only the additive structure of $\mathbb{Z}$ will be used. Because every integer $a$ has additive inverse $-a$, subtraction is defined by
 $$
@@ -286,16 +291,18 @@ An **iteration** of the loop means one full execution of the loop body for one p
 
 **Theorem.** Under the uniqueness promise above, the algorithm returns exactly the unique pair $(i,j) \in U_n$ satisfying $s_i+s_j=\tau$.
 
-**Proof.** After the algorithm has processed the indices $0,1,\dots,t-1$, and assuming the algorithm has not yet returned, we maintain the following loop invariant:
+**Proof.** After the algorithm has processed the indices $0,1,\dots,t-1$, and assuming the algorithm has not yet returned, we maintain the following loop invariant.
 
-1. For every integer $x$,
-   $$
-   x \in \mathrm{dom}(M)
-   \quad \Longleftrightarrow \quad
-   \text{there exists an index } k \in I_n \text{ with } k<t \text{ and } s_k=x.
-   $$
-2. If $x \in \mathrm{dom}(M)$, then $M(x)<t$ and $s_{M(x)}=x$.
-3. No valid solution pair lies entirely inside the prefix $\{0,1,\dots,t-1\}$.
+**Invariant 1.** For every integer $x$,
+$$
+x \in \mathrm{dom}(M)
+\quad \Longleftrightarrow \quad
+\text{there exists an index } k \in I_n \text{ with } k<t \text{ and } s_k=x.
+$$
+
+**Invariant 2.** If $x \in \mathrm{dom}(M)$, then $M(x)<t$ and $s_{M(x)}=x$.
+
+**Invariant 3.** No valid solution pair lies entirely inside the prefix $\{0,1,\dots,t-1\}$.
 
 The word **prefix** here means the already processed initial block of indices.
 
