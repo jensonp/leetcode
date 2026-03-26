@@ -2,441 +2,300 @@
 
 - **Difficulty:** Easy
 - **Tags:** Array, Hash Table
-- **Pattern:** Complement lookup over a growing prefix
+- **Pattern:** Single-pass complement lookup
 
 ## Fundamentals
 
-### Algebraic Foundations
+### Foundational Definitions
 
-We begin with the ambient algebraic language.
-
-A **set** is a collection of objects. The symbol $R$ will denote a set.
-
-A **binary operation** on $R$ is a rule that takes any ordered pair $(a,b)$ of elements of $R$ and returns another element of $R$. Here $a$ and $b$ are arbitrary elements of $R$, and the notation $(a,b)$ means that order matters: the first entry is $a$ and the second entry is $b$. We will write one binary operation as $+$ and another as $\cdot$.
-
-The notation $(R,+)$ means the set $R$ together with the operation $+$. It is called a **group** if the following four properties hold.
-
-**Group Property 1 (Closure).** For every $a \in R$ and every $b \in R$, the sum $a+b$ is again in $R$.
-
-**Group Property 2 (Associativity).** For every $a,b,c \in R$, one has
-
-$$
-(a+b)+c = a+(b+c).
-$$
-
-**Group Property 3 (Identity Element).** There exists an element $0_R \in R$ such that, for every $a \in R$,
-
-$$
-a+0_R = a
-\quad \text{and} \quad
-0_R+a = a.
-$$
-
-The symbol $0_R$ denotes the identity element for addition on $R$.
-
-**Group Property 4 (Inverse).** For every $a \in R$, there exists an element denoted by $-a$ such that
-
-$$
-a+(-a)=0_R
-\quad \text{and} \quad
-(-a)+a=0_R.
-$$
-
-The symbol $-a$ denotes the inverse of $a$ with respect to addition.
-
-A group $(R,+)$ is called an **abelian group** if addition is also **commutative**, meaning that for every $a,b \in R$,
-
-$$
-a+b=b+a.
-$$
-
-A **ring** is a set $R$ equipped with two binary operations, written $+$ and $\cdot$, such that the following three properties hold.
-
-**Ring Property 1.** The structure $(R,+)$ is an abelian group.
-
-**Ring Property 2.** Multiplication is associative, meaning that for every $a,b,c \in R$,
-
-$$
-(a \cdot b) \cdot c = a \cdot (b \cdot c).
-$$
-
-**Ring Property 3.** Multiplication distributes over addition from both sides, meaning that for every $a,b,c \in R$,
-
-$$
-a \cdot (b+c) = a \cdot b + a \cdot c
-\quad \text{and} \quad
-(a+b) \cdot c = a \cdot c + b \cdot c.
-$$
+We begin by fixing the notation that will be used throughout the note.
 
 The symbol $\mathbb{Z}$ denotes the set of all integers:
 
 $$
-\mathbb{Z} = \{\dots,-2,-1,0,1,2,\dots\}.
+\mathbb{Z} = \{\dots, -2, -1, 0, 1, 2, \dots\}.
 $$
 
-The symbol $\mathbb{N}$ denotes the set of positive integers:
+The symbol $\mathbb{N}$ denotes the set of all positive integers:
 
 $$
-\mathbb{N} = \{1,2,3,\dots\}.
+\mathbb{N} = \{1, 2, 3, \dots\}.
 $$
 
-The integers $\mathbb{Z}$ form a commutative ring with identity.
+The symbol $=$ denotes equality. The symbol $+$ denotes addition of integers. The symbol $-$ denotes subtraction of integers.
 
-Here **commutative** means multiplication also satisfies
+If $a \in \mathbb{Z}$ and $b \in \mathbb{Z}$, then both $a + b$ and $a - b$ are again elements of $\mathbb{Z}$. This closure under addition and subtraction is the algebraic fact that allows the complement expression $\tau - s_k$ to remain inside the same number system as the input.
 
-$$
-a \cdot b = b \cdot a
-\quad \text{for all } a,b \in \mathbb{Z}.
-$$
-
-Here **with identity** means there exists an integer written $1$ such that
+A finite sequence of length $n$ is an ordered list of $n$ objects. The notation
 
 $$
-1 \cdot a = a \cdot 1 = a
-\quad \text{for all } a \in \mathbb{Z}.
+\langle s_0, s_1, \dots, s_{n-1} \rangle
 $$
 
-For this problem, only the additive structure of $\mathbb{Z}$ will be used. Because every integer $a$ has additive inverse $-a$, subtraction is defined by
+denotes a sequence whose first element is $s_0$, whose second element is $s_1$, and whose last element is $s_{n-1}$. The angle brackets $\langle \cdot \rangle$ indicate that order matters.
+
+If $n \in \mathbb{N}$, then the symbol
 
 $$
-\tau - a := \tau + (-a).
+I_n := \{0, 1, 2, \dots, n-1\}
 $$
 
-Here the symbol $\tau$ denotes an integer, the symbol $a$ denotes an integer, and the symbol $:=$ means "is defined to be."
+denotes the index set of a sequence of length $n$. The symbol $:=$ means "is defined to be." The braces $\{\cdot\}$ denote a set.
 
-Therefore any equation of the form
+If $A$ and $B$ are sets, then the Cartesian product $A \times B$ is the set of all ordered pairs $(a,b)$ with $a \in A$ and $b \in B$. The symbol $\in$ means "is an element of." The symbol $<$ means "is strictly less than." The symbol $\le$ means "is less than or equal to." The symbol $\ge$ means "is greater than or equal to." The symbol $\dots$ indicates continuation of the evident pattern.
 
-$$
-a+x=\tau
-$$
+If $A$ is a finite set, then $|A|$ denotes the number of elements in $A$. This number is called the cardinality of $A$.
 
-can be rewritten by adding $-a$ to both sides, which gives
-
-$$
-x=\tau-a.
-$$
-
-This cancellation step is the algebraic fact needed later.
-
-### Sequences and Indices
-
-Let $n \in \mathbb{N}$ with $n \ge 2$. The symbol $n$ denotes the length of the input sequence. The symbol $\in$ means "is an element of," and the symbol $\ge$ means "is greater than or equal to."
-
-Define the index set
-
-$$
-I_n := \{0,1,\dots,n-1\}.
-$$
-
-Here the braces $\{\ \}$ denote a set, and the notation $0,1,\dots,n-1$ means the consecutive integers from $0$ through $n-1$.
-
-A **finite integer sequence of length $n$** is a function
-
-$$
-S : I_n \to \mathbb{Z}.
-$$
-
-The arrow $\to$ means "is a function from the set on the left to the set on the right." Thus the formula above says that each index in $I_n$ is assigned an integer value.
-
-If $k \in I_n$, then $S(k)$ means the value of the function $S$ at the index $k$. We introduce the shorthand
-
-$$
-s_k := S(k).
-$$
-
-The subscript in $s_k$ records the index $k$; it is not an exponent.
-
-Using that shorthand, we may write the sequence itself as
-
-$$
-\langle s_0, s_1, \dots, s_{n-1} \rangle.
-$$
-
-The angle brackets $\langle$ and $\rangle$ denote an ordered sequence.
-
-If $A$ and $B$ are sets, then their **Cartesian product** $A \times B$ is the set of all ordered pairs $(a,b)$ with $a \in A$ and $b \in B$. The symbol $\times$ denotes this Cartesian product when it is used between sets.
-
-Now define
-
-$$
-U_n := \{(i,j) \in I_n \times I_n \text{ such that } i < j\}.
-$$
-
-Here $i$ and $j$ denote indices, the symbol $<$ means "is strictly less than," and the phrase "such that" restricts the ordered pairs that are kept.
-
-We use $U_n$ as the **candidate solution space**, meaning the set of all index pairs that are allowed to be returned. The symbol $\ne$ means "is not equal to." We require $i<j$, not merely $i \ne j$, because integer addition is commutative:
-
-$$
-s_i+s_j=s_j+s_i.
-$$
-
-Thus the ordered pairs $(i,j)$ and $(j,i)$ would encode the same unordered choice of two positions. Requiring $i<j$ keeps exactly one representative.
-
-We write $|U_n|$ for the **cardinality** of $U_n$, meaning the number of elements of $U_n$.
-
-We also write
+The symbol
 
 $$
 \binom{n}{2}
 $$
 
-for the **binomial coefficient** pronounced "n choose 2." It means the number of subsets with exactly $2$ elements that can be chosen from a set with exactly $n$ elements.
-
-**Lemma.** The cardinality of $U_n$ is
+is the binomial coefficient "n choose 2." It denotes the number of two-element subsets of an $n$-element set, and it satisfies
 
 $$
-|U_n|=\binom{n}{2}.
+\binom{n}{2} = \frac{n(n-1)}{2}.
 $$
 
-**Proof.** Choosing an element of $U_n$ is the same as choosing two distinct indices from the $n$ indices in $I_n$ and then writing them in increasing order. The number of such unordered two-element choices is $\binom{n}{2}$.
+In set-builder notation, the vertical bar $\mid$ means "such that." The symbol $\iff$ means "if and only if." The symbol $\exists!$ means "there exists exactly one."
 
-### Formal Problem Statement
-
-Fix a target value $\tau \in \mathbb{Z}$. The symbol $\tau$ denotes the target sum.
-
-Define a **predicate** $P(i,j)$ by
+Let $f$ and $g$ be numerical functions defined on $\mathbb{N}$ and taking nonnegative values. The statement $f(n) = O(g(n))$ means that there exist constants $C > 0$ and $n_0 \in \mathbb{N}$ such that
 
 $$
-P(i,j) \iff s_i+s_j=\tau.
+f(n) \le Cg(n) \quad \text{for all } n \ge n_0.
 $$
 
-A predicate is a statement depending on variables that becomes either true or false after the variables are specified. The symbol $\iff$ means "if and only if": the statement on the left is true exactly when the statement on the right is true.
-
-The task is to compute the unique pair $(i,j) \in U_n$ such that $P(i,j)$ is true. The symbol
+The statement $f(n) = \Omega(g(n))$ means that there exist constants $c > 0$ and $n_0 \in \mathbb{N}$ such that
 
 $$
-\exists!\,(i,j) \in U_n \text{ such that } s_i+s_j=\tau
+f(n) \ge cg(n) \quad \text{for all } n \ge n_0.
 $$
 
-means "there exists exactly one pair $(i,j)$ in $U_n$ such that $s_i+s_j=\tau$."
+The statement $f(n) = \Theta(g(n))$ means that both $f(n) = O(g(n))$ and $f(n) = \Omega(g(n))$ hold. Informally, $f(n) = \Theta(g(n))$ means that $f$ grows at the same asymptotic rate as $g$, up to constant factors.
 
-A **brute-force** algorithm is one that checks every candidate directly. In this problem, brute force checks every pair in $U_n$, so it performs exactly $\binom{n}{2}$ pair checks.
+The phrase constant time means running time bounded above by a fixed constant independent of $n$. In asymptotic notation, that is written as $O(1)$.
 
-### Deriving the Complement Condition
+A hash map is a data structure that stores key-value associations. In this note, keys will be integer values already seen in the sequence, and values will be indices at which those integers occur. A membership test asks whether a given key is currently stored.
 
-Fix an index $t \in I_n$. The symbol $t$ denotes the current right endpoint being examined.
+### Formal Statement of the Problem
 
-We ask whether there exists an earlier index $u \in I_n$ with $u<t$ such that
-
-$$
-s_u+s_t=\tau.
-$$
-
-Here $u$ denotes a possible partner index for $t$.
-
-Define the **complement** of $s_t$ relative to $\tau$ by
+Let $n \in \mathbb{N}$. Let
 
 $$
-c_t := \tau-s_t.
+S = \langle s_0, s_1, \dots, s_{n-1} \rangle
 $$
 
-The symbol $c_t$ denotes the exact integer value that would have to pair with $s_t$ in order to reach the target $\tau$.
+be a finite sequence of length $n$ such that $s_k \in \mathbb{Z}$ for every index $k \in I_n$. Let $\tau \in \mathbb{Z}$ be the target sum.
 
-**Lemma (Complement Lemma).** For every $u \in I_n$,
-
-$$
-s_u+s_t=\tau
-\quad \Longleftrightarrow \quad
-s_u=c_t.
-$$
-
-The symbol $\Longleftrightarrow$ also means "if and only if"; it is the display-math version of the same logical equivalence used above.
-
-**Proof.** Starting from $s_u+s_t=\tau$, subtract $s_t$ from both sides. By the cancellation law established earlier,
+Define the candidate pair space by
 
 $$
-s_u=\tau-s_t=c_t.
+V := \{(i,j) \in I_n \times I_n \mid i < j\}.
 $$
 
-Conversely, if $s_u=c_t$, then
+This definition enforces two facts simultaneously. First, self-pairs are excluded because $i < j$ makes it impossible to have $i = j$. Second, each unordered pair of positions is represented exactly once, because either $i < j$ or $j < i$, but not both.
+
+Define the summation predicate $P$ by
 
 $$
-s_u+s_t=(\tau-s_t)+s_t=\tau.
+P(i,j) \iff s_i + s_j = \tau.
 $$
 
-This lemma turns the search at fixed $t$ into a **one-dimensional** membership question. Here "one-dimensional" means that once the index $t$ has been fixed, there is only one candidate value left to test, namely $c_t$.
-
-### Data-Structural Reformulation
-
-For the fixed index $t$, define
+The objective is to compute the unique ordered pair $(i,j) \in V$ for which $P(i,j)$ is true. The uniqueness assumption may be written as
 
 $$
-S_{<t} := \{s_0,s_1,\dots,s_{t-1}\}.
+\exists! (i,j) \in V \text{ such that } P(i,j).
 $$
 
-The subscript $<t$ means "coming from indices strictly smaller than $t$." Thus $S_{<t}$ is the set of values that appear before index $t$.
+### Domain, Variables, Assumptions, and Constraints
 
-By the complement lemma, a valid pair ending at $t$ exists if and only if
+**Domain.** Every sequence value lies in $\mathbb{Z}$, every index lies in $I_n$, and every admissible solution pair lies in $V$.
 
-$$
-c_t \in S_{<t}.
-$$
+**Traversal Variables.** The symbol $k$ will denote the current index being processed during a left-to-right scan of the sequence. The symbol $u$ will denote an earlier index, meaning an index satisfying $u < k$.
 
-We therefore need a data structure that supports fast lookup of previously seen values. We use a **hash map**, meaning a data structure that stores **key-value pairs**: each key is associated with one stored value, and the structure is designed so that lookup and insertion are fast on average under standard hashing assumptions. A **lookup** asks whether a given key is already stored and, if it is stored, what value is attached to it. An **insertion** stores a new key together with its associated value.
+**Combinatorial Baseline.** A brute-force search evaluates the predicate $P(i,j)$ for every pair $(i,j) \in V$. Since $|V| = \binom{n}{2} = n(n-1)/2$, the number of predicate evaluations is $\Theta(n^2)$.
 
-Define
+**Design Requirement.** We seek an algorithm that avoids this quadratic enumeration and instead performs a single left-to-right traversal of the index set together with average constant-time map operations. Under that model, the intended running time is $\Theta(n)$.
 
-$$
-M : \mathbb{Z} \rightharpoonup I_n.
-$$
+### Theorems and Proof Obligations
 
-The symbol $\rightharpoonup$ means "partial function." A partial function from $\mathbb{Z}$ to $I_n$ assigns some integers a value in $I_n$, but it does not need to assign every integer such a value.
+To obtain linear running time, the algorithm must avoid comparing the current element $s_k$ against every earlier element $s_0, s_1, \dots, s_{k-1}$. The central question is therefore the following: for a fixed current index $k$, what exact value must an earlier element have in order to pair with $s_k$ and sum to $\tau$?
 
-We write $\mathrm{dom}(M)$ for the **domain** of the partial function $M$, meaning the set of all integers $x$ for which $M(x)$ is defined. Thus
+#### Lemma 1: Determinism of the Algebraic Complement
+
+Fix an index $k \in I_n$. Let $u \in I_n$ satisfy $u < k$. Then
 
 $$
-x \in \mathrm{dom}(M)
-\quad \Longleftrightarrow \quad
-M(x) \text{ is defined}.
+P(u,k) \iff s_u + s_k = \tau.
 $$
 
-Here $x$ denotes an arbitrary integer, and $M(x)$ denotes the value assigned by the map $M$ to the key $x$.
-
-In this problem, the interpretation of $M$ is as follows: if a value $x$ has already appeared in the processed part of the sequence, then the map may store one earlier index where that value occurs. The map does not need to store every occurrence of $x$; one stored index is enough because the algorithm only needs to know whether some earlier occurrence exists.
-
-A **membership test** is the act of checking whether a given key belongs to the current domain of the map. In this problem, the membership test is the question "is $c_t$ already in $\mathrm{dom}(M)$?"
-
-### Algorithm
-
-Before writing the algorithm, two remaining symbols must be fixed.
-
-The symbol
+Because subtraction is valid inside $\mathbb{Z}$, subtracting $s_k$ from both sides yields
 
 $$
-\varnothing
+s_u = \tau - s_k.
 $$
 
-denotes the **empty map**, meaning a map with no stored key-value pairs.
-
-The symbol
+Define the complement of the current value $s_k$ by
 
 $$
-\gets
+c_k := \tau - s_k.
 $$
 
-denotes **assignment** or **update**. For example, $M(s_t) \gets t$ means "store the index $t$ under the key $s_t$ in the map $M$."
+The value $c_k$ is uniquely determined by $s_k$ and $\tau$. Therefore, for fixed $k$, an earlier index $u$ forms a valid pair with $k$ if and only if the earlier value is exactly $c_k$.
 
-The word "Input" labels the data supplied to the algorithm before the algorithm starts.
+#### Lemma 2: Prefix-Memory Equivalence
 
-The word "return" means terminate the algorithm and output the value that follows it.
-
-The phrase
+For each index $k \in I_n$, define the processed prefix by
 
 $$
-\text{for } t = 0,1,\dots,n-1 \text{ do}
+S_{<k} := \langle s_0, s_1, \dots, s_{k-1} \rangle.
 $$
 
-means that the body of the loop is executed once for each listed value of $t$, in increasing order.
+The notation $<k$ in the subscript means "strictly before index $k$."
 
-With all symbols defined, the one-pass algorithm is
+Let $M$ be a hash map with the following interpretation: if an integer value $x$ has already appeared in the prefix $S_{<k}$, then the map may store that key $x$ together with one index $u < k$ satisfying $s_u = x$. The notation $M(x)$ means the index stored under key $x$ when that key is present.
+
+For the current index $k$, the statement "the key $c_k$ is present in $M$" is equivalent to the statement "there exists an earlier index $u < k$ such that $s_u = c_k$." By Lemma 1, this is in turn equivalent to the statement "there exists an earlier index $u < k$ such that $P(u,k)$ is true."
+
+#### Algorithmic Consequence
+
+Lemma 1 reduces the search for a partner of $s_k$ to the search for one specific value, namely $c_k$. Lemma 2 shows that a single membership test in a hash map is enough to decide whether that specific value already exists in the processed prefix. Hence the secondary scan over earlier indices can be eliminated.
+
+### Step-by-Step Derivation of the Algorithm
+
+#### 1. State Initialization
+
+Create an empty hash map $M$. At this moment, no sequence value has yet been processed, so no key is present.
+
+#### 2. Domain Iteration
+
+Traverse the index set $I_n$ in increasing order:
 
 $$
-\begin{aligned}
-&\text{Input: the sequence } \langle s_0,s_1,\dots,s_{n-1} \rangle \text{ and the target } \tau \\
-&M \gets \varnothing \\
-&\text{for } t = 0,1,\dots,n-1 \text{ do} \\
-&\qquad c_t \gets \tau-s_t \\
-&\qquad \text{if } c_t \in \mathrm{dom}(M) \text{ then return } (M(c_t),t) \\
-&\qquad M(s_t) \gets t
-\end{aligned}
+k = 0, 1, 2, \dots, n-1.
 $$
 
-Because the loop processes indices in increasing order, every index already stored in $M$ is smaller than the current index $t$. Therefore any returned pair automatically satisfies the condition $i<j$.
+At step $k$, the active sequence value is $s_k$.
+
+#### 3. Complement Evaluation
+
+Using Lemma 1, compute the unique value that would complete the target sum with $s_k$:
+
+$$
+c_k := \tau - s_k.
+$$
+
+#### 4. Membership Test and Return Rule
+
+If the key $c_k$ is already present in $M$, then an earlier index storing the complement has already been seen. In that case, return the ordered pair
+
+$$
+\bigl(M(c_k), k\bigr).
+$$
+
+This returned pair belongs to $V$ because $M(c_k)$ is an earlier index and therefore satisfies $M(c_k) < k$.
+
+#### 5. State Mutation
+
+If the key $c_k$ is not present in $M$, then no earlier value forms a valid pair with $s_k$. The current value must therefore be recorded for use by later indices. Using the update arrow $\gets$, write
+
+$$
+M(s_k) \gets k.
+$$
+
+The symbol $\gets$ means that the map is updated so that the key on the left stores the value on the right.
 
 ### Correctness Proof
 
-A **loop invariant** is a statement that is true before the first loop iteration and remains true after every iteration.
+We now prove that the algorithm returns the unique correct pair.
 
-An **iteration** of the loop means one full execution of the loop body for one particular value of $t$.
+#### Loop Invariant
 
-**Theorem.** Under the uniqueness promise above, the algorithm returns exactly the unique pair $(i,j) \in U_n$ satisfying $s_i+s_j=\tau$.
+Before the iteration for index $k$ begins, the map $M$ has the following property:
 
-**Proof.** After the algorithm has processed the indices $0,1,\dots,t-1$, and assuming the algorithm has not yet returned, we maintain the following loop invariant.
+For every integer value $x$, the key $x$ is present in $M$ if and only if there exists an index $u < k$ such that $s_u = x$. Whenever the key $x$ is present, the stored value $M(x)$ is one such index $u$.
 
-**Invariant 1.** For every integer $x$,
+This statement is called a loop invariant because it is intended to remain true at the start of every loop iteration.
 
-$$
-x \in \mathrm{dom}(M)
-\quad \Longleftrightarrow \quad
-\text{there exists an index } k \in I_n \text{ with } k<t \text{ and } s_k=x.
-$$
+#### Initialization
 
-**Invariant 2.** If $x \in \mathrm{dom}(M)$, then $M(x)<t$ and $s_{M(x)}=x$.
+Before the first iteration, one has $k = 0$. There is no index $u$ satisfying $u < 0$, so no value has occurred in the processed prefix. The map was initialized as empty, so the invariant holds.
 
-**Invariant 3.** No valid solution pair lies entirely inside the prefix $\{0,1,\dots,t-1\}$.
+#### Maintenance
 
-The word **prefix** here means the already processed initial block of indices.
+Assume the invariant holds at the start of the iteration for some index $k$.
 
-**Initialization.** When $t=0$, no indices have been processed, so $M$ is empty. Statement 1 holds because there are no seen values yet. Statement 2 holds because there is no integer $x$ for which $x \in \mathrm{dom}(M)$. Statement 3 holds because no pair can be formed from an empty prefix.
+First compute $c_k = \tau - s_k$.
 
-**Maintenance.** Assume the loop invariant holds at the start of iteration $t$. Compute $c_t=\tau-s_t$.
-
-Case 1: $c_t \in \mathrm{dom}(M)$. By Statement 2, the index $u := M(c_t)$ satisfies $u<t$ and $s_u=c_t$. By the complement lemma,
+If the key $c_k$ is present in $M$, then by the invariant there exists an index $u < k$ such that $s_u = c_k$. By the definition of $c_k$, one has
 
 $$
-s_u+s_t=\tau.
+s_u + s_k = c_k + s_k = (\tau - s_k) + s_k = \tau.
 $$
 
-Hence $(u,t)$ is a valid pair in $U_n$. Because the problem promises uniqueness, $(u,t)$ must be the desired output, so returning it is correct.
+Hence $P(u,k)$ is true, and the algorithm returns the valid pair $(u,k)$. Since the actual returned first component is $M(c_k)$, and $M(c_k)$ is one such earlier index, the returned pair is correct.
 
-Case 2: $c_t$ is not in $\mathrm{dom}(M)$. By Statement 1, there is no earlier index $u<t$ with $s_u=c_t$. By the complement lemma, there is no valid solution pair whose second index is $t$. The algorithm then updates the map by setting $M(s_t) \gets t$. After this update, Statement 1 remains true because the value $s_t$ has now been added to the processed prefix. Statement 2 remains true by construction of the update. Statement 3 remains true because it was already true at the start of the iteration and there is no solution ending at $t$.
-
-**Termination.** Let $(i^\ast,j^\ast)$ denote the unique valid pair. The superscript $\ast$ marks these indices as the distinguished indices of the actual solution; it is not an exponent. Since $i^\ast<j^\ast$, the algorithm processes index $i^\ast$ before index $j^\ast$. When the loop reaches $t=j^\ast$, Statement 1 implies that $s_{i^\ast}$ is already recorded in $M$, so $s_{i^\ast} \in \mathrm{dom}(M)$. Because
+If the key $c_k$ is not present in $M$, then no earlier index $u < k$ satisfies $s_u = c_k$. By Lemma 1, no earlier index forms a valid pair with $k$. The update
 
 $$
-\tau-s_{j^\ast}=s_{i^\ast},
+M(s_k) \gets k
 $$
 
-we have $c_{j^\ast}=s_{i^\ast}$, so the algorithm returns $(i^\ast,j^\ast)$ at iteration $j^\ast$. Therefore the algorithm returns the unique correct answer.
+then makes the current value available to later iterations. After this update, the invariant holds for the next iteration index $k+1$.
 
-### Complexity Analysis
+#### Termination
 
-We now define the asymptotic notation used in the complexity claims.
+Let $(i^\ast, j^\ast)$ denote the unique pair in $V$ satisfying $P(i^\ast, j^\ast)$. The superscript ${}^\ast$ is used only to distinguish this specific solution pair from arbitrary indices.
 
-Let $f(n)$ and $g(n)$ be functions whose values are never negative.
-
-We write
+Because $i^\ast < j^\ast$, the iteration processing index $i^\ast$ occurs before the iteration processing index $j^\ast$. When the algorithm reaches index $j^\ast$, the invariant implies that the key $s_{i^\ast}$ is already present in $M$. Since
 
 $$
-f(n)=O(g(n))
+s_{i^\ast} + s_{j^\ast} = \tau,
 $$
 
-if there exist positive constants $C$ and $n_0$ such that
+Lemma 1 gives
 
 $$
-f(n) \le Cg(n)
-\quad \text{for every } n \ge n_0.
+s_{i^\ast} = \tau - s_{j^\ast} = c_{j^\ast}.
 $$
 
-The symbol $\le$ means "is less than or equal to." Here $C$ and $n_0$ are fixed positive real numbers that do not depend on $n$. The notation $O(g(n))$ means that $g(n)$ is an asymptotic upper bound for $f(n)$.
+Therefore the key $c_{j^\ast}$ is present in $M$ when index $j^\ast$ is processed, and the algorithm returns at that iteration. The returned pair is valid, and by the uniqueness assumption it must be the unique desired solution.
 
-We write
+This proves that the algorithm is correct.
+
+### Complexity Claims
+
+We now justify the running-time and memory bounds.
+
+The algorithm performs one left-to-right traversal of the sequence, so the loop executes exactly $n$ iterations.
+
+During each iteration, the following work is performed:
+
+1. one subtraction to compute $c_k$,
+2. one hash-map membership test for the key $c_k$,
+3. in the non-returning case, one hash-map insertion or update for the key $s_k$.
+
+Under the simple uniform hashing assumption, the expected cost of a membership test and the expected cost of an insertion are both $O(1)$. Here "expected" means average over the hash-table behavior induced by the hashing rule, and "simple uniform hashing assumption" means that keys behave as though they are distributed evenly across hash buckets.
+
+Since each of the $n$ iterations performs only expected constant-time work, the total expected running time is
 
 $$
-f(n)=\Theta(g(n))
+\Theta(n).
 $$
 
-if there exist positive constants $c_1$, $c_2$, and $n_0$ such that
+If a pathological collision pattern causes many keys to fall into the same bucket, then individual map operations may degrade from constant time to linear time. In that worst case, the overall running time may degrade to
 
 $$
-c_1 g(n) \le f(n) \le c_2 g(n)
-\quad \text{for every } n \ge n_0.
+O(n^2).
 $$
 
-Here $c_1$, $c_2$, and $n_0$ are again fixed positive real numbers that do not depend on $n$. The notation $\Theta(g(n))$ means that $g(n)$ is both an asymptotic upper bound and an asymptotic lower bound for $f(n)$.
+The auxiliary space of an algorithm is the memory used in addition to the input sequence and the output pair. In the worst case, the algorithm stores one key-value entry for each processed element before returning. Therefore the auxiliary space usage is
 
-The phrase **constant time** means time bounded above by a fixed constant independent of $n$; in asymptotic notation this is $\Theta(1)$. The phrase **expected time** means the average running time under the probability model supplied by the hashing assumption below. The phrase **worst-case** means the maximum running time over all inputs of the same length together with all collision behaviors allowed by the model. The phrase **auxiliary space** means the memory used by the algorithm besides the memory already occupied by the input sequence itself.
-
-The **simple uniform hashing assumption** is the standard idealized assumption that keys behave as if they are spread evenly by the hash function, so lookup and insertion have constant expected time. A **pathological collision pattern** is an extremely bad hashing outcome in which many keys are sent to the same storage location, which makes map operations much slower.
-
-**Theorem.** Under the simple uniform hashing assumption, the algorithm runs in expected time $\Theta(n)$ and uses auxiliary space $\Theta(n)$.
-
-**Proof.** The loop performs exactly $n$ iterations, one for each index in $I_n$. In each iteration, the algorithm does one subtraction, one membership test in the hash map, and at most one insertion into the hash map. The subtraction takes constant time, which means it takes time $\Theta(1)$. Under the simple uniform hashing assumption, the membership test and the insertion each take constant expected time, which means expected time $\Theta(1)$. Therefore each iteration takes expected time $\Theta(1)$, and $n$ iterations together give total expected running time $\Theta(n)$.
-
-For space, the map stores at most one earlier index for each processed value. In the worst case, the algorithm finds the unique solution only after it has already stored $n-1$ indices. Thus the extra memory used by the map grows linearly with $n$, so the auxiliary space is $\Theta(n)$.
-
-If pathological collisions occur, hash-map operations need not remain constant-time on average. In that situation the running time can degrade to $O(n^2)$.
+$$
+\Theta(n).
+$$
 
 ### Conclusion
 
-The improvement over searching all $\binom{n}{2}$ candidate pairs comes from an algebraic identity, not from guesswork. Once $s_t$ is fixed, the equation $s_u+s_t=\tau$ determines exactly one required partner value, namely $c_t=\tau-s_t$. The algorithm stores earlier values in a hash map and tests whether that one required value has already appeared. That is why a single left-to-right pass through the sequence is enough.
+The brute-force formulation searches a quadratic pair space. The complement reformulation collapses the search at each index $k$ from "check all earlier indices" to "check whether one exact value $c_k$ has already appeared." A hash map realizes that check in expected constant time, which yields an expected $\Theta(n)$ algorithm with $\Theta(n)$ auxiliary space.
