@@ -160,12 +160,12 @@ $$
 meaning a finite partial function from integer values to indices. Its intended interpretation is
 
 $$
-x \in \operatorname{dom}(M)
+x \in \mathrm{dom}(M)
 \quad \Longleftrightarrow \quad
 \text{some previously processed index stores the value } x.
 $$
 
-If $x \in \operatorname{dom}(M)$, then $M(x)$ is one such earlier index.
+If $x \in \mathrm{dom}(M)$, then $M(x)$ is one such earlier index.
 
 **Remark.** The map does not need to store every occurrence of a repeated value. It is enough to store one prior index for each value, because the complement test asks only whether such an index exists.
 
@@ -173,18 +173,17 @@ If $x \in \operatorname{dom}(M)$, then $M(x)$ is one such earlier index.
 
 Scan the sequence once from left to right.
 
-```text
-Input: integers s_0, s_1, ..., s_{n-1} and target tau
-M := empty hash map
-
-for t := 0 to n - 1 do
-    c_t := tau - s_t
-    if c_t is in M then
-        return (M(c_t), t)
-    end if
-    M(s_t) := t
-end for
-```
+$$
+\begin{aligned}
+&\text{Input: } \langle s_0, s_1, \dots, s_{n-1} \rangle,\ \tau \\
+&M \gets \varnothing \\
+&\text{for } t = 0,1,\dots,n-1 \text{ do} \\
+&\qquad c_t \gets \tau - s_t \\
+&\qquad \text{if } c_t \in \mathrm{dom}(M) \text{ then} \\
+&\qquad\qquad \text{return } (M(c_t), t) \\
+&\qquad M(s_t) \gets t
+\end{aligned}
+$$
 
 Because the hash map contains only indices from earlier iterations, any returned pair automatically satisfies the canonical ordering $i < j$.
 
@@ -198,18 +197,18 @@ After processing indices $0,1,\dots,t-1$, and assuming the algorithm has not yet
 
 1. For every integer $x$,
    $$
-   x \in \operatorname{dom}(M)
+   x \in \mathrm{dom}(M)
    \quad \Longleftrightarrow \quad
    \exists k < t \text{ such that } s_k = x.
    $$
-2. If $x \in \operatorname{dom}(M)$, then $M(x) < t$ and $s_{M(x)} = x$.
+2. If $x \in \mathrm{dom}(M)$, then $M(x) < t$ and $s_{M(x)} = x$.
 3. No solution pair lies entirely inside the prefix $\{0,1,\dots,t-1\}$.
 
 **Initialization.** When $t = 0$, the map is empty. Statements (1) and (2) hold trivially because no indices have been processed. Statement (3) also holds trivially because no pair can be formed from the empty prefix.
 
 **Maintenance.** Assume the invariant holds at the start of iteration $t$. Compute $c_t = \tau - s_t$.
 
-Case 1: $c_t \in \operatorname{dom}(M)$.
+Case 1: $c_t \in \mathrm{dom}(M)$.
 
 By statement (2), the index $u := M(c_t)$ satisfies $u < t$ and $s_u = c_t$. By the complement lemma,
 
@@ -219,11 +218,11 @@ $$
 
 Hence $(u,t) \in U_n$ is a valid solution pair. Because the problem promises uniqueness, this pair is exactly the desired answer.
 
-Case 2: $c_t \notin \operatorname{dom}(M)$.
+Case 2: $c_t \notin \mathrm{dom}(M)$.
 
 By statement (1), there is no prior index $u < t$ with $s_u = c_t$. By the complement lemma, no valid pair ending at $t$ exists. The algorithm then inserts $M(s_t) := t$. After this update, statements (1) and (2) remain true for the new prefix, and statement (3) remains true because there was no earlier solution by induction and no solution ending at $t$.
 
-**Termination.** Let $(i^\ast, j^\ast)$ be the unique solution pair, with $i^\ast < j^\ast$. When the loop reaches iteration $t = j^\ast$, the index $i^\ast$ has already been processed. Therefore $s_{i^\ast} \in \operatorname{dom}(M)$, and since
+**Termination.** Let $(i^\ast, j^\ast)$ be the unique solution pair, with $i^\ast < j^\ast$. When the loop reaches iteration $t = j^\ast$, the index $i^\ast$ has already been processed. Therefore $s_{i^\ast} \in \mathrm{dom}(M)$, and since
 
 $$
 \tau - s_{j^\ast} = s_{i^\ast},
