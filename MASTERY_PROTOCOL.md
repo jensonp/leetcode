@@ -55,6 +55,7 @@ Brief notes only. You already own the family.
 - Full rigor for the first 2–3 canonical problems in a new family.
 - Medium-depth for the next few.
 - Compressed notes after the family is owned.
+- Exception: for DP, front-load state-definition problems before optimization-heavy or pattern-compression problems.
 
 ---
 
@@ -89,10 +90,10 @@ Study these at full rigor. Each is a canonical representative whose proof struct
 | 33 | Search in Rotated Sorted Array | Case-split binary search | Binary search when order is partially broken |
 | 4 | Median of Two Sorted Arrays | Advanced binary-search partition proof | High-value proof problem; do not memorize blindly |
 | 295 | Find Median from Data Stream | Heap invariant design | Canonical two-heap maintenance |
-| 198 | House Robber | 1D DP recurrence | Minimal recurrence with strong transfer |
-| 322 | Coin Change | Unbounded-choice DP | Canonical min-DP / complete-knapsack style |
-| 72 | Edit Distance | 2D alignment DP | One of the best DP state-definition problems |
-| 300 | Longest Increasing Subsequence | DP with structural optimization | Forces `O(n²)` DP vs `O(n log n)` distinction |
+| 72 | Edit Distance | 2D alignment DP | First core DP anchor; forces exact prefix-state definition and base cases |
+| 198 | House Robber | 1D DP recurrence | Best learned after formal state-definition discipline is in place |
+| 322 | Coin Change | Unbounded-choice DP | Canonical objective-value DP; requires clear infeasible/base-state handling |
+| 300 | Longest Increasing Subsequence | DP with structural optimization | Study after plain DP state design feels routine; forces `O(n²)` DP vs `O(n log n)` distinction |
 
 ---
 
@@ -109,8 +110,36 @@ Promote these to full-depth **only if** the corresponding family still feels wea
 | Tree decomposition | 105. Construct BT from Preorder+Inorder, 114. Flatten BT to Linked List |
 | Graph copying / boundary fill | 133. Clone Graph, 130. Surrounded Regions |
 | Harder backtracking | 51. N-Queens, 79. Word Search, 212. Word Search II |
-| DP segmentation / string-state | 139. Word Break, 97. Interleaving String |
+| DP state-definition / prefix-state | 139. Word Break, 97. Interleaving String |
 | Stock-state DP | 123. Best Time to Buy/Sell Stock III or 188. IV |
+
+---
+
+## Dynamic Programming Study Order
+
+Do not enter DP through optimization tricks. Enter through formal problem definition.
+
+For the first few DP problems, the goal is not "spot the recurrence quickly." The goal is: define the subproblem so precisely that the recurrence becomes forced.
+
+Use this order inside the DP family, regardless of whether each problem is being studied at full-depth or medium-depth under the global policy.
+
+| Order | Problem | What it should teach |
+|-------|---------|----------------------|
+| 1 | 139. Word Break | `dp[i]` must be a formal statement about the prefix `s[0..i-1]`; ambiguity about index vs prefix-length is unacceptable |
+| 2 | 72. Edit Distance | A DP state over two prefixes, plus exact base-row/base-column semantics |
+| 3 | 97. Interleaving String | A 2D boolean state where each coordinate has a precise contract and the transition follows from the last consumed character |
+| 4 | 198. House Robber | Once the state is defined correctly, the 1D recurrence is almost trivial |
+| 5 | 322. Coin Change | Objective-value DP: define what is minimized, what counts as impossible, and how base states propagate |
+| 6 | 123. Best Time to Buy/Sell Stock III or 188. IV | Explicit multi-state modeling: transaction count, holding status, and transition legality |
+| 7 | 300. Longest Increasing Subsequence | Separate the baseline `O(n²)` DP definition from the later `O(n log n)` structural optimization |
+
+DP-specific discipline:
+
+- For problems 1-3, write the state definition before writing any recurrence.
+- State whether indices denote positions or prefix lengths. Do not leave this implicit.
+- State the base cases in words before encoding them in an array.
+- For optimization problems, define the objective function formally: feasibility, minimum cost, maximum value, or count.
+- Do not study LIS patience sorting until the `O(n²)` DP can be derived and justified cold.
 
 ---
 
