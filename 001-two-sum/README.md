@@ -105,14 +105,14 @@ The symbol $c_k$ is therefore not arbitrary. It is the unique integer that would
 For each index $k \in I_n$, define the processed prefix by
 
 $$
-S_{<k} := \langle s_0, s_1, \dots, s_{k-1} \rangle.
+S_{\lt k} := \langle s_0, s_1, \dots, s_{k-1} \rangle.
 $$
 
-The subscript $<k$ means "strictly before index $k$."
+The subscript $\lt k$ means "strictly before index $k$."
 
 Now introduce the data structure required by the process. A hash map is a structure that stores key-value associations. In this note, a key will be an integer value already seen in the sequence, and the associated value will be an index where that integer occurs.
 
-Let $M$ denote such a hash map while the algorithm is processing index $k$. If an integer $x$ has already appeared in the prefix $S_{<k}$, then the map may store the key $x$ together with one earlier index $u < k$ satisfying $s_u = x$. The notation $M(x)$ means "the index stored in the map under the key $x$" when that key is present.
+Let $M$ denote such a hash map while the algorithm is processing index $k$. If an integer $x$ has already appeared in the prefix $S_{\lt k}$, then the map may store the key $x$ together with one earlier index $u < k$ satisfying $s_u = x$. The notation $M(x)$ means "the index stored in the map under the key $x$" when that key is present.
 
 For the current index $k$, the statement "the key $c_k$ is present in $M$" is equivalent to the statement "there exists an index $u < k$ such that $s_u = c_k$." By Lemma 1, that is equivalent to saying that there exists an earlier index $u < k$ such that $P(u,k)$ is true.
 
